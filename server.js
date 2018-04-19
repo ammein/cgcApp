@@ -3,10 +3,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var {mongoose} = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
+const hbs = require('hbs');
+// to get certain value of API using lodash
+const _ = require('lodash');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
 app.use(bodyParser.json());
-
+// Dynamic Templates
+hbs.registerPartials(__dirname + '/views/partials');
+// Load static
+app.use(express.static(__dirname + '/public'));
+app.set('view engine', 'hbs');
 // Deploy Setting
 // if(env === 'development'){
 //     process.env.PORT = 3000;
@@ -17,6 +24,15 @@ app.use(bodyParser.json());
 // }
 
 var port = process.env.PORT || 3000;
+
+app.get('/create' , (req ,res)=>{
+    res.render('create.hbs');
+});
+
+hbs.registerHelper('script', function (src) {
+    var s = '<script src="' + src + '" type="text/javascript"><' + '/script>';
+    return new hbs.SafeString(s);
+});
 
 // POST Question & Answers
 app.post('/question/api' , (req , res)=>{
@@ -71,6 +87,26 @@ app.delete('/question/api/:id' , (req , res)=>{
     Question.findByIdAndRemove(id).then((question)=>{
         if(!question){
             res.status(400).send();
+        }
+        res.send(question);
+    }).catch((e)=>{
+        res.status(400).send(e);
+    });
+});
+
+// PATCH/UPDATE /question/api/:id
+app.patch('/question/api/:id' , (req,res)=>{
+    var id = req.params.id;
+    // pick key to update the value
+    var body = _.pick(req.body , ['questionString' , 'answers' , 'time']);
+    if(!ObjectID.isValid(id))
+    {
+        return res.status(400).send();
+    }
+    Question.findByIdAndUpdate(id , {$set : body} , {new : true}).then((question)=>{
+        if(!question)
+        {
+            return res.status(400).send();
         }
         res.send(question);
     }).catch((e)=>{
