@@ -1,8 +1,8 @@
 const {MongoClient} = require('mongo-db');
 const express = require('express');
 const bodyParser = require('body-parser');
-var {mongoose} = require('./db/mongoose');
-var {Question} = require('./db/question/question');
+var {mongoose} = require('./server/db/mongoose');
+var {Question} = require('./server/models/question');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
 app.use(bodyParser.json());

@@ -1,7 +1,7 @@
 const expect = require('expect');
 const request = require('supertest');
-const {app} = require('./../server');
-const {Question} = require('./../db/question/question');
+const {app} = require('./../../server');
+const {Question} = require('./../models/question');
 
 const question = [{
     questionString : 'new question enter testing',
