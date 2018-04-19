@@ -1,0 +1,29 @@
+{
+  "name": "cgc-api",
+  "version": "1.0.0",
+  "description": "For Question Adding , Updating , Deleting and Receiving CGC Project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ammein/cgc-api.git"
+  },
+  "keywords": [
+    "CGC"
+  ],
+  "author": "Amin Shazrin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ammein/cgc-api/issues"
+  },
+  "homepage": "https://github.com/ammein/cgc-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongo-db": "^1.0.2",
+    "mongoose": "^5.0.15"
+  }
+}
