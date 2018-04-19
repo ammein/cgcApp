@@ -1,6 +1,11 @@
 var mongoose = require('mongoose');
 const {MongoClient , ObjectID} = require('mongo-db');
 
+
+function arrayLimit(val) {
+    val.length <= 4;
+};
+
 var questionSchema = new mongoose.Schema({
     questionString : {
         type : String,
@@ -8,7 +13,16 @@ var questionSchema = new mongoose.Schema({
         date : Date.now,
         minlength : 3
     },
-    answers : [Number],
+    answers : { 
+        type : [Number],
+        required: [true, 'There is no question without an answer. Please provide answers atleast 2 to that question'],        
+        validate : {
+            validator : function (val) {
+                return val.length <= 4 && !(val.length === 0);
+            },
+            message : 'Answers = {VALUE} \n The answers are only limit between (0 < answers <= 4)'
+        }
+    },
     time : {
         type : Number,
         required : true

@@ -3,23 +3,32 @@ const request = require('supertest');
 const {app} = require('./../server');
 const {Question} = require('./../db/question/question');
 
+const question = [{
+    questionString : 'new question enter testing',
+    answers: [20, 30, 10, 40],
+    time : 50
+},{
+    questionString : '',
+    time : null
+}];
+
 beforeEach((done)=>{
     Question.remove({}).then(()=>{
-        done();
-    });
+        return Question.insertMany(question);
+    }).catch(()=> done());
 });
 
 describe('POST /question' , ()=>{
     it('should create new question' , (done)=>{
-        var questionString = 'new question enter testing';
-        var answers = [20 , 30 ,10 ,40];
+        var questionString= 'new question enter testing';
+        var answers= [20, 30, 10, 40];
         var time = 50;
         request(app)
         .post('/question')
         .send({
             questionString,
             answers,
-            time,
+            time
         })
         .expect(200)
         .expect((res)=>{
@@ -57,11 +66,39 @@ describe('POST /question' , ()=>{
     });
 
     it('should not create a string with 2 characters' , (done)=>{
-        var questionString = 'as';
+        var questionString = 'as';        
         request(app)
         .post('/question')
         .send({
             questionString
+        })
+        .expect(400)
+        .end(done);
+    });
+
+    it('should not send too many answers' , (done)=> {
+        var answers = [23 ,23,12,35,12];
+        var questionString = "For too many answers";
+
+        request(app)
+        .post('/question')
+        .send({
+            questionString,
+            answers
+        })
+        .expect(400)
+        .end(done);
+    });
+
+    it('should not send without an answers' , (done)=>{
+        var answers = [];
+        var questionString = "Without Answers";
+        
+        request(app)
+        .post('/question')
+        .send({
+            questionString,
+            answers
         })
         .expect(400)
         .end(done);
