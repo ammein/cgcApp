@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/*.test.js",
+    "test-watch": "nodemon --exec npm test"
   },
   "repository": {
     "type": "git",
@@ -22,8 +23,14 @@
   "homepage": "https://github.com/ammein/cgc-api#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "express": "^4.16.3",
     "mongo-db": "^1.0.2",
     "mongoose": "^5.0.15"
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "express": "^4.14.0",
+    "mocha": "^3.0.0",
+    "nodemon": "^1.17.3",
+    "supertest": "^3.0.0"
   }
 }

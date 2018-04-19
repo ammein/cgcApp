@@ -8,11 +8,7 @@ var questionSchema = new mongoose.Schema({
         date : Date.now,
         minlength : 3
     },
-    answers : [{
-        type : Number,
-        required : true,
-        default : null
-    }],
+    answers : [Number],
     time : {
         type : Number,
         required : true
