@@ -25,3 +25,11 @@ gulp.task('nunjucks', function () {
 
 //default task to be run with gulp
 gulp.task('default', ['serve']);
+
+/*
+    Resource :
+    https://www.tengio.com/blog/nunjucks-templates-with-gulp/
+
+    MUST USE : version "gulp-nunjucks-render": "^1.1.10",
+
+*/
