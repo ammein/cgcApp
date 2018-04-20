@@ -6,14 +6,16 @@ var {Question} = require('./server/models/question');
 const nunjucks = require('nunjucks');
 // to get certain value of API using lodash
 const _ = require('lodash');
+const path = require('path');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
-
 app.use(bodyParser.json());
 // Load static
-app.use(express.static(__dirname + '/views/public'));
+app.use(express.static(__dirname + '/public'));
+app.set(path.join(__dirname , '/public'));
+// console.log(path.join(__dirname, './views/public'));
 // Configure nunjucks using multiple template in array
-nunjucks.configure(['views', 'views/template' , 'views/public'], {
+nunjucks.configure('views', {
     autoescape: false,
     express: app
 });
@@ -33,6 +35,7 @@ app.get('/' , (req ,res)=>{
     res.render('header.html');
 });
 app.get('/index'  ,(req , res)=>{
+    // require('./views/public/index');
     res.render('index.html');
 });
 
@@ -123,5 +126,6 @@ app.listen(port , ()=>{
 
 
 module.exports = {
-    app
+    app,
+    nunjucks
 };
