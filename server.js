@@ -3,17 +3,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var {mongoose} = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
-const hbs = require('hbs');
+const nunjucks = require('nunjucks');
 // to get certain value of API using lodash
 const _ = require('lodash');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
+// Configure nunjucks using multiple template in array
+nunjucks.configure(['views', 'views/template'], {
+    autoescape: false,
+    express: app
+});
 app.use(bodyParser.json());
-// Dynamic Templates
-hbs.registerPartials(__dirname + '/views/partials');
 // Load static
 app.use(express.static(__dirname + '/public'));
-app.set('view engine', 'hbs');
+
 // Deploy Setting
 // if(env === 'development'){
 //     process.env.PORT = 3000;
@@ -25,14 +28,13 @@ app.set('view engine', 'hbs');
 
 var port = process.env.PORT || 3000;
 
-app.get('/create' , (req ,res)=>{
-    res.render('create.hbs');
+app.get('/' , (req ,res)=>{
+    res.render('header.html');
+});
+app.get('/index'  ,(req , res)=>{
+    res.render('index.html');
 });
 
-hbs.registerHelper('script', function (src) {
-    var s = '<script src="' + src + '" type="text/javascript"><' + '/script>';
-    return new hbs.SafeString(s);
-});
 
 // POST Question & Answers
 app.post('/question/api' , (req , res)=>{
