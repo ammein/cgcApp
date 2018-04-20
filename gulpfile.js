@@ -18,7 +18,7 @@ gulp.task('nunjucks', function () {
     render.nunjucks.configure(['src/templates/']);
 
     // get the pages files
-    return gulp.src('src/pages/**/*.+(html)')
+    return gulp.src('src/pages/**/*.+(html || js)')
         .pipe(render())
         .pipe(gulp.dest('src'))
 });
