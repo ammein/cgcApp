@@ -1,0 +1,12 @@
+<!-- index.html -->
+{% extends "./../templates/base.html" %} <!-- we're extending the base template -->
+ 
+{% block title %}This is the new title of our webpage{% endblock %}
+ 
+{% block content %}
+<h1>Hello<h1>
+<p>
+  We just extended the base template. Anything we put in the content blocks will
+  be specific to the index.html page.
+</p>
+{% endblock %}

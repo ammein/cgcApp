@@ -23,7 +23,6 @@
   "homepage": "https://github.com/ammein/cgc-api#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "browser-sync": "^2.23.7",
     "gulp": "^3.9.1",
     "jquery": "^3.3.1",
     "jsdom": "^7.2.2",
@@ -35,7 +34,7 @@
   "devDependencies": {
     "expect": "^1.20.2",
     "express": "^4.16.3",
-    "gulp-nunjucks-render": "^2.2.2",
+    "gulp-nunjucks-render": "^1.1.10",
     "mocha": "^3.0.0",
     "nodemon": "^1.17.3",
     "supertest": "^3.0.0"

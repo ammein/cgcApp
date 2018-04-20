@@ -11,11 +11,11 @@ const path = require('path');
 var app = express();
 app.use(bodyParser.json());
 // Load static
-app.use(express.static(__dirname + '/public'));
-app.set(path.join(__dirname , '/public'));
+// app.use(express.static(__dirname + '/src'));
+// app.set(path.join(__dirname , '/src'));
 // console.log(path.join(__dirname, './views/public'));
 // Configure nunjucks using multiple template in array
-nunjucks.configure('views', {
+nunjucks.configure('./src', {
     autoescape: false,
     express: app
 });
