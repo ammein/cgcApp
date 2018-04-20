@@ -1,4 +1,3 @@
-{% extends "header.html" %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Index</title>
+    
 </head>
 <body>
+{% extends "header.html" %}
+    
     {% block header %}
         <ul>
             <li>Home</li>
@@ -17,6 +19,6 @@
             <li>Hey</li>
         </ul>
     {% endblock %}
-    <script src="nunjucks.js"></script>
+    <script src="./public/nunjucks/nunjucks.min.js"></script>
 </body>
 </html>

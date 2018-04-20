@@ -8,14 +8,15 @@ const nunjucks = require('nunjucks');
 const _ = require('lodash');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
+
+app.use(bodyParser.json());
+// Load static
+app.use(express.static(__dirname + '/views/public'));
 // Configure nunjucks using multiple template in array
-nunjucks.configure(['views', 'views/template'], {
+nunjucks.configure(['views', 'views/template' , 'views/public'], {
     autoescape: false,
     express: app
 });
-app.use(bodyParser.json());
-// Load static
-app.use(express.static(__dirname + '/public'));
 
 // Deploy Setting
 // if(env === 'development'){
