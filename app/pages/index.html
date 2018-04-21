@@ -2,6 +2,11 @@
 {% extends "./../templates/base.html" %} <!-- we're extending the base template -->
  
 {% block title %}This is the new title of our webpage{% endblock %}
+
+    {% block css %}
+    <!-- inject:css -->
+    <!-- endinject -->
+    {% endblock %}
  
 {% block content %}
 <h1>Hello<h1>
@@ -9,4 +14,9 @@
   We just extended the base template. Anything we put in the content blocks will
   be specific to the index.html page.
 </p>
+{% endblock %}
+
+{% block script %}
+<!-- inject:js -->
+<!-- endinject -->
 {% endblock %}

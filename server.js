@@ -7,15 +7,16 @@ const nunjucks = require('nunjucks');
 // to get certain value of API using lodash
 const _ = require('lodash');
 const path = require('path');
+var mime = require('mime-types');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
 app.use(bodyParser.json());
 // Load static
-// app.use(express.static(__dirname + '/src'));
+app.use(express.static(path.join(__dirname, 'public')))
 // app.set(path.join(__dirname , '/src'));
 // console.log(path.join(__dirname, './views/public'));
 // Configure nunjucks using multiple template in array
-nunjucks.configure('./src', {
+nunjucks.configure('./public', {
     autoescape: false,
     express: app
 });
@@ -32,13 +33,8 @@ nunjucks.configure('./src', {
 var port = process.env.PORT || 3000;
 
 app.get('/' , (req ,res)=>{
-    res.render('header.html');
-});
-app.get('/index'  ,(req , res)=>{
-    // require('./views/public/index');
     res.render('index.html');
 });
-
 
 // POST Question & Answers
 app.post('/question/api' , (req , res)=>{

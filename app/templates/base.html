@@ -7,31 +7,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
  
     <title>
-      This is the new title of our webpage <!-- we'll change the title -->
+      {% block title %} {% endblock %} <!-- we'll change the title -->
     </title>
  
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    {% block css %}
+    {% endblock %}
   </head>
  
   <body>
  
     <div class="container container-fluid">
-      
-<h1>Hello<h1>
-<p>
-  We just extended the base template. Anything we put in the content blocks will
-  be specific to the index.html page.
-</p>
-
+      {% block content %} <!--- Our content will be here -->
+      {% endblock %}
     </div>
  
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    
-    <script src="/src/resources/index.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+    {% block script %}
+
+    {% endblock %}
   </body>
 </html>
