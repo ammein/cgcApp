@@ -13,8 +13,6 @@ var app = express();
 app.use(bodyParser.json());
 // Load static
 app.use(express.static(path.join(__dirname, 'public')))
-// app.set(path.join(__dirname , '/src'));
-// console.log(path.join(__dirname, './views/public'));
 // Configure nunjucks using multiple template in array
 nunjucks.configure(['./app' , './public'], {
     autoescape: false,
