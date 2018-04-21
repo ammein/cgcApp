@@ -3,20 +3,19 @@ var render = require('gulp-nunjucks-render');
 var browserSync = require('browser-sync').create();
 var inject = require('gulp-inject');
 
-gulp.task('browserSync', function () {
+gulp.task('browserSync',['default'] , function () {
     browserSync.init({
         server: {
-            baseDir: 'public'
+            baseDir: 'app'
         },
     })
 });
 
 gulp.task('watch', ['browserSync'], function () {
-    gulp.watch('public/**/*.css' , ['css']);
-    // Other watchers
     // Reloads the browser whenever HTML or JS files change
-    gulp.watch('public/**/*.html', browserSync.reload);
-    gulp.watch('public/**/*.js', browserSync.reload);
+    gulp.watch('app/**/*.html', browserSync.reload);
+    gulp.watch('app/**/*.js', browserSync.reload);
+    gulp.watch('app/**/*.css', browserSync.reload);
 });
 // writing up the gulp nunjucks task
 gulp.task('nunjucks', function () {
@@ -30,6 +29,7 @@ gulp.task('nunjucks', function () {
         .pipe(inject(gulp.src(['./app/css/*.+(css)', './app/js/**/*.+(js)'], { read: false }), { relative: true }))
         .pipe(render())
         .pipe(gulp.dest('./public'))
+        .pipe(gulp.dest('./app'))
 });
 
 gulp.task('nunjucks-css' , function(){

@@ -16,9 +16,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 // app.set(path.join(__dirname , '/src'));
 // console.log(path.join(__dirname, './views/public'));
 // Configure nunjucks using multiple template in array
-nunjucks.configure('./public', {
+nunjucks.configure(['./app' , './public'], {
     autoescape: false,
-    express: app
+    express: app,
+    watch : true
 });
 
 // Deploy Setting
