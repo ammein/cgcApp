@@ -49,6 +49,35 @@ html , body{
     height: 72px;
     border: none;
     background-color: #E7E7E7;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.answer-box:nth-of-type(1){
+    background-color: #84CCF3 !important;
+    color: white !important;
+}
+
+.answer-box:focus{
+    font-size: 40px;
+}
+
+.answer-box:nth-of-type(1)::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.answer-box:nth-of-type(1):-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.answer-box:nth-of-type(1)::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: white;
 }
 
 .add{
@@ -62,12 +91,54 @@ html , body{
     font-size: 21px;
     color: white;
     border-radius: 10px;
-    display: inline-block;
+    /* display: inline-block; */
     box-shadow: rgba(0, 0, 0, 0.16) 0 3px 5px;
+    z-index: 2;
+    position: absolute;
+    bottom: 400px;
+    right:52.9px;
 }
 
 input[type="button"]:focus {
     outline: none;
+}
+
+input[type="number"]:focus {
+    outline: none;
+}
+
+/* For Firefox */
+
+input[type='number'] {
+    -moz-appearance: textfield;
+    resize: none;
+}
+
+/* Webkit browsers like Safari and Chrome */
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#timeBoxLabel{
+    margin-top: 44px;
+    margin-right: 11px;
+    font-size: 24px;
+    font-family: 'Josefin Sans',sans-serif;
+}
+
+#timeBox {
+    border: none;
+    text-align: center;
+    width: 89px;
+    height: 74px;
+    display: inline-block;
+    font-size: 42.45px;
+    color: #535353;
+    background-color: #f6f6f6;
+    border-radius: 10px;
 }
 
 .add:active{

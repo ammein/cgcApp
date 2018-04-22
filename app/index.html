@@ -29,13 +29,15 @@
     <div class="row">
       <div class="parent-box">
         <div class="box">
-          <h1>Make your question here</h1>
+          <h1>CGC Make Question</h1>
           <form action="/question/api" id="questionForm" method="post">
-            <textarea name="questionString" id="questionForm" class="textarea-box">Add your question here.</textarea>                      
-            <input type="number" name="answers" id="trueAnswerBox" class="answer-box">
-            <input type="number" name="answers" id="falseAnswerBox" class="answer-box">
-            <input type="number" name="answers" id="falseAnswerBox" class="answer-box">
-            <input type="number" name="answers" id="falseAnswerBox" class="answer-box">
+            <textarea name="questionString" id="questionForm" class="textarea-box">Add your question here.</textarea>                 
+            <input type="number" name="answers" id="trueAnswerBox" class="answer-box" placeholder="True Answer" onfocus="this.placeholder = ''">
+            <input type="number" name="answers" id="falseAnswerBox" class="answer-box" placeholder="False Answer" onfocus="this.placeholder = ''">
+            <input type="number" name="answers" id="falseAnswerBox" class="answer-box" placeholder="False Answer" onfocus="this.placeholder = ''">
+            <input type="number" name="answers" id="falseAnswerBox" class="answer-box" placeholder="False Answer" onfocus="this.placeholder = ''">
+            <label for="timeBox" id="timeBoxLabel">Time to complete the question :</label>
+            <input type="number" name="time" id="timeBox" value="60" onfocus="this.value = ''"><p style="font-size: 24px;color: #535353; display: inline-block; margin-left : 14px;">seconds</p>
             <input type="submit" value="Add" class="add">
           </form>
         </div>

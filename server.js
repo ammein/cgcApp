@@ -14,7 +14,7 @@ const router = express.Router();
 // Pass json using POSTMAN
 app.use(bodyParser.json());
 // Pass json using FORM html METHOD POST
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
 // Load static
 app.use(express.static(path.join(__dirname, 'public')))
 // Configure nunjucks using multiple template in array
