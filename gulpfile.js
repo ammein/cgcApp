@@ -29,6 +29,7 @@ gulp.task('nunjucks', function () {
         .pipe(inject(gulp.src(['./app/css/*.+(css)', './app/js/**/*.+(js)'], { read: false }), { relative: true }))
         .pipe(render())
         .pipe(gulp.dest('./public'))
+        .pipe(gulp.dest('./app'))
 });
 
 gulp.task('nunjucks-css' , function(){

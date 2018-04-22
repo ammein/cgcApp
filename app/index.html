@@ -12,7 +12,9 @@
  
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
     
     <!-- inject:css -->
     <link rel="stylesheet" href="../css/styles.css">
@@ -24,14 +26,23 @@
  
     <div class="container container-fluid">
       
-<h1>Hello<h1>
-<p>
-  We just extended the base template. Anything we put in the content blocks will
-  be specific to the index.html page.
-</p>
+    <div class="row">
+      <div class="parent-box">
+        <div class="box">
+          <h1>Make your question here</h1>
+          <form action="/question/api" id="questionForm" method="POST">
+            <textarea name="question" id="questionForm" class="textarea-box">Add your question here.</textarea>                      
+            <input type="number" name="answer1" id="trueAnswerBox" class="answer-box">
+            <input type="number" name="answer2" id="falseAnswerBox" class="answer-box">
+            <input type="number" name="answer3" id="falseAnswerBox" class="answer-box">
+            <input type="number" name="answer" id="falseAnswerBox" class="answer-box">
+            <input type="button" value="Add" class="add">
+          </form>
+        </div>
+      </div>
+    </div>
 
     </div>
- 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

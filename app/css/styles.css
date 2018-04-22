@@ -1,11 +1,80 @@
 p{
-    font-size: 50px;
+    font-size: 17px;
 }
 
 h1{
-    color : white;
+    font-size: 35px;
+    color: #2E2E2E;
+    font-family: 'Josefin Slab', serif;
+    margin-bottom: 24.4px;
 }
 
-body{
-    background-color: #000;
+html , body{
+    background-color: #5CB9EB;
+    width: 100%;
+    height: 100%;
+    font-family: 'Josefin Sans' , sans-serif;
+}
+
+.parent-box {
+    width: 100%;
+    margin: auto;
+    position: relative;
+}
+
+.box {
+    /* position: relative; */
+    height: 498px;
+    background-color: #fff;
+    padding: 37.9px 52.9px 22.9px 52.9px;
+    vertical-align: middle;
+    border-radius: 10px;
+    width: 686px;
+    margin: 0 auto;
+    transform: translateY(30%);
+}
+
+.textarea-box {
+    background-color: #FAFAFA;
+    border : none;
+    height: 160px;
+    width: 100%;
+    margin-bottom: 32.2px;
+    padding: 19.3px 27.2px;
+    color: #D2D2D2;
+}
+
+.answer-box {
+    width: 137px;
+    height: 72px;
+    border: none;
+    background-color: #E7E7E7;
+}
+
+.add{
+    width: 137.33px;
+    height: 45.78px;
+    background-color: #5FF457;
+    border:none;
+    float: right;
+    margin-top: 35px;
+    font-family: 'Joselin Slab', serif;
+    font-size: 21px;
+    color: white;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 3px 5px;
+}
+
+input[type="button"]:focus {
+    outline: none;
+}
+
+.add:active{
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 0px 2px;
+}
+
+#falseAnswerBox {
+    margin-left: 5px;
 }
