@@ -11,8 +11,9 @@ var mime = require('mime-types');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
 const router = express.Router();
-// bodyParser.urlencoded() for convert array of answers
+// Pass json using POSTMAN
 app.use(bodyParser.json());
+// Pass json using FORM html METHOD POST
 app.use(bodyParser.urlencoded());
 // Load static
 app.use(express.static(path.join(__dirname, 'public')))
