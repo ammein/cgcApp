@@ -7,4 +7,8 @@ $(function(){
             "color" : "#2e2e2e"
         });
     });
+
+    $("form").on("submit" , function(){
+        $(this).serialize();
+    });
 });

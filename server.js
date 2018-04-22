@@ -10,7 +10,10 @@ const path = require('path');
 var mime = require('mime-types');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
+const router = express.Router();
+// bodyParser.urlencoded() for convert array of answers
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 // Load static
 app.use(express.static(path.join(__dirname, 'public')))
 // Configure nunjucks using multiple template in array
@@ -37,6 +40,8 @@ app.get('/' , (req ,res)=>{
 
 // POST Question & Answers
 app.post('/question/api' , (req , res)=>{
+    console.log(req.body.answers);
+    console.log(req.body.questionString);
     var newQuestion = new Question({
         questionString: req.body.questionString,
         answers: req.body.answers,
