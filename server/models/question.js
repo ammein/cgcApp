@@ -25,7 +25,7 @@ var questionSchema = new mongoose.Schema({
     },
     time : {
         type : Number,
-        required : true
+        default : 60
     }
 });
 

@@ -41,8 +41,6 @@ app.get('/' , (req ,res)=>{
 
 // POST Question & Answers
 app.post('/question/api' , (req , res)=>{
-    console.log(req.body.answers);
-    console.log(req.body.questionString);
     var newQuestion = new Question({
         questionString: req.body.questionString,
         answers: req.body.answers,

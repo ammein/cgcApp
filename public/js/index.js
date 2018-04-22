@@ -8,7 +8,7 @@ $(function(){
         });
     });
 
-    $("form").on("submit" , function(){
-        $(this).serialize();
-    });
+    // $("form").on("submit" , function(){
+    //     $(this).serialize();
+    // });
 });
