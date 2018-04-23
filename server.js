@@ -36,11 +36,16 @@ nunjucks.configure(['./app' , './public'], {
 var port = process.env.PORT || 3000;
 
 app.get('/' , (req ,res)=>{
-    res.render('index.html');
+    var data = {
+        questionString : req.body.questionString,
+        answers : req.body.answers,
+        time : req.body.time
+    };
+    res.render('index.html' , data);
 });
 
 // POST Question & Answers
-app.post('/question/api' , (req , res)=>{
+router.post('/question' , (req , res)=>{
     var newQuestion = new Question({
         questionString: req.body.questionString,
         answers: req.body.answers,
@@ -48,14 +53,14 @@ app.post('/question/api' , (req , res)=>{
     });
 
     newQuestion.save().then((question)=>{
-        res.send(question);
+        res.status(200).redirect('/');
     },(e)=>{
         res.status(400).send(e);
     });
 });
 
-// GET /question/api
-app.get('/question/api' , (req , res)=>{
+// GET /api/question
+router.get('/question' , (req , res)=>{
     Question.find().then((question)=>{
         res.send({question});
     }, (err)=>{
@@ -63,8 +68,8 @@ app.get('/question/api' , (req , res)=>{
     });
 });
 
-// GET /question/api/:id
-app.get('/question/api/:id' , (req , res)=>{
+// GET /api/question/:id
+router.get('/question/:id' , (req , res)=>{
     var id = req.params.id;
 
     if(!ObjectID.isValid(id))
@@ -82,8 +87,8 @@ app.get('/question/api/:id' , (req , res)=>{
     });
 });
 
-// DELETE /question/api/:id
-app.delete('/question/api/:id' , (req , res)=>{
+// DELETE /api/question/:id
+router.delete('/question/:id' , (req , res)=>{
     var id = req.params.id;
     if(!ObjectID.isValid(id)){
         return res.status(400).send();
@@ -99,8 +104,8 @@ app.delete('/question/api/:id' , (req , res)=>{
     });
 });
 
-// PATCH/UPDATE /question/api/:id
-app.patch('/question/api/:id' , (req,res)=>{
+// PATCH/UPDATE /api/question/:id
+router.patch('/question/:id' , (req,res)=>{
     var id = req.params.id;
     // pick key to update the value
     var body = _.pick(req.body , ['questionString' , 'answers' , 'time']);
@@ -118,6 +123,11 @@ app.patch('/question/api/:id' , (req,res)=>{
         res.status(400).send(e);
     });
 });
+
+
+// Tell express to use this router with /api before.
+// You can put just '/' if you don't want any sub path before routes.
+app.use('/api' , router);
 
 app.listen(port , ()=>{
     console.log(`Listen on port ${port}`);

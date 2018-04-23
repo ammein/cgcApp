@@ -63,6 +63,23 @@ html , body{
     font-size: 40px;
 }
 
+.answer-box:nth-of-type(1)::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.answer-box:nth-of-type(1):-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.answer-box:nth-of-type(1)::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: white;
+}
+
 .add{
     width: 137.33px;
     height: 45.78px;
@@ -109,6 +126,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 44px;
     margin-right: 11px;
     font-size: 24px;
+    font-family: 'Josefin Sans',sans-serif;
 }
 
 #timeBox {
@@ -117,9 +135,10 @@ input[type=number]::-webkit-outer-spin-button {
     width: 89px;
     height: 74px;
     display: inline-block;
-    font-size: 56.46px;
+    font-size: 42.45px;
     color: #535353;
     background-color: #f6f6f6;
+    border-radius: 10px;
 }
 
 .add:active{
