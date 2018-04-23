@@ -7,7 +7,6 @@ const nunjucks = require('nunjucks');
 // to get certain value of API using lodash
 const _ = require('lodash');
 const path = require('path');
-var mime = require('mime-types');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
 const router = express.Router();

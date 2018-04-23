@@ -9,10 +9,10 @@ $(function(){
     });
 
     $("form").on("submit" , function () {
-        var question = $("questionForm" + [1]).val();
+        var question = $(".textarea-box").val();
         console.log(question);
-        var trueAnswer = $("trueAnswerBox").val();
-        var falseAnswer = $("falseAnswerBox").val();
+        var trueAnswer = $("#trueAnswerBox").val();
+        var falseAnswer = $("#falseAnswerBox").val();
         alert('Question : ' + question + "\n True Asnwer :" + trueAnswer + "\n False Answers : " + falseAnswer);
     });
 
@@ -24,6 +24,13 @@ $(function(){
         success: function (response) {
             var lastAddedResponse = response.question.length - 1;
             // alert('All data added : ' + JSON.stringify(response.question[lastAddedResponse], undefined, 2));
+            var getListBlock = document.getElementById("questionsBlock");
+            var list = "<li class='list'>" + response.questions + "</li>";
         }
+    }).then(function (data) {
+        console.log("Get data :",data);
+        console.log("Get data question :",data.question);
+        
+        $('#list').html(data.question);            
     });
 });
