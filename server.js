@@ -43,12 +43,15 @@ app.get('/' , (req ,res)=>{
     res.render('index.html' , data);
 });
 
+var idIncrement = 0;
 // POST Question & Answers
 router.post('/question' , (req , res)=>{
+    idIncrement++;
     var newQuestion = new Question({
         questionString: req.body.questionString,
         answers: req.body.answers,
-        time : req.body.time
+        time : req.body.time,
+        id : idIncrement
     });
 
     newQuestion.save().then((question)=>{

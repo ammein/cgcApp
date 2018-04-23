@@ -26,6 +26,10 @@ var questionSchema = new mongoose.Schema({
     time : {
         type : Number,
         default : 60
+    },
+    idIncr : {
+        type : Number,
+        default :0
     }
 });
 
