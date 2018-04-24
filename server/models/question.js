@@ -27,10 +27,6 @@ var questionSchema = new mongoose.Schema({
         type : Number,
         default : 60
     },
-    idIncr : {
-        type : Number,
-        default :0
-    },
     level : {
         type : Number,
         default : 1
