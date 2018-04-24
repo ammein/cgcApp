@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 const {MongoClient , ObjectID} = require('mongodb');
+// Pagination Module
+var mongoosePaginate = require('mongoose-paginate');
 
 
 function arrayLimit(val) {
@@ -32,6 +34,8 @@ var questionSchema = new mongoose.Schema({
         default : 1
     }
 });
+
+questionSchema.plugin(mongoosePaginate);
 
 var Question = mongoose.model('Question' , questionSchema);
 

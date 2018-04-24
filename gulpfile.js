@@ -36,22 +36,6 @@ gulp.task('nunjucks', function () {
     // get the pages files
     return gulp.src('app/pages/**/*.+(html)')
         .pipe(inject(gulp.src(['./app/css/*.+(css)', './app/js/**/*.+(js)'], { read: false }), { relative: true }))
-        // .pipe(nunjucks.compile({
-        //     questions: [
-        //         {
-        //             "answers": [
-        //                 342,
-        //                 345,
-        //                 345,
-        //                 456
-        //             ],
-        //             "time": 60,
-        //             "_id": "5add99da0a03e8806cfae73a",
-        //             "questionString": "sadfdsgdgd",
-        //             "__v": 0
-        //         }
-        //     ]
-        // }))
         .pipe(render())
         .pipe(gulp.dest('./public'))
         .pipe(gulp.dest('./app'))
@@ -62,7 +46,7 @@ gulp.task('nunjucks-css' , function(){
     .pipe(gulp.dest('./public/css'))
 });
 
-gulp.task('nunjucks-js' , function(){
+gulp.task('nunjucks-js' , function(cb){
     return gulp.src('app/js/**/*.+(js)')
     .pipe(gulp.dest('./public/js'))
 });

@@ -61,10 +61,11 @@ router.post('/question' , (req , res)=>{
 
 // GET /api/question
 router.get('/question' , (req , res)=>{
-    Question.find().then((question)=>{
+
+    Question.paginate({}, { limit: 5 }).then((question) => {
         res.send({question});
-    }, (err)=>{
-        res.status(400).send(err);
+    }).catch((e)=>{
+        res.status(400).send(e);
     });
 });
 
