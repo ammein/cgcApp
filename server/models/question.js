@@ -30,6 +30,10 @@ var questionSchema = new mongoose.Schema({
     idIncr : {
         type : Number,
         default :0
+    },
+    level : {
+        type : Number,
+        default : 1
     }
 });
 

@@ -51,7 +51,8 @@ router.post('/question' , (req , res)=>{
         questionString: req.body.questionString,
         answers: req.body.answers,
         time : req.body.time,
-        id : idIncrement
+        id : idIncrement,
+        level : req.body.level
     });
 
     newQuestion.save().then((question)=>{
@@ -110,7 +111,7 @@ router.delete('/question/:id' , (req , res)=>{
 router.patch('/question/:id' , (req,res)=>{
     var id = req.params.id;
     // pick key to update the value
-    var body = _.pick(req.body , ['questionString' , 'answers' , 'time']);
+    var body = _.pick(req.body , ['questionString' , 'answers' , 'time' , 'level']);
     if(!ObjectID.isValid(id))
     {
         return res.status(400).send();

@@ -1,4 +1,4 @@
-function update(id, questionString , allAnswers) {
+function update(id, questionString , allAnswers , level) {
     $.ajax({
         method: "PATCH",
         url: '/api/question/' + id,
@@ -6,7 +6,8 @@ function update(id, questionString , allAnswers) {
         data: JSON.stringify({
             id,
             questionString,
-            answers : allAnswers
+            answers : allAnswers,
+            level
         }),
         success: function (response) {
             initialize();
@@ -42,7 +43,7 @@ function initialize() {
                 // console.log("All responses",{response});
                 response.question.forEach((questions) => {
                     var id = questions._id;
-                    getListBlock.append("<form id='" + id + "' class='questionBox'><textarea class='list'>" + questions.questionString + "</textarea><input type='number' class='answer-box-edit' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
+                    getListBlock.append("<form id='" + id + "' class='questionBox'><textarea class='list'>" + questions.questionString + "</textarea><input type='number' class='answer-box-edit' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>"+questions.level+"</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level +"' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
                 });
                 $('.questionBox').on('click', '.update', function (e) {
                     e.preventDefault();
@@ -53,8 +54,9 @@ function initialize() {
                     var answer2 = $("form#" + id).find("#falseAnswerBox1").val();
                     var answer3 = $("form#" + id).find("#falseAnswerBox2").val();
                     var answer4 = $("form#" + id).find("#falseAnswerBox3").val();
+                    var level = $("form#" + id).find("#level").val();
                     var allAnswers = [answer1 , answer2 , answer3 , answer4];
-                    update(id, questionString , allAnswers);
+                    update(id, questionString , allAnswers , level);
                 });
                 $('.questionBox').on('click', '.delete', function (e) {
                     e.preventDefault();
@@ -111,7 +113,7 @@ $(function(){
         console.log(question);
         var trueAnswer = $("#trueAnswerBox").val();
         var falseAnswer = $("#falseAnswerBox").val();
-        alert('Question : ' + question + "\n True Asnwer :" + trueAnswer + "\n False Answers : " + falseAnswer);
+        // alert('Question : ' + question + "\n True Asnwer :" + trueAnswer + "\n False Answers : " + falseAnswer);
     });
 
 });
