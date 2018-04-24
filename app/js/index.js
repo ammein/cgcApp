@@ -97,7 +97,8 @@ function openBox(){
 $(function(){
 
     console.log("I loaded in browser");
-
+    var level = $("#level").val(1);
+    console.log(level);
     $(".textarea-box").one("click" , function(){
         $(".textarea-box").val("");
         $(".textarea-box").css({

@@ -24,14 +24,14 @@ html , body{
 
 .box {
     /* position: relative; */
-    height: 498px;
+    height: auto;
     background-color: #fff;
     padding: 37.9px 52.9px 22.9px 52.9px;
     vertical-align: middle;
     border-radius: 10px;
     width: 686px;
     margin: 0 auto;
-    transform: translateY(30%);
+    transform: translateY(10%);
 }
 
 .textarea-box {
@@ -87,7 +87,6 @@ html , body{
     background-color: #5FF457;
     border:none;
     float: right;
-    margin-top: 35px;
     font-family: 'Joselin Slab', serif;
     font-size: 21px;
     color: white;
@@ -96,7 +95,7 @@ html , body{
     box-shadow: rgba(0, 0, 0, 0.16) 0 3px 5px;
     z-index: 2;
     position: absolute;
-    bottom: 400px;
+    bottom: 570px;
     right:52.9px;
 }
 
@@ -282,4 +281,118 @@ ol{
     font-size: 20px;
     opacity: 1;
     margin: 0;
+}
+
+
+/****************************************************
+
+                    RANGE SLIDER
+
+****************************************************/
+
+.rangeValue{
+    font-size: 24px;
+    display: inline-block;
+}
+
+input[type=range] {
+    height: 41px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 15px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 0px 0px 0px #50555C;
+    background: #F0F0F0;
+    border-radius: 25px;
+    border: 0px solid #FFFFFF;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 35px;
+    width: 26px;
+    border-radius: 7px;
+    background: #529DE1;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -10px;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #F0F0F0;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 15px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 0px 0px 0px #50555C;
+    background: #F0F0F0;
+    border-radius: 25px;
+    border: 0px solid #FFFFFF;
+}
+
+input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 35px;
+    width: 26px;
+    border-radius: 7px;
+    background: #529DE1;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 15px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #F0F0F0;
+    border: 0px solid #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0px 0px 0px #50555C;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #F0F0F0;
+    border: 0px solid #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0px 0px 0px #50555C;
+}
+
+input[type=range]::-ms-thumb {
+    margin-top: 1px;
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 35px;
+    width: 26px;
+    border-radius: 7px;
+    background: #529DE1;
+    cursor: pointer;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: #F0F0F0;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: #F0F0F0;
 }
