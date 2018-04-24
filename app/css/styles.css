@@ -42,6 +42,7 @@ html , body{
     margin-bottom: 32.2px;
     padding: 19.3px 27.2px;
     color: #D2D2D2;
+    font-size: 24px;
 }
 
 .answer-box {
@@ -150,6 +151,20 @@ input[type=number]::-webkit-outer-spin-button {
     margin-left: 5px;
 }
 
+.see-questions {
+    display: inline-block;
+    position: absolute;
+    z-index: 2;
+    bottom: calc(100% - 60%);
+    transform: rotate(-90deg);
+    padding: 6px;
+    background-color: #84CCF3;
+    transform-origin: left top 0;
+    border-radius: 0 0 5px 5px;
+    color : white;
+    cursor: pointer;
+}
+
 
 /****************************************************
 
@@ -163,15 +178,17 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: rgba(0, 0, 0, 0.55);
     z-index: 2;
     position: absolute;
+    display: none;    
 }
 
 .sidebar{
-    width:768px;
+    width:55%;
     height: 100%;
     overflow-y: auto;
     background-color: #fff;
     z-index: 3;
     position: absolute;
+    display: none;
 }
 
 .title{
@@ -233,7 +250,36 @@ ol{
     margin-bottom: 25px;
 }
 
+.answer-box-edit:nth-child(1n+2){
+    margin-left: 15px;
+}
+
 .answer-box-edit:nth-of-type(1){
     background-color: #84CCF3;
     color: white;
+}
+
+#get {
+    display: none;
+}
+
+.remove-icon {
+    font-size: 25px;
+    color :#B4B4B4;
+    transform: translateX(50%);
+}
+
+.close-box{
+    display: block;
+    float: right;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.close-text{
+    text-align: center;
+    color: #707070;
+    font-size: 20px;
+    opacity: 1;
+    margin: 0;
 }

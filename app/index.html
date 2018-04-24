@@ -9,7 +9,6 @@
     <title>
       This is the new title of our webpage <!-- we'll change the title -->
     </title>
- 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Fonts -->
@@ -29,13 +28,19 @@
         <div class="sidebar">
           <div class="all-question">
             <h1 class="title">All Question</h1>
-            <button id="get">Refresh</button>
+            <div class="close-box" onclick="closeBox()">
+              <i class="glyphicon glyphicon-remove remove-icon"></i>
+              <br><p class="close-text">Close</p>
+            </div>
             <hr>            
             <ol id="questionsBlock">
             </ol>
           </div>
         </div>
     
+    <div class="see-questions" onclick="openBox()">
+      <p class="text-question" style="margin : 0;">See Questions</p>
+    </div>
     <div class="container container-fluid">
       
     <div class="row">
