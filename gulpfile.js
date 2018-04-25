@@ -4,8 +4,6 @@ var browserSync = require('browser-sync').create();
 var inject = require('gulp-inject');
 var data = require('gulp-data');
 var {Question} = require('./server/models/question');
-var gzip = require('gulp-gzip');
-gzip({ append: true })
 
 function getDataFromDatabase(){
     Question.find()

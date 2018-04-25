@@ -137,6 +137,11 @@ router.patch('/question/:id' , (req,res)=>{
 // You can put just '/' if you don't want any sub path before routes.
 app.use('/api' , router);
 
+// 404 PAGE NOT FOUND . MUST PUT ON VERY BOTTOM OF THE PAGE
+app.get('*' , (req, res)=>{
+    res.status(404).render('404.html');
+})
+
 app.listen(port , ()=>{
     console.log(`Listen on port ${port}`);
 });
