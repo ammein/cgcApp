@@ -43,15 +43,6 @@ app.get('/' , (req ,res)=>{
     res.render('index.html' , data);
 });
 
-// app.get('/question/paginate' , (req ,res)=>{
-//     var data = {
-//         questionString : req.body.questionString,
-//         answers : req.body.answers,
-//         time : req.body.time
-//     };
-//     res.render('index.html' , data);
-// });
-
 // POST Question & Answers
 router.post('/question' , (req , res)=>{
     var newQuestion = new Question({
