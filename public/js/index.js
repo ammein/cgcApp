@@ -204,6 +204,4 @@ $(function(){
         // alert('Question : ' + question + "\n True Asnwer :" + trueAnswer + "\n False Answers : " + falseAnswer);
     });
 
-    initialize();
-
 });
