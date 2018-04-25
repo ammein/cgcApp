@@ -43,6 +43,15 @@ app.get('/' , (req ,res)=>{
     res.render('index.html' , data);
 });
 
+// app.get('/question/paginate' , (req ,res)=>{
+//     var data = {
+//         questionString : req.body.questionString,
+//         answers : req.body.answers,
+//         time : req.body.time
+//     };
+//     res.render('index.html' , data);
+// });
+
 // POST Question & Answers
 router.post('/question' , (req , res)=>{
     var newQuestion = new Question({
@@ -61,12 +70,19 @@ router.post('/question' , (req , res)=>{
 
 // GET /api/question
 router.get('/question' , (req , res)=>{
-
-    Question.paginate({}, { limit: 5 }).then((question) => {
-        res.send({question});
-    }).catch((e)=>{
-        res.status(400).send(e);
-    });
+    if(req.query.q){
+        Question.paginate({}, { page: JSON.parse(req.query.q), limit: 5 }).then((question) => {
+            return res.send({question});
+        }).catch((e) => {
+            return res.status(400).send(e);
+        });
+    }else if(!req.query.q){
+        Question.paginate({}, { limit: 5 }).then((question) => {
+            return res.send({ question });
+        }).catch((e) => {
+            return res.status(400).send(e);
+        });
+    }
 });
 
 // GET /api/question/:id
