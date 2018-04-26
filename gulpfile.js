@@ -5,49 +5,42 @@ var inject = require('gulp-inject');
 var data = require('gulp-data');
 var {Question} = require('./server/models/question');
 
-function getDataFromDatabase(){
-    Question.find()
-    .exec((err , questions)=>{
-        return questions;
-    });
-}
-
 gulp.task('browserSync',['default'] , function () {
     browserSync.init({
         server: {
-            baseDir: 'app'
+            baseDir: 'views'
         },
     })
 });
 
 gulp.task('watch', ['browserSync'], function () {
     // Reloads the browser whenever HTML or JS files change
-    gulp.watch('app/**/*.html', browserSync.reload);
-    gulp.watch('app/**/*.js', browserSync.reload);
-    gulp.watch('app/**/*.css', browserSync.reload);
+    gulp.watch('views/**/*.html', browserSync.reload);
+    gulp.watch('views/**/*.js', browserSync.reload);
+    gulp.watch('views/**/*.css', browserSync.reload);
 });
 // writing up the gulp nunjucks task
 gulp.task('nunjucks', function () {
     console.log('nunjucking');
 
     // configuring the templates folder for nunjucks
-    render.nunjucks.configure(['app/templates/']);
+    render.nunjucks.configure(['views/templates/']);
 
     // get the pages files
-    return gulp.src('app/pages/**/*.+(html)')
-        .pipe(inject(gulp.src(['./app/css/*.+(css)', './app/js/**/*.+(js)'], { read: false }), { relative: true }))
+    return gulp.src('views/pages/**/*.+(html)')
+        .pipe(inject(gulp.src(['./views/css/*.+(css)', './views/js/**/*.+(js)'], { read: false }), { relative: true }))
         .pipe(render())
         .pipe(gulp.dest('./public'))
-        .pipe(gulp.dest('./app'))
+        .pipe(gulp.dest('./views'))
 });
 
 gulp.task('nunjucks-css' , function(){
-    return gulp.src('app/css/**/*.+(css)')
+    return gulp.src('views/css/**/*.+(css)')
     .pipe(gulp.dest('./public/css'))
 });
 
 gulp.task('nunjucks-js' , function(cb){
-    return gulp.src('app/js/**/*.+(js)')
+    return gulp.src('views/js/**/*.+(js)')
     .pipe(gulp.dest('./public/js'))
 });
 
