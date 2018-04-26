@@ -35,11 +35,6 @@ nunjucks.configure(['./app' , './public'], {
 var port = process.env.PORT || 3000;
 
 app.get('/' , (req ,res)=>{
-    var data = {
-        questionString : req.body.questionString,
-        answers : req.body.answers,
-        time : req.body.time
-    };
     res.render('index.html' , data);
 });
 
