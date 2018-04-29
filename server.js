@@ -44,7 +44,7 @@ app.get('/create' , (req ,res)=>{
 });
 
 // APP GET LIMIT WITH LEVEL (questions)
-router.get('/app/:id' , (req , res)=>{
+router.get('/game/:id' , (req , res)=>{
     var level = req.params.id;
     Question.find()
     .limit(5)
@@ -56,11 +56,21 @@ router.get('/app/:id' , (req , res)=>{
     });
 });
 
+router.get('/app/user', (req, res) => {
+    User.find({}).then((user) => {
+        res.send(user);
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
+
 // APP POST LIMIT WITH LEVEL
 router.post('/app/user' , (req , res)=>{
     var userAttr = new User({
+        from : req.body.from,
+        text : req.body.text,
         level : req.body.level,
-        answers : req.body.answers
+        answers : req.body.answers,
     });
 
     userAttr.save().then((user)=>{
@@ -70,13 +80,22 @@ router.post('/app/user' , (req , res)=>{
     });
 });
 
-router.get('/app/user' , (req , res)=>{
-    User.find({}).then((user)=>{
-        res.send({user});
+// APP POST LIMIT WITH LEVEL
+router.patch('/app/user/:id' , (req , res)=>{
+    var id = req.params.id;
+    // pick key to update the value
+    var body = _.pick(req.body, ['level', 'answers', 'from', 'text']);
+    if (!ObjectID.isValid(id)) {
+        return res.status(400).send();
+    }
+
+    User.findByIdAndUpdate(id , {$set : body} , {new : true}).then((user)=>{
+        res.send(user);
     },(e)=>{
         res.status(400).send(e);
     });
 });
+
 
 // POST Question & Answers
 router.post('/question' , (req , res)=>{
