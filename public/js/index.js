@@ -44,7 +44,7 @@ function deleteData(id, questionString , q) {
 function getQueryLink(q){
     return $.ajax({
             method: "GET",
-            url: '/api/question/?q=' + q,
+            url: '/api/question/?q=' + encodeURIComponent(q),
             contentType: 'application/json',
             success: function (response) {
                 var getListBlock = $("#questionsBlock");

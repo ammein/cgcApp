@@ -28,7 +28,7 @@ gulp.task('nunjucks', function () {
 
     // get the pages files
     return gulp.src('views/pages/**/*.+(html)')
-        .pipe(inject(gulp.src(['./views/css/*.+(css)', './views/js/**/*.+(js)'], { read: false }), { relative: true }))
+        .pipe(inject(gulp.src(['./views/css/*.+(css)', './views/js/**/*.*.+(js)', './views/js/**/*.+(js)'], { read: false }), { relative: true }))
         .pipe(render())
         .pipe(gulp.dest('./public'))
         .pipe(gulp.dest('./views'))

@@ -1,0 +1,32 @@
+{% extends "./../templates/baseapp.html" %}
+    {% block css %}
+    <!-- inject:css -->
+    <!-- endinject -->
+    {% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="pause" id="pause"></div>
+    <div class="level-num" id="level-num"></div>
+    <div class="chat" id="chat"></div>
+</div>
+<div class="row">
+    <div class="round-circle">
+        <div class="inner-circle"></div>
+        <div class="time" id="time"></div>
+    </div>
+</div>
+<div class="row">
+    <form action="" class="answers">
+        <input type="number" name="" id="">
+        <input type="number" name="" id="">
+        <input type="number" name="" id="">
+        <input type="number" name="" id="">
+    </form>
+</div>
+{% endblock %}
+
+    {% block script %}
+    <!-- inject:js -->
+    <!-- endinject -->
+    {% endblock %}

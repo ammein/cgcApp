@@ -34,8 +34,12 @@ nunjucks.configure(['./app' , './public'], {
 
 var port = process.env.PORT || 3000;
 
-app.get('/' , (req ,res)=>{
-    res.render('index.html' , data);
+app.get('/' , (req , res)=>{
+    res.render('app.html');
+});
+
+app.get('/create' , (req ,res)=>{
+    res.render('create.html');
 });
 
 // POST Question & Answers
@@ -48,7 +52,7 @@ router.post('/question' , (req , res)=>{
     });
 
     newQuestion.save().then((question)=>{
-        res.status(200).redirect('/');
+        res.status(200).redirect('/create');
     },(e)=>{
         res.status(400).send(e);
     });
