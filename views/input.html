@@ -7,34 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
  
     <title>
-      {% block title %} {% endblock %}
+      
+Username
+
     </title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet">
-    {% block css %}
-    {% endblock %}
+    
+<!-- inject:css -->
+<link rel="stylesheet" href="../css/pagination.css">
+<link rel="stylesheet" href="../css/styles.css">
+<!-- endinject -->
+
   </head>
  
-  <body class="create">
+  <body>
  
-    {% block overlay %}
-    {% endblock %}
-    <div class="see-questions" onclick="openBox()">
-      <p class="text-question" style="margin : 0;">See Questions</p>
-    </div>
     <div class="container container-fluid">
-      {% block content %} <!--- Our content will be here -->
-      {% endblock %}
+      
+<div class="row">
+    <form action="/app/user/input" method="post">
+    <label for="from">Your name :</label>
+        <input type="text" name="from" id="from"/>
+        <input type="submit" value="Send">
+    </form>
+</div>
+
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
-    {% block script %}
+    
+<!-- inject:js -->
+<script src="../js/jquery/jquery-3.3.1.min.js"></script>
+<script src="../js/nunjucks/nunjucks.min.js"></script>
+<script src="../js/index.js"></script>
+<!-- endinject -->
 
-    {% endblock %}
   </body>
 </html>

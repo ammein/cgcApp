@@ -11,14 +11,21 @@ var userschema = new mongoose.Schema({
         required : false
     },
     level : {
-        type : [Number],
-        required : true
+        type : [Number]
     },
     answers : {
-        type : [Boolean],
-        required : true
+        type : [Boolean]
     }
 });
+
+userschema.statics.findByUser = function(req,user){
+    var User = this;
+
+    return User.findOne({
+        "_id" : user,
+        "from" : req.body.from
+    });
+}
 
 
 var User = mongoose.model('User' , userschema);

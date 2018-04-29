@@ -1,0 +1,25 @@
+{% extends "./../templates/baseinput.html" %}
+
+{% block css %}
+<!-- inject:css -->
+<!-- endinject -->
+{% endblock %}
+
+{% block title %}
+Username
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <form action="/app/user/input" method="post">
+    <label for="from">Your name :</label>
+        <input type="text" name="from" id="from"/>
+        <input type="submit" value="Send">
+    </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- inject:js -->
+<!-- endinject -->
+{% endblock %}

@@ -28,7 +28,11 @@ nunjucks.configure(['./app' , './public'], {
 var port = process.env.PORT || 3000;
 
 app.get('/' , (req , res)=>{
-    res.render('app.html');
+    res.render('input.html');
+});
+
+app.get('/character', (req, res)=>{
+    res.render('character.html' , {from : req.header('user')});
 });
 
 app.get('/create' , (req ,res)=>{
@@ -70,6 +74,31 @@ router.post('/app/user' , (req , res)=>{
     },(e)=>{
         res.status(400).send(e);
     });
+});
+
+// APP POST INPUT
+router.post('/app/user/input' , (req , res)=>{
+    var userAttr = new User({
+        from : req.body.from,
+    });
+
+    userAttr.save().then((user)=>{    
+        return res.status(200).header('user', user._id).send(user);
+    },(e)=>{
+        res.status(400).send(e);
+    });
+});
+
+// APP GET INPUT
+router.get('/app/user/input/:id' , (req , res)=>{
+    var user = req.header('user');
+
+    User.findByUser(req , user).then((user)=>{
+        res.send(user);
+    },(e)=>{
+        res.status(400).send(e);
+    });
+    res.send(user);
 });
 
 // APP POST LIMIT WITH LEVEL
