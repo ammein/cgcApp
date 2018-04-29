@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var {mongoose} = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
+const {User} = require('./server/models/user');
 const nunjucks = require('nunjucks');
 // to get certain value of API using lodash
 const _ = require('lodash');
@@ -40,6 +41,41 @@ app.get('/' , (req , res)=>{
 
 app.get('/create' , (req ,res)=>{
     res.render('create.html');
+});
+
+// APP GET LIMIT WITH LEVEL (questions)
+router.get('/app/:id' , (req , res)=>{
+    var level = req.params.id;
+    Question.find()
+    .limit(5)
+    .where('level').equals(level)
+    .then((question)=>{
+        res.send({question});
+    },(e)=>{
+        res.status(400).send(e);
+    });
+});
+
+// APP POST LIMIT WITH LEVEL
+router.post('/app/user' , (req , res)=>{
+    var userAttr = new User({
+        level : req.body.level,
+        answers : req.body.answers
+    });
+
+    userAttr.save().then((user)=>{
+        res.status(200).send(user);
+    },(e)=>{
+        res.status(400).send(e);
+    });
+});
+
+router.get('/app/user' , (req , res)=>{
+    User.find({}).then((user)=>{
+        res.send({user});
+    },(e)=>{
+        res.status(400).send(e);
+    });
 });
 
 // POST Question & Answers
