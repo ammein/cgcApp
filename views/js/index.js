@@ -10,13 +10,13 @@ function update(id, questionString , allAnswers , level , q) {
             level
         }),
         success: function (response) {
+            $("#questionsBlock").empty();                        
             if (q) {
                 return getQueryLink(q);
             } else {
                 return initialize();
             }
             // Empty the content to avoid duplicate content
-            $("#questionsBlock").empty();            
         }
     });
 }
@@ -30,13 +30,13 @@ function deleteData(id, questionString , q) {
             id
         }),
         success: function (response) {
+            $("#questionsBlock").empty();            
             if(q){
                 return getQueryLink(q);
             }else{
                 return initialize();                
             }
             // Empty the content to avoid duplicate content
-            $("#questionsBlock").empty();
         }
     });
 }
