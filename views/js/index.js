@@ -217,27 +217,44 @@ function gameStarted(level){
         contentType : "application/json",
         success : function(response){
             var question = response.question;
-            $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='"+question[arrayQuestion]._id+"' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + question[arrayQuestion].answers[0] + "'><input type='submit' id='answer2' value='" + question[arrayQuestion].answers[1] + "'><input type='submit' id='answer3' value='" + question[arrayQuestion].answers[2] + "'><input type='submit' id='answer4' value='" + question[arrayQuestion].answers[3] +"'>");
-
-            for(var i = 1 ; i<=4; i++)(function(i){
-                $("#answer"+i).on("click",function(){
-                    var value = this.value;
-                    console.log(value);
-                    // console.log("What's this ? ",this);
-                    pushAnswer(getCookie("from"),question[arrayQuestion].answers[0],value,question.level);
-                });
-            }(i));
-
+            gameCounter(question , arrayQuestion);
             var clicked = $(".append").find(":submit");
             console.log("Element to click",clicked);
-            if(clicked.on("click")){
+            clicked.on("click" , function(){
                 arrayQuestion++;
-                console.log("Clicked. counter = " , arrayQuestion);
-            }
+                gameCounter(question, arrayQuestion , true);
+            });
         }
     })
 }
-// Make it global to be able to push array
+
+function gameCounter(question , arrayQuestion , clear){
+    $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + question[arrayQuestion].answers[0] + "'><input type='submit' id='answer2' value='" + question[arrayQuestion].answers[1] + "'><input type='submit' id='answer3' value='" + question[arrayQuestion].answers[2] + "'><input type='submit' id='answer4' value='" + question[arrayQuestion].answers[3] + "'>");
+
+    for (var i = 1; i <= 4; i++)(function (i) {
+        $("#answer" + i).on("click", function () {
+            var value = this.value;
+            console.log(value);
+            // console.log("What's this ? ",this);
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
+        });
+    }(i));
+
+    if(clear){
+        $(".append").empty();
+            $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + question[arrayQuestion].answers[0] + "'><input type='submit' id='answer2' value='" + question[arrayQuestion].answers[1] + "'><input type='submit' id='answer3' value='" + question[arrayQuestion].answers[2] + "'><input type='submit' id='answer4' value='" + question[arrayQuestion].answers[3] + "'>");
+
+            for (var i = 1; i <= 4; i++)(function (i) {
+                $("#answer" + i).on("click", function () {
+                    var value = this.value;
+                    console.log(value);
+                    // console.log("What's this ? ",this);
+                    pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
+                });
+            }(i));
+    }
+}
+// Make it global to be able to push array for clicking not more than 5 total questions
 var allAnswer = [];
 function pushAnswer(user,correctAns , ans , level){
     if(ans == correctAns){
@@ -255,6 +272,7 @@ function pushAnswer(user,correctAns , ans , level){
 var finalAnswer = [];
 function sendAnswer(allAnswer , user , level){
     console.log("Answer Before" , allAnswer);
+    // To make push on each array to a new one
     for(var i = 0 ; i<allAnswer.length; i++){
         finalAnswer.push(allAnswer[i]);        
     }
