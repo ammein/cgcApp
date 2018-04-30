@@ -209,17 +209,15 @@ function checkCookie() {
         $("#welcome").append(decodeURI(user));
     } 
 }
-
-function gameStarted(level){
+var arrayQuestion = 0;
+function gameStarted(level){    
     $.ajax({
         url : '/api/game/' + encodeURI(level),
         method : "GET",
         contentType : "application/json",
         success : function(response){
-            // gamePlay(response);
-            var arrayQuestion = 0;
             var question = response.question;
-            $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='questionDisplay'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + question[arrayQuestion].answers[0] + "'><input type='submit' id='answer2' value='" + question[arrayQuestion].answers[1] + "'><input type='submit' id='answer3' value='" + question[arrayQuestion].answers[2] + "'><input type='submit' id='answer4' value='" + question[arrayQuestion].answers[3] +"'>");
+            $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='"+question[arrayQuestion]._id+"' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + question[arrayQuestion].answers[0] + "'><input type='submit' id='answer2' value='" + question[arrayQuestion].answers[1] + "'><input type='submit' id='answer3' value='" + question[arrayQuestion].answers[2] + "'><input type='submit' id='answer4' value='" + question[arrayQuestion].answers[3] +"'>");
 
             for(var i = 1 ; i<=4; i++)(function(i){
                 $("#answer"+i).on("click",function(){
@@ -229,41 +227,50 @@ function gameStarted(level){
                     pushAnswer(getCookie("from"),question[arrayQuestion].answers[0],value,question.level);
                 });
             }(i));
+
+            var clicked = $(".append").find(":submit");
+            console.log("Element to click",clicked);
+            if(clicked.on("click")){
+                arrayQuestion++;
+                console.log("Clicked. counter = " , arrayQuestion);
+            }
         }
     })
 }
-
-
+// Make it global to be able to push array
+var allAnswer = [];
 function pushAnswer(user,correctAns , ans , level){
     if(ans == correctAns){
-        ans = true;
-        $.ajax({
-            url: "api/app/user/" + encodeURI(user),
-            method : "PATCH",
-            contentType: "application/json",
-            data : JSON.stringify({
-                answers : ans,
-                level : level
-            }),
-            success : function(){
-                console.log("Success TRUE PATCH");
-            }
-        });
-    }else{
-        ans = false;
-        $.ajax({
-            url: "api/app/user/" + encodeURI(user),
-            method: "PUT",
-            contentType : "application/json",
-            data: JSON.stringify({
-                answers: ans,
-                level: level
-            }),
-            success: function () {
-                console.log("Success FALSE PATCH");
-            }
-        });
+        allAnswer.push(true);
+    }else if(ans !== correctAns){
+        allAnswer.push(false);
     }
+    console.log("Answer Length ",allAnswer.length);
+    console.log("Answer All ",allAnswer);
+    if(allAnswer.length === 5){
+        sendAnswer(allAnswer, user, level);
+        allAnswer = [];  
+    }
+}
+var finalAnswer = [];
+function sendAnswer(allAnswer , user , level){
+    console.log("Answer Before" , allAnswer);
+    for(var i = 0 ; i<allAnswer.length; i++){
+        finalAnswer.push(allAnswer[i]);        
+    }
+    console.log("Final Answer =", finalAnswer);
+    $.ajax({
+        url: "api/app/user/" + encodeURI(user),
+        method: "PATCH",
+        contentType: "application/json",
+        data: JSON.stringify({
+            answers: finalAnswer,
+            level: level
+        }),
+        success: function () {
+            console.log("Success TRUE PATCH");
+        }
+    });
 }
 
 // DOMContentLoaded
