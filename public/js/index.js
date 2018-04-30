@@ -205,7 +205,7 @@ function getCookie(cname) {
 function checkCookie() {
     var user = getCookie("from");
     if (user != "") {
-        $("div#input").append("<a href='/character' onclick='fetchUser()'> Welcome again " + decodeURI(user) + "</a>");
+        $("div#formInput").append("<a class='fetchUser' href='/play'> Use \"" + decodeURI(user) + "\"</a>");
         $("#welcome").append(decodeURI(user));
     } 
 }

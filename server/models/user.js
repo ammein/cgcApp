@@ -18,16 +18,6 @@ var userschema = new mongoose.Schema({
     }
 });
 
-userschema.statics.findByUser = function(req,user){
-    var User = this;
-
-    return User.findOne({
-        "_id" : user,
-        "from" : req.body.from
-    });
-}
-
-
 var User = mongoose.model('User' , userschema);
 
 

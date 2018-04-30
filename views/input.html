@@ -23,16 +23,18 @@ Username
 
   </head>
  
-  <body onload="checkCookie()">
+  <body onload="checkCookie()" id="bodyInput">
  
     <div class="container-fluid">
       
 <div class="row" id="input">
-    <form action="api/app/user/input" method="post">
-    <label for="from">Your name :</label>
-        <input type="text" name="from" id="from">
-        <input type="submit" value="Send" id="nameSubmit">
-    </form>
+    <div id="formInput">
+        <form action="api/app/user/input" method="post" style="margin-left:17px; margin-right:18px;">
+        <label for="from">Your name :</label><br>
+            <input type="text" name="from" id="from"><br>
+            <input type="submit" value="Send" id="nameSubmit">
+        </form>
+    </div>
 </div>
 
     </div>
@@ -43,8 +45,8 @@ Username
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
     
 <!-- inject:js -->
-<script src="../js/nunjucks/nunjucks.min.js"></script>
 <script src="../js/jquery/jquery-3.3.1.min.js"></script>
+<script src="../js/nunjucks/nunjucks.min.js"></script>
 <script src="../js/index.js"></script>
 <!-- endinject -->
 

@@ -8,6 +8,7 @@ const nunjucks = require('nunjucks');
 // to get certain value of API using lodash
 const _ = require('lodash');
 const path = require('path');
+// Use Cookies
 const cookieParser = require('cookie-parser');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 // Load static
 app.use(express.static(path.join(__dirname, 'public')));
+// Load Cookies
 app.use(cookieParser());
 // Configure nunjucks using multiple template in array
 nunjucks.configure(['./app' , './public'], {
@@ -33,7 +35,7 @@ app.get('/' , (req , res)=>{
     res.render('input.html');
 });
 
-app.get('/character', (req, res)=>{
+app.get('/play', (req, res)=>{
     res.render('character.html' , {from : req.cookies.from});
 });
 
@@ -54,26 +56,28 @@ router.get('/game/:id' , (req , res)=>{
     });
 });
 
-router.get('/app/user', (req, res) => {
-    User.find({}).then((user) => {
+
+// APP PATCH LIMIT WITH LEVEL
+router.patch('/app/user/:id', (req, res) => {
+    var id = req.params.id;
+    // pick key to update the value
+    var body = _.pick(req.body, ['level', 'answers', 'from', 'text']);
+    if (!ObjectID.isValid(id)) {
+        return res.status(400).send();
+    }
+
+    User.findByIdAndUpdate(id, { $set: body }, { new: true }).then((user) => {
         res.send(user);
     }, (e) => {
         res.status(400).send(e);
     });
 });
 
-// APP POST LIMIT WITH LEVEL
-router.post('/app/user' , (req , res)=>{
-    var userAttr = new User({
-        from : req.body.from,
-        text : req.body.text,
-        level : req.body.level,
-        answers : req.body.answers,
-    });
 
-    userAttr.save().then((user)=>{
-        res.status(200).send(user);
-    },(e)=>{
+router.get('/app/user', (req, res) => {
+    User.find({}).then((user) => {
+        res.send(user);
+    }, (e) => {
         res.status(400).send(e);
     });
 });
@@ -85,38 +89,29 @@ router.post('/app/user/input' , (req , res)=>{
     });
 
     userAttr.save().then((user)=>{    
-        res.status(200).cookie("from", user.from , {maxAge : 99999}).redirect('/character');
+        res.status(200).cookie("from", user.from , {maxAge : 99999}).redirect('/play');
     },(e)=>{
         res.status(400).send(e);
     });
 });
 
 // APP GET INPUT
-router.get('/app/user/input/:id' , (req , res)=>{
-    var user = req.header('user');
-
-    User.findByUser(req , user).then((user)=>{
-        res.send(user);
-    },(e)=>{
-        res.status(400).send(e);
-    });
-    res.send(user);
-});
-
-// APP POST LIMIT WITH LEVEL
-router.patch('/app/user/:id' , (req , res)=>{
-    var id = req.params.id;
-    // pick key to update the value
-    var body = _.pick(req.body, ['level', 'answers', 'from', 'text']);
-    if (!ObjectID.isValid(id)) {
-        return res.status(400).send();
+router.get('/app/user/input/' , (req , res)=>{
+    if(req.cookies.from){
+        User.findOne({ from: req.cookies.from}).then((user)=>{
+            return res.status(200).send({user});
+        }, (e)=>{
+            return res.status(400).send(e);
+        });
+    }
+    else{
+        User.find().then((user) => {
+            return res.status(200).send(user);
+        }, (e) => {
+            return res.status(400).send(e);
+        });
     }
 
-    User.findByIdAndUpdate(id , {$set : body} , {new : true}).then((user)=>{
-        res.send(user);
-    },(e)=>{
-        res.status(400).send(e);
-    });
 });
 
 
