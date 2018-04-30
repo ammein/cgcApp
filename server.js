@@ -8,6 +8,7 @@ const nunjucks = require('nunjucks');
 // to get certain value of API using lodash
 const _ = require('lodash');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
 const router = express.Router();
@@ -16,7 +17,8 @@ app.use(bodyParser.json());
 // Pass json using FORM html METHOD POST
 app.use(bodyParser.urlencoded({extended: true}));
 // Load static
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 // Configure nunjucks using multiple template in array
 nunjucks.configure(['./app' , './public'], {
     autoescape: false,
@@ -32,7 +34,7 @@ app.get('/' , (req , res)=>{
 });
 
 app.get('/character', (req, res)=>{
-    res.render('character.html' , {from : req.header('user')});
+    res.render('character.html' , {from : req.cookies.from});
 });
 
 app.get('/create' , (req ,res)=>{
@@ -83,7 +85,7 @@ router.post('/app/user/input' , (req , res)=>{
     });
 
     userAttr.save().then((user)=>{    
-        return res.status(200).header('user', user._id).send(user);
+        res.status(200).cookie("from", user.from , {maxAge : 99999}).redirect('/character');
     },(e)=>{
         res.status(400).send(e);
     });

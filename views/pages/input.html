@@ -10,11 +10,11 @@ Username
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <form action="/app/user/input" method="post">
+<div class="row" id="input">
+    <form action="api/app/user/input" method="post">
     <label for="from">Your name :</label>
-        <input type="text" name="from" id="from"/>
-        <input type="submit" value="Send">
+        <input type="text" name="from" id="from">
+        <input type="submit" value="Send" id="nameSubmit">
     </form>
 </div>
 {% endblock %}

@@ -23,13 +23,12 @@ Character choose
 
   </head>
  
-  <body>
+  <body onload="checkCookie()">
  
-    <div class="container container-fluid">
+    <div class="container-fluid">
       
 <div class="row">
-    Wow, you did it !
-    
+    Wow, you did it ! Welcome <p id="welcome" onload="checkCookie"></p>
 </div>
 
     </div>
@@ -40,8 +39,8 @@ Character choose
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
     
 <!-- inject:js -->
-<script src="../js/jquery/jquery-3.3.1.min.js"></script>
 <script src="../js/nunjucks/nunjucks.min.js"></script>
+<script src="../js/jquery/jquery-3.3.1.min.js"></script>
 <script src="../js/index.js"></script>
 <!-- endinject -->
 
