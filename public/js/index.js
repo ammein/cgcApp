@@ -210,12 +210,24 @@ function checkCookie() {
     } 
 }
 
+function gameStarted(level){
+    $.ajax({
+        url : '/api/game/' + encodeURI(level),
+        method : "GET",
+        contentType : "application/json",
+        success : function(response){
+            // gamePlay(response);
+            console.log(response);
+        }
+    })
+}
 
-// function fetchUser(user){
-//     $.ajax({
-//         url : '/api/app/user'
-//     });
-// }
+
+function gamePlay(response){
+    response.forEach(function(user){
+        return console.log(user);
+    });
+}
 
 // DOMContentLoaded
 $(function(){

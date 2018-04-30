@@ -444,7 +444,7 @@ input[type=range]:focus::-ms-fill-upper {
         transform: translateY(-50%);
     }
 
-    label{
+    label[for=from]{
         font-family: 'Baumans' , cursive;
         color : white;
     }
@@ -475,4 +475,10 @@ input[type=range]:focus::-ms-fill-upper {
         color:white;
     }
 
+    div.append{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: block;
+    }
 }

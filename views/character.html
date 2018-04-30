@@ -1,35 +1,33 @@
 <!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
- 
+
     <title>
-      
+        
 Character choose
 
     </title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet"> 
 <!-- inject:css -->
 <link rel="stylesheet" href="../css/pagination.css">
 <link rel="stylesheet" href="../css/styles.css">
 <!-- endinject -->
 
-  </head>
- 
-  <body onload="checkCookie()" id="bodyInput">
- 
+</head>
+
+<body onload="gameStarted(1)" id="bodyInput">
+
     <div class="container-fluid">
-      
-<div class="row">
-    Wow, you did it ! Welcome <p id="welcome" onload="checkCookie"></p>
-</div>
+        
+<div class="append"></div>
 
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -37,12 +35,12 @@ Character choose
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
-    
 <!-- inject:js -->
 <script src="../js/jquery/jquery-3.3.1.min.js"></script>
 <script src="../js/nunjucks/nunjucks.min.js"></script>
 <script src="../js/index.js"></script>
 <!-- endinject -->
 
-  </body>
+</body>
+
 </html>
