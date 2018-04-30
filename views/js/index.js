@@ -217,16 +217,53 @@ function gameStarted(level){
         contentType : "application/json",
         success : function(response){
             // gamePlay(response);
-            console.log(response);
+            var arrayQuestion = 0;
+            var question = response.question;
+            $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='questionDisplay'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + question[arrayQuestion].answers[0] + "'><input type='submit' id='answer2' value='" + question[arrayQuestion].answers[1] + "'><input type='submit' id='answer3' value='" + question[arrayQuestion].answers[2] + "'><input type='submit' id='answer4' value='" + question[arrayQuestion].answers[3] +"'>");
+
+            for(var i = 1 ; i<=4; i++)(function(i){
+                $("#answer"+i).on("click",function(){
+                    var value = this.value;
+                    console.log(value);
+                    // console.log("What's this ? ",this);
+                    pushAnswer(getCookie("from"),question[arrayQuestion].answers[0],value,question.level);
+                });
+            }(i));
         }
     })
 }
 
 
-function gamePlay(response){
-    response.forEach(function(user){
-        return console.log(user);
-    });
+function pushAnswer(user,correctAns , ans , level){
+    if(ans == correctAns){
+        ans = true;
+        $.ajax({
+            url: "api/app/user/" + encodeURI(user),
+            method : "PATCH",
+            contentType: "application/json",
+            data : JSON.stringify({
+                answers : ans,
+                level : level
+            }),
+            success : function(){
+                console.log("Success TRUE PATCH");
+            }
+        });
+    }else{
+        ans = false;
+        $.ajax({
+            url: "api/app/user/" + encodeURI(user),
+            method: "PATCH",
+            contentType : "application/json",
+            data: JSON.stringify({
+                answers: ans,
+                level: level
+            }),
+            success: function () {
+                console.log("Success FALSE PATCH");
+            }
+        });
+    }
 }
 
 // DOMContentLoaded

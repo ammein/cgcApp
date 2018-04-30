@@ -58,15 +58,12 @@ router.get('/game/:id' , (req , res)=>{
 
 
 // APP PATCH LIMIT WITH LEVEL
-router.patch('/app/user/:id', (req, res) => {
-    var id = req.params.id;
+router.patch('/app/user/:from', (req, res) => {
+    var id = req.params;
     // pick key to update the value
     var body = _.pick(req.body, ['level', 'answers', 'from', 'text']);
-    if (!ObjectID.isValid(id)) {
-        return res.status(400).send();
-    }
 
-    User.findByIdAndUpdate(id, { $set: body }, { new: true }).then((user) => {
+    User.findOneAndUpdate(id, { $set: body }, { new: true }).then((user) => {
         res.send(user);
     }, (e) => {
         res.status(400).send(e);

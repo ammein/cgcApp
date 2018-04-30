@@ -478,7 +478,7 @@ input[type=range]:focus::-ms-fill-upper {
     div.append{
         width: 100%;
         height: 100%;
-        position: absolute;
+        position: relative;
         display: block;
     }
 }
