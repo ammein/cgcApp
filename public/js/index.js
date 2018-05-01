@@ -220,7 +220,7 @@ function gameStarted(level){
             gameCounter(question , arrayQuestion);
             var clicked = $(".append").find(":submit");
             console.log("Element to click",clicked);
-            clicked.on("click" ,"touchstart" , function(){
+            clicked.on("touchstart click" , function(){
                 arrayQuestion++;
                 gameCounter(question, arrayQuestion , true);
             });
@@ -254,17 +254,18 @@ function gameCounter(question , arrayQuestion , clear){
     })
     // Countdown Ends
     for (var i = 1; i <= 4; i++)(function (i) {
-        $("#answer" + i).on("click", "touchstart", function () {
+        $("#answer" + i).on("touchstart click", function () {
             var value = this.value;
             console.log(value);
             compareArray = [];
             // console.log("What's this ? ",this);
             pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
-            gameCounter(question, arrayQuestion+ 1, true);            
+            gameCounter(question, arrayQuestion+ 1, true);       
         });
     }(i));
 
     if(clear){
+        countdown = 0;
         $(".append").empty();
         $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='70' cy='70' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'>");
         // Countdown Begins
@@ -280,7 +281,7 @@ function gameCounter(question , arrayQuestion , clear){
         })
         // Countdown Ends
             for (var i = 1; i <= 4; i++)(function (i) {
-                $("#answer" + i).on("click", "touchstart", function () {
+                $("#answer" + i).on("touchstart click", function () {
                     var value = this.value;
                     console.log(value);
                     compareArray = [];
