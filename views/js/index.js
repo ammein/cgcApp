@@ -209,13 +209,13 @@ function checkCookie() {
         $("#welcome").append(decodeURI(user));
     } 
 }
-var arrayQuestion = 0;
 function gameStarted(level){    
     $.ajax({
         url : '/api/game/' + encodeURI(level),
         method : "GET",
         contentType : "application/json",
         success : function(response){
+            var arrayQuestion = 0;
             var question = response.question;
             gameCounter(question , arrayQuestion);
             var clicked = $(".append").find(":submit");
@@ -229,27 +229,42 @@ function gameStarted(level){
 }
 
 function gameCounter(question , arrayQuestion , clear){
-    $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + question[arrayQuestion].answers[0] + "'><input type='submit' id='answer2' value='" + question[arrayQuestion].answers[1] + "'><input type='submit' id='answer3' value='" + question[arrayQuestion].answers[2] + "'><input type='submit' id='answer4' value='" + question[arrayQuestion].answers[3] + "'>");
+    Array.prototype.move = function (from, to) {
+        this.splice(to, 0, this.splice(from, 1)[0]);
+    };
+    var oriArray = question[arrayQuestion].answers;
+    var rand = Math.floor((Math.random() * 4) + 1); 
+    oriArray.move(0 , rand);
+    var randomArray = [];
+    for(var i = 0; i < oriArray.length;i++){
+        randomArray.push(oriArray[i]);        
+    }
+    // Begin Append Question
+    $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'>");
 
     for (var i = 1; i <= 4; i++)(function (i) {
         $("#answer" + i).on("click", function () {
             var value = this.value;
             console.log(value);
+            compareArray = [];
             // console.log("What's this ? ",this);
             pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
+            gameCounter(question, arrayQuestion+ 1, true);            
         });
     }(i));
 
     if(clear){
         $(".append").empty();
-            $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + question[arrayQuestion].answers[0] + "'><input type='submit' id='answer2' value='" + question[arrayQuestion].answers[1] + "'><input type='submit' id='answer3' value='" + question[arrayQuestion].answers[2] + "'><input type='submit' id='answer4' value='" + question[arrayQuestion].answers[3] + "'>");
+            $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle r='18' cx='20' cy='20'></circle></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'>");
 
             for (var i = 1; i <= 4; i++)(function (i) {
                 $("#answer" + i).on("click", function () {
                     var value = this.value;
                     console.log(value);
+                    compareArray = [];
                     // console.log("What's this ? ",this);
                     pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
+                    gameCounter(question, arrayQuestion+ 1, true);
                 });
             }(i));
     }
