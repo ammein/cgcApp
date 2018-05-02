@@ -248,6 +248,10 @@ function gameCounter(question , arrayQuestion , clear){
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
         countdownNumberEl.textContent = countdown;
+        setInterval(function () {
+            countdown = --countdown <= 0 ? pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], false, question.level) : countdown;
+            countdownNumberEl.textContent = countdown;
+        }, 1000);
         $(".circle").css({
             animation: "countdown " + question[arrayQuestion].time + "s linear forwards"
         })
