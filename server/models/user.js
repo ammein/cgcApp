@@ -6,15 +6,12 @@ var userschema = new mongoose.Schema({
         type : String,
         required: true
     },
-    text : {
-        type : String,
-        required : false
-    },
     level : {
         type : [Number]
     },
     answers : {
-        type : [Boolean]
+        type : [Boolean],
+        required : true
     }
 });
 

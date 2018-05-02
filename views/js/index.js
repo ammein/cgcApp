@@ -220,7 +220,7 @@ function gameStarted(level){
             gameCounter(question , arrayQuestion);
             var clicked = $(".append").find(":submit");
             console.log("Element to click",clicked);
-            clicked.on("touchstart click" , function(){
+            clicked.on("click" , function(){
                 arrayQuestion++;
                 gameCounter(question, arrayQuestion , true);
             });
@@ -239,35 +239,30 @@ function gameCounter(question , arrayQuestion , clear){
     for(var i = 0; i < oriArray.length;i++){
         randomArray.push(oriArray[i]);        
     }
-    // Begin Append Question
-    $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='70' cy='70' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'>");
-    // Countdown Begins
-    var countdownNumberEl = document.getElementById('countdown-number');
-    var countdown = question[arrayQuestion].time;
-    countdownNumberEl.textContent = countdown;
-    setInterval(function () {
-        countdown = --countdown <= 0 ? pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], false, question.level) : countdown;
-        countdownNumberEl.textContent = countdown;
-    }, 1000);
-    $(".circle").css({
-        animation: "countdown " + question[arrayQuestion].time + "s linear forwards"
-    })
-    // Countdown Ends
-    for (var i = 1; i <= 4; i++)(function (i) {
-        $("#answer" + i).on("touchstart click", function () {
-            var value = this.value;
-            console.log(value);
-            compareArray = [];
-            // console.log("What's this ? ",this);
-            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
-            gameCounter(question, arrayQuestion+ 1, true);       
-        });
-    }(i));
-
-    if(clear){
+    if(clear == true){
         countdown = 0;
         $(".append").empty();
-        $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='70' cy='70' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'>");
+        $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div>");
+        // Countdown Begins
+        var countdownNumberEl = document.getElementById('countdown-number');
+        var countdown = question[arrayQuestion].time;
+        countdownNumberEl.textContent = countdown;
+        $(".circle").css({
+            animation: "countdown " + question[arrayQuestion].time + "s linear forwards"
+        })
+        // Countdown Ends
+            for (var i = 1; i <= 4; i++)(function (i) {
+                $("#answer" + i).on("click", function () {
+                    var value = this.value;
+                    console.log(value);
+                    compareArray = [];
+                    pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
+                    gameCounter(question, arrayQuestion+ 1, true);
+                });
+            }(i));
+    }else if(!clear== true){
+        // Begin Append Question
+        $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div>");
         // Countdown Begins
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
@@ -280,16 +275,15 @@ function gameCounter(question , arrayQuestion , clear){
             animation: "countdown " + question[arrayQuestion].time + "s linear forwards"
         })
         // Countdown Ends
-            for (var i = 1; i <= 4; i++)(function (i) {
-                $("#answer" + i).on("touchstart click", function () {
-                    var value = this.value;
-                    console.log(value);
-                    compareArray = [];
-                    // console.log("What's this ? ",this);
-                    pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
-                    gameCounter(question, arrayQuestion+ 1, true);
-                });
-            }(i));
+        for (var i = 1; i <= 4; i++)(function (i) {
+            $("#answer" + i).on("click", function () {
+                var value = this.value;
+                console.log(value);
+                compareArray = [];
+                pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
+                gameCounter(question, arrayQuestion + 1, true);
+            });
+        }(i));
     }
 }
 // Make it global to be able to push array for clicking not more than 5 total questions
@@ -309,14 +303,14 @@ function pushAnswer(user,correctAns , ans , level){
 }
 var finalAnswer = [];
 function sendAnswer(allAnswer , user , level){
-    console.log("Answer Before" , allAnswer);
+    // console.log("Answer Before" , allAnswer);
     // To make push on each array to a new one
     for(var i = 0 ; i<allAnswer.length; i++){
         finalAnswer.push(allAnswer[i]);        
     }
-    console.log("Final Answer =", finalAnswer);
+    // console.log("Final Answer =", finalAnswer);
     $.ajax({
-        url: "api/app/user/" + encodeURI(user),
+        url: "api/app/user/" + user,
         method: "PATCH",
         contentType: "application/json",
         data: JSON.stringify({
