@@ -5,6 +5,8 @@ var {mongoose} = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
 const {User} = require('./server/models/user');
 const nunjucks = require('nunjucks');
+const {Conversation} = require('./server/models/conversation');
+const {Messages} = require('./server/models/messages');
 // to get certain value of API using lodash
 const _ = require('lodash');
 const path = require('path');
@@ -56,6 +58,41 @@ router.get('/game/:id' , (req , res)=>{
     });
 });
 
+
+// Test MESSAGE POST
+router.post('/message' , (req , res)=>{
+    // var body = req.body.body;
+
+    var Message = new Messages({
+        conversationId : new ObjectID(),
+        body : "testing"
+    });
+
+    Message.save((err , message)=>{
+        if(err){
+            throw  err;
+        }
+
+        message.populate({
+            path : 'author'
+        });
+    }).then((message) => {
+        res.send(message);
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
+
+// GET CONVERSATIONS
+router.get('/conversation', (req, res) => {
+    Conversation.find({})
+    .populate('participants')
+    .then((conversation)=>{
+        res.send(conversation);
+    },(e)=>{
+        res.status(400).send(e);
+    })
+});
 
 // APP PATCH LIMIT WITH LEVEL
 router.patch('/app/user/:from', (req, res) => {
