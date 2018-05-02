@@ -229,6 +229,7 @@ function gameStarted(level){
 }
 
 function gameCounter(question , arrayQuestion , clear){
+    console.log("Level available" , question[arrayQuestion].level);
     Array.prototype.move = function (from, to) {
         this.splice(to, 0, this.splice(from, 1)[0]);
     };
@@ -256,7 +257,7 @@ function gameCounter(question , arrayQuestion , clear){
                     var value = this.value;
                     console.log(value);
                     compareArray = [];
-                    pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
+                    pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level);
                     gameCounter(question, arrayQuestion+ 1, true);
                 });
             }(i));
@@ -280,7 +281,7 @@ function gameCounter(question , arrayQuestion , clear){
                 var value = this.value;
                 console.log(value);
                 compareArray = [];
-                pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question.level);
+                pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level);
                 gameCounter(question, arrayQuestion + 1, true);
             });
         }(i));
@@ -289,6 +290,7 @@ function gameCounter(question , arrayQuestion , clear){
 // Make it global to be able to push array for clicking not more than 5 total questions
 var allAnswer = [];
 function pushAnswer(user,correctAns , ans , level){
+    console.log("Push Answer Level available", level);
     if(ans == correctAns){
         allAnswer.push(true);
     }else if(ans !== correctAns){
@@ -303,6 +305,7 @@ function pushAnswer(user,correctAns , ans , level){
 }
 var finalAnswer = [];
 function sendAnswer(allAnswer , user , level){
+    console.log("Send Answer Level available", level);    
     // console.log("Answer Before" , allAnswer);
     // To make push on each array to a new one
     for(var i = 0 ; i<allAnswer.length; i++){
