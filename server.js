@@ -5,7 +5,6 @@ var {mongoose} = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
 const {User} = require('./server/models/user');
 const nunjucks = require('nunjucks');
-const {Conversation} = require('./server/models/conversation');
 const {Messages} = require('./server/models/messages');
 // to get certain value of API using lodash
 const _ = require('lodash');
@@ -60,37 +59,35 @@ router.get('/game/:id' , (req , res)=>{
 
 
 // Test MESSAGE POST
-router.post('/message' , (req , res)=>{
-    // var body = req.body.body;
+router.put('/message' , (req , res)=>{
+    var body = req.body.body;
 
-    var Message = new Messages({
-        conversationId : new ObjectID(),
-        body : "testing"
+    var user = new User({
+        from : req.body.from
     });
 
-    Message.save((err , message)=>{
-        if(err){
-            throw  err;
-        }
-
-        message.populate({
-            path : 'author'
-        });
-    }).then((message) => {
-        res.send(message);
-    }, (e) => {
-        res.status(400).send(e);
+    user.save();
+    var messageText = req.body.message.forEach((message) => {
+        console.log(message.text);
+        return message.text;
     });
-});
+    var message = new Messages({
+        message : [{
+            text: req.body.message[0].text,
+            sendBy: user._id            
+        }]
+    });
 
-// GET CONVERSATIONS
-router.get('/conversation', (req, res) => {
-    Conversation.find({})
-    .populate('participants')
-    .then((conversation)=>{
-        res.send(conversation);
-    },(e)=>{
-        res.status(400).send(e);
+    message.save((err)=>{
+        if(err) throw err;
+
+        Messages.find({})
+        .populate('message.sendBy')
+        .sort('-createdAt')
+        .exec((err , message)=>{
+            if(err) throw err;
+            res.send({AllMessages : message});
+        })
     })
 });
 

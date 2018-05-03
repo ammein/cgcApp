@@ -10,8 +10,7 @@ var userschema = new mongoose.Schema({
         type : [Number]
     },
     answers : {
-        type : [Boolean],
-        required : true
+        type : [Boolean]
     }
 });
 
