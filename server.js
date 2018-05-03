@@ -59,7 +59,7 @@ router.get('/game/:id' , (req , res)=>{
 
 
 // Test MESSAGE POST
-router.put('/message' , (req , res)=>{
+router.post('/message' , (req , res)=>{
     var body = req.body.body;
 
     var user = new User({
