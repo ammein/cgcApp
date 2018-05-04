@@ -62,7 +62,7 @@ router.get('/game/:id' , (req , res)=>{
 router.post('/message' , (req , res)=>{
     User.findOne({ from : req.body.from }).then((user)=>{   
         var user = new User({
-            from : req.body.from,
+            from : user.from,
             answers : user.answers,
             level : user.level
         });
@@ -90,7 +90,7 @@ router.post('/message' , (req , res)=>{
     });
 });
 
-
+// GET ALL MESSAGE
 router.get('/message', (req , res)=>{
     var user = req.body.from;
 
@@ -102,7 +102,6 @@ router.get('/message', (req , res)=>{
         res.send({AllMessages : message});
     });
 });
-
 // APP PATCH LIMIT WITH LEVEL
 router.patch('/app/user/:from', (req, res) => {
     var id = req.params;

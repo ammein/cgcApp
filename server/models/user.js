@@ -2,10 +2,7 @@ const {ObjectId , MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
 
 var userschema = new mongoose.Schema({
-    from : {
-        type : String,
-        required: true
-    },
+    from : {type : String,required: true},
     level : {
         type : [Number]
     },
