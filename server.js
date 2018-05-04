@@ -60,8 +60,6 @@ router.get('/game/:id' , (req , res)=>{
 
 // MESSAGE POST
 router.post('/message' , (req , res)=>{
-    var body = req.body.body;
-
     User.findOne({ from : req.body.from }).then((user)=>{   
         var user = new User({
             from : req.body.from,
@@ -89,6 +87,19 @@ router.post('/message' , (req , res)=>{
         });
     },(e)=>{
         res.send(e);
+    });
+});
+
+
+router.get('/message', (req , res)=>{
+    var user = req.body.from;
+
+    Messages.find({})
+    .populate('message.sendBy')
+    .sort('-createdAt')
+    .exec((err , message)=>{
+        if (err) throw err;
+        res.send({AllMessages : message});
     });
 });
 
