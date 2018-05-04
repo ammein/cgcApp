@@ -62,29 +62,34 @@ router.get('/game/:id' , (req , res)=>{
 router.post('/message' , (req , res)=>{
     var body = req.body.body;
 
-    var user = new User({
-        from : req.body.from
-    });
+    User.findOne({ from : req.body.from }).then((user)=>{   
+        var user = new User({
+            from : req.body.from,
+            answers : user.answers,
+            level : user.level
+        });
+        user.save();
+        var message = new Messages({
+            message : [{
+                text: req.body.text,
+                sendBy: user._id            
+            }]
+        });
 
-    user.save();
-    var message = new Messages({
-        message : [{
-            text: req.body.message[0].text,
-            sendBy: user._id            
-        }]
-    });
-
-    message.save((err)=>{
-        if(err) throw err;
-
-        Messages.find({})
-        .populate('message.sendBy')
-        .sort('-createdAt')
-        .exec((err , message)=>{
+        message.save((err)=>{
             if(err) throw err;
-            res.send({AllMessages : message});
-        })
-    })
+
+            Messages.find({})
+            .populate('message.sendBy')
+            .sort('-createdAt')
+            .exec((err , message)=>{
+                if(err) throw err;
+                res.send({AllMessages : message});
+            })
+        });
+    },(e)=>{
+        res.send(e);
+    });
 });
 
 // APP PATCH LIMIT WITH LEVEL
