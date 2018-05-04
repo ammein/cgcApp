@@ -58,7 +58,7 @@ router.get('/game/:id' , (req , res)=>{
 });
 
 
-// Test MESSAGE POST
+// MESSAGE POST
 router.post('/message' , (req , res)=>{
     var body = req.body.body;
 
