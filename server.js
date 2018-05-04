@@ -67,10 +67,6 @@ router.post('/message' , (req , res)=>{
     });
 
     user.save();
-    var messageText = req.body.message.forEach((message) => {
-        console.log(message.text);
-        return message.text;
-    });
     var message = new Messages({
         message : [{
             text: req.body.message[0].text,
