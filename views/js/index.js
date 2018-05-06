@@ -215,11 +215,11 @@ function gameStarted(level){
         method : "GET",
         contentType : "application/json",
         success : function(response){
+            // console.log("What's this ?",this);
             var arrayQuestion = 0;
             var question = response.question;
             gameCounter(question , arrayQuestion);
             var clicked = $(".append").find(":submit");
-            console.log("Element to click",clicked);
             clicked.on("click" , function(){
                 arrayQuestion++;
                 gameCounter(question, arrayQuestion , true);
@@ -241,15 +241,26 @@ function gameCounter(question , arrayQuestion , clear){
         randomArray.push(oriArray[i]);        
     }
     if(clear == true){
+        // Avoid adding number , RESET
         countdown = 0;
+        // Empty the question area for a new one
         $(".append").empty();
+        // Append Question for answers
         $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div>");
         // Countdown Begins
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
         countdownNumberEl.textContent = countdown;
         setInterval(function () {
-            countdown = --countdown <= 0 ? pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], false, question.level) : countdown;
+        //     countdown = --countdown <= 0 ? pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], false, question.level ,arrayQuestion) : countdown;
+        countdown = --countdown;
+        if(countdown ==0){
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], false, question.level, arrayQuestion);
+            gameCounter(question, arrayQuestion++, true);
+            countdown = question[arrayQuestion].time;
+        }else{
+            countdown;
+        }
             countdownNumberEl.textContent = countdown;
         }, 1000);
         $(".circle").css({
@@ -260,9 +271,8 @@ function gameCounter(question , arrayQuestion , clear){
                 $("#answer" + i).on("click", function () {
                     var value = this.value;
                     console.log(value);
-                    compareArray = [];
                     pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level);
-                    gameCounter(question, arrayQuestion+ 1, true);
+                    gameCounter(question, arrayQuestion + 1, true);
                 });
             }(i));
     }else if(!clear== true){
@@ -273,7 +283,15 @@ function gameCounter(question , arrayQuestion , clear){
         var countdown = question[arrayQuestion].time;
         countdownNumberEl.textContent = countdown;
         setInterval(function () {
-            countdown = --countdown <= 0 ? pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], false, question.level) : countdown;
+            // countdown = --countdown <= 0 ? pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], false, question.level , arrayQuestion) : countdown;
+            countdown = --countdown;
+            if (countdown == 0) {
+                pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], false, question.level, arrayQuestion);
+                gameCounter(question, arrayQuestion++, true);
+                countdown = question[arrayQuestion].time;
+            } else {
+                countdown;
+            }
             countdownNumberEl.textContent = countdown;
         }, 1000);
         $(".circle").css({
@@ -284,7 +302,6 @@ function gameCounter(question , arrayQuestion , clear){
             $("#answer" + i).on("click", function () {
                 var value = this.value;
                 console.log(value);
-                compareArray = [];
                 pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level);
                 gameCounter(question, arrayQuestion + 1, true);
             });
@@ -293,13 +310,12 @@ function gameCounter(question , arrayQuestion , clear){
 }
 // Make it global to be able to push array for clicking not more than 5 total questions
 var allAnswer = [];
-function pushAnswer(user,correctAns , ans , level){
-    console.log("Push Answer Level available", level);
+function pushAnswer(user,correctAns , ans , level , arrayQuestion){
     if(ans == correctAns){
         allAnswer.push(true);
     }else if(ans !== correctAns){
         allAnswer.push(false);
-    }else if(ans === false){
+    }else if(ans == false){
         allAnswer.push(false);
     }
     if(allAnswer.length === 5){
@@ -308,24 +324,27 @@ function pushAnswer(user,correctAns , ans , level){
     }
 }
 var finalAnswer = [];
+var allLevel = [];
 function sendAnswer(allAnswer , user , level){
-    console.log("Send Answer Level available", level);    
-    // console.log("Answer Before" , allAnswer);
     // To make push on each array to a new one
     for(var i = 0 ; i<allAnswer.length; i++){
-        finalAnswer.push(allAnswer[i]);        
+        finalAnswer.push(allAnswer[i]); 
+        allLevel.push(level);       
     }
-    // console.log("Final Answer =", finalAnswer);
+    console.log("All Level available",allLevel);
+    var newLevel = level + 1;
     $.ajax({
         url: "api/app/user/" + user,
         method: "PATCH",
         contentType: "application/json",
         data: JSON.stringify({
             answers: finalAnswer,
-            level: level
+            level: allLevel
         }),
         success: function () {
             console.log("Success TRUE PATCH");
+            $(".append").empty();
+            gameStarted(newLevel);            
         }
     });
 }
@@ -349,6 +368,11 @@ $(function(){
         var falseAnswer = $("#falseAnswerBox").val();
         // alert('Question : ' + question + "\n True Asnwer :" + trueAnswer + "\n False Answers : " + falseAnswer);
     });
+
+    // Start game when the site is on
+    if(window.location.pathname === '/play'){
+        $("body").attr('onload', gameStarted(1));        
+    }
 
     // Get length of circle
     // var circle = document.querySelector("circle");
