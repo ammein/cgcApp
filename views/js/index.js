@@ -343,6 +343,7 @@ function sendAnswer(allAnswer , user , level , timeTrue){
             console.log("Success TRUE PATCH");
             $(".append").empty();
             var newLevel = level + 1;
+            // clear all interval on timeTrue (BUG)
             window.clearInterval(timeTrue);
             gameStarted(newLevel);
         }
