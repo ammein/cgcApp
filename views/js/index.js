@@ -235,6 +235,8 @@ function gameCounter(question , arrayQuestion , clear){
         randomArray.push(oriArray[i]);        
     }
     if(clear === true){
+        // Avoid adding number , RESET
+        countdown = 0;
         // Empty the question area for a new one
         $(".append").empty();
         // Append Question for answers
@@ -243,7 +245,7 @@ function gameCounter(question , arrayQuestion , clear){
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
         countdownNumberEl.textContent = countdown;
-        var timeTrue = setInterval(function () {
+        var timeTrue = window.setInterval(function () {
         countdown = --countdown;
         console.log("Countdown :",countdown);
         if(countdown === 0){
@@ -274,7 +276,7 @@ function gameCounter(question , arrayQuestion , clear){
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
         countdownNumberEl.textContent = countdown;
-        var timeFalse = setInterval(function () {
+        var timeFalse = window.setInterval(function () {
             console.log("Countdown :", countdown);            
             if (countdown === 0) {
                 pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level);
@@ -305,7 +307,7 @@ function gameCounter(question , arrayQuestion , clear){
 }
 // Make it global to be able to push array for clicking not more than 5 total questions
 var allAnswer = [];
-function pushAnswer(user,correctAns , ans , level){
+function pushAnswer(user,correctAns , ans , level , timeTrue){
     console.log("All Answer" , allAnswer);
     if(ans == correctAns){
         allAnswer.push(true);
@@ -315,13 +317,13 @@ function pushAnswer(user,correctAns , ans , level){
         allAnswer.push(false);
     }
     if(allAnswer.length === 5){
-        sendAnswer(allAnswer, user, level);
+        sendAnswer(allAnswer, user, level , timeTrue);
         allAnswer = [];     
     }
 }
 var finalAnswer = [];
 var allLevel = [];
-function sendAnswer(allAnswer , user , level){
+function sendAnswer(allAnswer , user , level , timeTrue){
     console.log("Final Answer", finalAnswer);    
     // To make push on each array to a new one
     for(var i = 0 ; i<allAnswer.length; i++){
@@ -340,7 +342,8 @@ function sendAnswer(allAnswer , user , level){
         success: function () {
             console.log("Success TRUE PATCH");
             $(".append").empty();
-            var newLevel = level + 1;      
+            var newLevel = level + 1;
+            window.clearInterval(timeTrue);
             gameStarted(newLevel);
         }
     });
