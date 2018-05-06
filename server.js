@@ -130,8 +130,15 @@ router.post('/app/user/input' , (req , res)=>{
         from : req.body.from,
     });
 
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = 'expires='+d.toUTCString();
+        return expires;
+    }
+
     userAttr.save().then((user)=>{    
-        res.status(200).cookie("from", user.from , {maxAge : 99999}).redirect('/play');
+        res.status(200).cookie("from", user.from, {expire: new Date() + 9999}).redirect('/play');
     },(e)=>{
         res.status(400).send(e);
     });
