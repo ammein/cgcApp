@@ -218,11 +218,6 @@ function gameStarted(level){
             var arrayQuestion = 0;
             var question = response.question;
             gameCounter(question , arrayQuestion , false);
-            var clicked = $(".append").find(":submit");
-            clicked.on("click" , function(){
-                arrayQuestion++;
-                gameCounter(question, arrayQuestion , true);
-            });
         }
     })
 }
@@ -239,9 +234,7 @@ function gameCounter(question , arrayQuestion , clear){
     for(var i = 0; i < oriArray.length;i++){
         randomArray.push(oriArray[i]);        
     }
-    if(clear == true){
-        // Avoid adding number , RESET
-        countdown = 0;
+    if(clear === true){
         // Empty the question area for a new one
         $(".append").empty();
         // Append Question for answers
@@ -250,16 +243,14 @@ function gameCounter(question , arrayQuestion , clear){
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
         countdownNumberEl.textContent = countdown;
-        setInterval(function () {
+        var timeTrue = setInterval(function () {
         countdown = --countdown;
         console.log("Countdown :",countdown);
-        if(countdown ==0){
+        if(countdown === 0){
             pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level);
             $(".append").empty();            
             gameCounter(question, arrayQuestion+1, true);
-            clearInterval(this);            
-        }else{
-            countdown;
+            clearInterval(timeTrue);
         }
             countdownNumberEl.textContent = countdown;
         }, 1000);
@@ -271,28 +262,29 @@ function gameCounter(question , arrayQuestion , clear){
                 $("#answer" + i).on("click", function () {
                     var value = this.value;
                     console.log(value);
-                    pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level);
+                    pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level , timeTrue);
                     gameCounter(question, arrayQuestion + 1, true);
+                    clearInterval(timeTrue);                    
                 });
             }(i));
-    }else if(clear== false){
+    }else if(clear=== false){
         // Begin Append Question
         $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div>");
         // Countdown Begins
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
         countdownNumberEl.textContent = countdown;
-        setInterval(function () {
+        var timeFalse = setInterval(function () {
             console.log("Countdown :", countdown);            
-            countdown = --countdown;
-            if (countdown == 0) {
+            if (countdown === 0) {
                 pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level);
                 $(".append").empty();           
                 gameCounter(question, arrayQuestion+1, true);
                 // countdown = question[arrayQuestion].time;
-                clearInterval(this);
-            } else {
-                countdown;
+                countdown = 0;
+                clearInterval(timeFalse);
+            }else{
+                countdown = --countdown;
             }
             countdownNumberEl.textContent = countdown;
         }, 1000);
@@ -306,6 +298,7 @@ function gameCounter(question , arrayQuestion , clear){
                 console.log(value);
                 pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level);
                 gameCounter(question, arrayQuestion + 1, true);
+                clearInterval(timeFalse);
             });
         }(i));
     }
@@ -347,7 +340,7 @@ function sendAnswer(allAnswer , user , level){
         success: function () {
             console.log("Success TRUE PATCH");
             $(".append").empty();
-            var newLevel = level + 1;
+            var newLevel = level + 1;      
             gameStarted(newLevel);
         }
     });
