@@ -218,93 +218,59 @@ function gameStarted(level){
         success : function(response){
             var arrayQuestion = 0;
             var question = response.question;
-            gameCounter(question , arrayQuestion , false);
+            gameCounter(question , arrayQuestion);
         }
     })
 }
 
-function gameCounter(question , arrayQuestion , clear){
+function gameCounter(question , arrayQuestion){
     console.log("Level available" , question[arrayQuestion].level);
     Array.prototype.move = function (from, to) {
         this.splice(to, 0, this.splice(from, 1)[0]);
     };
-    var oriArray = question[arrayQuestion].answers;
-    var rand = Math.floor((Math.random() * 4) + 1); 
-    oriArray.move(0 , rand);
-    var randomArray = [];
-    for(var i = 0; i < oriArray.length;i++){
-        randomArray.push(oriArray[i]);        
-    }
-    if(clear === true){
-        // Avoid adding number , RESET
-        countdown = 0;
-        // Empty the question area for a new one
-        $(".append").empty();
-        // Append Question for answers
-        $(".append").append("<div id='level-text' class='level-text'>Level " + question[arrayQuestion].level + "</div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
-        // Countdown Begins
-        var countdownNumberEl = document.getElementById('countdown-number');
-        var countdown = question[arrayQuestion].time;
-        countdownNumberEl.textContent = countdown;
-        var timeTrue = window.setInterval(function () {
-        countdown = --countdown;
-        console.log("Countdown :",countdown);
-        if(countdown === 0){
-            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level);
-            $(".append").empty();            
-            gameCounter(question, arrayQuestion+1, true);
+    var randomArray = question[arrayQuestion].answers;
+    var rand = Math.floor((Math.random() * 4) + 1);        
+    console.log("Counter Fetch",rand);
+    randomArray.move(0, rand);
+    // var randomArray = [];
+    // for(var i = 0; i < oriArray.length;i++){
+    //     randomArray.push(oriArray[i]);        
+    // }
+    console.log("Random Array" , randomArray);
+    console.log("Ori Array", question[arrayQuestion].answers);
+    // Begin Append Question
+    $(".append").html("<div id='level-text' class='level-text'>Level " + question[arrayQuestion].level + "</div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
+    // Countdown Begins
+    var countdownNumberEl = document.getElementById('countdown-number');
+    var countdown = question[arrayQuestion].time;
+    countdownNumberEl.textContent = countdown;
+    var timeTrue = window.setInterval(function () {
+        console.log("Countdown :", countdown);            
+        if (countdown === 0) {
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level , timeTrue);
+            $(".append").empty();           
+            gameCounter(question, arrayQuestion+1);
+            countdown = 0;
             clearInterval(timeTrue);
+        }else{
+            countdown = --countdown;
         }
-            countdownNumberEl.textContent = countdown;
-        }, 1000);
-        $(".circle").css({
-            animation: "countdown " + question[arrayQuestion].time + "s linear forwards"
-        })
-        // Countdown Ends
-            for (var i = 1; i <= 4; i++)(function (i) {
-                $("#answer" + i).on("click", function () {
-                    var value = this.value;
-                    console.log(value);
-                    pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level , timeTrue);
-                    gameCounter(question, arrayQuestion + 1, true);
-                    clearInterval(timeTrue);                    
-                });
-            }(i));
-    }else if(clear=== false){
-        // Begin Append Question
-        $(".append").append("<div id='level-text' class='level-text'>Level " + question[arrayQuestion].level + "</div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
-        // Countdown Begins
-        var countdownNumberEl = document.getElementById('countdown-number');
-        var countdown = question[arrayQuestion].time;
         countdownNumberEl.textContent = countdown;
-        var timeFalse = window.setInterval(function () {
-            console.log("Countdown :", countdown);            
-            if (countdown === 0) {
-                pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level);
-                $(".append").empty();           
-                gameCounter(question, arrayQuestion+1, true);
-                // countdown = question[arrayQuestion].time;
-                countdown = 0;
-                clearInterval(timeFalse);
-            }else{
-                countdown = --countdown;
-            }
-            countdownNumberEl.textContent = countdown;
-        }, 1000);
-        $(".circle").css({
-            animation: "countdown " + question[arrayQuestion].time + "s linear forwards"
-        })
-        // Countdown Ends
-        for (var i = 1; i <= 4; i++)(function (i) {
-            $("#answer" + i).on("click", function () {
-                var value = this.value;
-                console.log(value);
-                pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level);
-                gameCounter(question, arrayQuestion + 1, true);
-                clearInterval(timeFalse);
-            });
-        }(i));
-    }
+    }, 1000);
+    $(".circle").css({
+        animation: "countdown " + question[arrayQuestion].time + "s linear forwards"
+    })
+    // Countdown Ends
+    for (var i = 1; i <= 4; i++)(function (i) {
+        $("#answer" + i).on("click", function () {
+            var value = this.value;
+            console.log("You click",value);
+            console.log("True Answer",question[arrayQuestion].answers[0]);
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level,timeTrue);
+            gameCounter(question, arrayQuestion + 1);
+            clearInterval(timeTrue);
+        });
+    }(i));
 }
 // Make it global to be able to push array for clicking not more than 5 total questions
 var allAnswer = [];
@@ -331,7 +297,7 @@ function sendAnswer(allAnswer , user , level , timeTrue){
         finalAnswer.push(allAnswer[i]); 
         allLevel.push(level);       
     }
-    $("body").removeAttr("onload");
+    // $("body").removeAttr("onload");
     $.ajax({
         url: "api/app/user/" + user,
         method: "PATCH",
