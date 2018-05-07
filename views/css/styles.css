@@ -523,7 +523,7 @@ input[type=range]:focus::-ms-fill-upper {
     }
 
     .input-area{
-        top: calc(200px);
+        top: calc(320px);
         position: absolute;
         width: 100%;
         padding-left: 19px;
@@ -544,7 +544,7 @@ input[type=range]:focus::-ms-fill-upper {
 
     .input-area input[type=submit]{
         width: 45%;
-        height: 140px;
+        height: 110px;
         display: inline-block;
         margin-right: 14px;
         margin-bottom: 14px;
@@ -554,6 +554,39 @@ input[type=range]:focus::-ms-fill-upper {
         font-size: 32.94px;
         font-family: 'Baumans',cursive;
         border-radius: 5px;
+    }
+
+    .level-text{
+        display: block;
+        text-align: center;
+        color: white;
+        font-size: 12px;
+        position: relative;
+        top: 19px;
+    }
+
+    .new-user {
+        position: relative;
+        bottom : 160px;
+        z-index: 2;
+        margin: 0 auto;
+        color: white;
+        display: none;        
+        background-color: #529DE1;
+        border-radius: 10px;
+        padding: 10px;
+        width: auto;
+        height: auto;
+    }
+
+    .user-welcome{
+        position: relative;
+        top : 50%;
+        left : 0;
+        right: 0;
+        text-align: center;
+        margin-bottom: 0;
+        display: none;
     }
 
     @keyframes countdown {

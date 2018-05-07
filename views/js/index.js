@@ -41,6 +41,7 @@ function deleteData(id, questionString , q) {
     });
 }
 
+
 function getQueryLink(q){
     return $.ajax({
             method: "GET",
@@ -49,7 +50,7 @@ function getQueryLink(q){
             success: function (response) {
                 var getListBlock = $("#questionsBlock");
                 $("#questionsBlock").empty();    
-                response.question.docs.forEach((questions) => {
+                response.question.docs.forEach(function (questions) {
                     var id = questions._id;
                     getListBlock.append("<form id='" + id + "' class='questionBox'><textarea class='list'>" + questions.questionString + "</textarea><input type='number' class='answer-box-edit' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>" + questions.level + "</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level + "' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
                 });
@@ -115,7 +116,7 @@ function initialize() {
             contentType: 'application/json',
             success: function (response) {
                 var getListBlock = $("#questionsBlock");
-                response.question.docs.forEach((questions) => {
+                response.question.docs.forEach(function (questions) {
                     var id = questions._id;
                     getListBlock.append("<form id='" + id + "' class='questionBox'><textarea class='list'>" + questions.questionString + "</textarea><input type='number' class='answer-box-edit' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>"+questions.level+"</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level +"' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
                 });
@@ -240,7 +241,7 @@ function gameCounter(question , arrayQuestion , clear){
         // Empty the question area for a new one
         $(".append").empty();
         // Append Question for answers
-        $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div>");
+        $(".append").append("<div id='level-text' class='level-text'>Level " + question[arrayQuestion].level + "</div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
         // Countdown Begins
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
@@ -271,7 +272,7 @@ function gameCounter(question , arrayQuestion , clear){
             }(i));
     }else if(clear=== false){
         // Begin Append Question
-        $(".append").append("<div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div>");
+        $(".append").append("<div id='level-text' class='level-text'>Level " + question[arrayQuestion].level + "</div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
         // Countdown Begins
         var countdownNumberEl = document.getElementById('countdown-number');
         var countdown = question[arrayQuestion].time;
@@ -370,6 +371,26 @@ $(function(){
     });
     if(window.location.pathname == '/play'){
         gameStarted(1);
+        // Initialize socket
+        var socket = io();
+        socket.on('connect', function () {
+
+            socket.on("newUser", function (welcome) {
+                var $div = $(".new-user");  
+                $div.slideDown(500 , function () {
+                    $div.css("display", "table");
+                    $(".user-welcome").css("display" , "block");
+                });            
+                $div.html("<p class='user-welcome'>User Connected : " + welcome.from + "</p>");
+                setTimeout(() => {
+                    $div.slideUp(500, function(){
+                        $(".user-welcome").css("display", "none");
+                    });
+                }, 5000);
+            });
+
+            console.log("Connected to Server");
+        });
     }
 
 });

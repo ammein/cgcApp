@@ -6,9 +6,12 @@ var {Question} = require('./server/models/question');
 const {User} = require('./server/models/user');
 const nunjucks = require('nunjucks');
 const {Messages} = require('./server/models/messages');
+const http = require('http');
 // to get certain value of API using lodash
 const _ = require('lodash');
 const path = require('path');
+// Load Socket
+const socketIO = require('socket.io');
 // Use Cookies
 const cookieParser = require('cookie-parser');
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
@@ -29,6 +32,11 @@ nunjucks.configure(['./app' , './public'], {
     watch : true
 });
 
+// intergrate app into our server (SOCKET IO)
+var server = http.createServer(app);
+
+// Add websocket server on createServer
+var io = socketIO(server);
 
 var port = process.env.PORT || 3000;
 
@@ -37,7 +45,16 @@ app.get('/' , (req , res)=>{
 });
 
 app.get('/play', (req, res)=>{
-    res.render('character.html' , {from : req.cookies.from});
+    res.render('character.html');
+    // All socket
+    io.on('connection', (client) => {
+        client.broadcast.emit('newUser', req.cookies);
+
+        // for disconnect
+        client.on('disconnect', () => {
+            console.log("User disconnected");
+        })
+    });
 });
 
 app.get('/create' , (req ,res)=>{
@@ -263,7 +280,7 @@ app.get('*' , (req, res)=>{
     res.status(404).render('404.html');
 })
 
-app.listen(port , ()=>{
+server.listen(port , ()=>{
     console.log(`Listen on port ${port}`);
 });
 

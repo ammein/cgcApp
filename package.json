@@ -32,12 +32,15 @@
     "mongodb": "^3.0.7",
     "mongoose": "^5.0.15",
     "mongoose-paginate": "^5.0.3",
-    "nunjucks": "^3.1.2"
+    "nunjucks": "^3.1.2",
+    "socket.io": "^2.1.0"
   },
   "devDependencies": {
     "browser-sync": "^2.23.7",
     "expect": "^1.20.2",
     "express": "^4.16.3",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-concat": "^2.6.1",
     "gulp-inject": "^4.3.2",
     "gulp-nunjucks": "^3.1.1",
     "gulp-nunjucks-render": "^1.1.10",

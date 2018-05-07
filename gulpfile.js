@@ -4,6 +4,8 @@ var browserSync = require('browser-sync').create();
 var inject = require('gulp-inject');
 var data = require('gulp-data');
 var {Question} = require('./server/models/question');
+var cleanCSS = require('gulp-clean-css');
+var concat = require('gulp-concat');
 
 gulp.task('browserSync',['default'] , function () {
     browserSync.init({
@@ -36,6 +38,8 @@ gulp.task('nunjucks', function () {
 
 gulp.task('nunjucks-css' , function(){
     return gulp.src('views/css/**/*.+(css)')
+    .pipe(concat('styles.css'))
+    .pipe(cleanCSS())
     .pipe(gulp.dest('./public/css'))
 });
 
