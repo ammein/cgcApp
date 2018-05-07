@@ -228,14 +228,14 @@ function gameCounter(question , arrayQuestion){
     Array.prototype.move = function (from, to) {
         this.splice(to, 0, this.splice(from, 1)[0]);
     };
-    var randomArray = question[arrayQuestion].answers;
-    var rand = Math.floor((Math.random() * 4) + 1);        
-    console.log("Counter Fetch",rand);
-    randomArray.move(0, rand);
-    // var randomArray = [];
-    // for(var i = 0; i < oriArray.length;i++){
-    //     randomArray.push(oriArray[i]);        
-    // }
+    var oriArray = question[arrayQuestion].answers;
+    var randomArray = [];
+    for(var i = 0; i < oriArray.length;i++){
+        randomArray.push(oriArray[i]);        
+    }
+    var rand = Math.floor((Math.random() * 4) + 1);
+    console.log("Counter Fetch", rand);
+    randomArray.move(1, rand);
     console.log("Random Array" , randomArray);
     console.log("Ori Array", question[arrayQuestion].answers);
     // Begin Append Question
