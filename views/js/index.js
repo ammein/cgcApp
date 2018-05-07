@@ -233,9 +233,9 @@ function gameCounter(question , arrayQuestion){
     for(var i = 0; i < oriArray.length;i++){
         randomArray.push(oriArray[i]);        
     }
-    var rand = Math.floor((Math.random() * 4) + 1);
+    var rand = Math.floor((Math.random() * 3) + 1);
     console.log("Counter Fetch", rand);
-    randomArray.move(1, rand);
+    randomArray.move(0, -rand);
     console.log("Random Array" , randomArray);
     console.log("Ori Array", question[arrayQuestion].answers);
     // Begin Append Question
