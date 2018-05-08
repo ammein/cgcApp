@@ -560,9 +560,12 @@ input[type=range]:focus::-ms-fill-upper {
         display: block;
         text-align: center;
         color: white;
-        font-size: 12px;
         position: relative;
         top: 19px;
+    }
+
+    .level-text > p{
+        font-size: 12px;        
     }
 
     .new-user {
@@ -587,6 +590,26 @@ input[type=range]:focus::-ms-fill-upper {
         text-align: center;
         margin-bottom: 0;
         display: none;
+    }
+
+    #chatbox{
+        display: none;
+        overflow:none;
+        position: relative;
+        width: 0;
+        height : 100%;
+    }
+
+    .chat{
+        float: right;
+    }
+
+    #chatmessages{
+        overflow: auto;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        max-height: 100%;
     }
 
     @keyframes countdown {

@@ -224,7 +224,7 @@ function gameStarted(level){
 }
 
 function gameCounter(question , arrayQuestion){
-    console.log("Level available" , question[arrayQuestion].level);
+    // console.log("Level available" , question[arrayQuestion].level);
     Array.prototype.move = function (from, to) {
         this.splice(to, 0, this.splice(from, 1)[0]);
     };
@@ -234,18 +234,19 @@ function gameCounter(question , arrayQuestion){
         randomArray.push(oriArray[i]);        
     }
     var rand = Math.floor((Math.random() * 3) + 1);
-    console.log("Counter Fetch", rand);
-    randomArray.move(0, -rand);
-    console.log("Random Array" , randomArray);
-    console.log("Ori Array", question[arrayQuestion].answers);
+    var rand2 = Math.floor((Math.random() * 4) - 1);
+    var rand3 = Math.floor((Math.random() * 3) + 1);
+    randomArray.move(0, rand);
+    randomArray.move(1, rand2);
+    randomArray.move(2, rand3);
     // Begin Append Question
-    $(".append").html("<div id='level-text' class='level-text'>Level " + question[arrayQuestion].level + "</div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
+    $(".append").html("<div id='level-text' class='level-text'><p style='text-align:center;'>Level " + question[arrayQuestion].level + "</p></div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
     // Countdown Begins
     var countdownNumberEl = document.getElementById('countdown-number');
     var countdown = question[arrayQuestion].time;
     countdownNumberEl.textContent = countdown;
     var timeTrue = window.setInterval(function () {
-        console.log("Countdown :", countdown);            
+        // console.log("Countdown :", countdown);            
         if (countdown === 0) {
             pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level , timeTrue);
             $(".append").empty();           
@@ -264,8 +265,8 @@ function gameCounter(question , arrayQuestion){
     for (var i = 1; i <= 4; i++)(function (i) {
         $("#answer" + i).on("click", function () {
             var value = this.value;
-            console.log("You click",value);
-            console.log("True Answer",question[arrayQuestion].answers[0]);
+            // console.log("You click",value);
+            // console.log("True Answer",question[arrayQuestion].answers[0]);
             pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level,timeTrue);
             gameCounter(question, arrayQuestion + 1);
             clearInterval(timeTrue);
@@ -335,28 +336,48 @@ $(function(){
         var trueAnswer = $("#trueAnswerBox").val();
         var falseAnswer = $("#falseAnswerBox").val();
     });
-    if(window.location.pathname == '/play'){
+
+
+    if (window.location.pathname == '/play') {
         gameStarted(1);
         // Initialize socket
         var socket = io();
         socket.on('connect', function () {
 
             socket.on("newUser", function (welcome) {
-                var $div = $(".new-user");  
-                $div.slideDown(500 , function () {
+                var $div = $(".new-user");
+                $div.slideDown(500, function () {
                     $div.css("display", "table");
-                    $(".user-welcome").css("display" , "block");
-                });            
+                    $(".user-welcome").css("display", "block");
+                });
                 $div.html("<p class='user-welcome'>User Connected : " + welcome.from + "</p>");
                 setTimeout(() => {
-                    $div.slideUp(500, function(){
+                    $div.slideUp(500, function () {
                         $(".user-welcome").css("display", "none");
                     });
                 }, 5000);
+
+                $(document).on("click" , "button#chat" , function(e){
+                    // $("#chatbox").appendTo($(""));
+                    console.log("Clicked");
+                    // $("#chatbox").css({
+                    //     width: "100%",
+                    //     transition: "1s ease-in",
+                    //     float: "right"
+                    // });
+                    // socket.on("chating", function (message) {
+                    //     $("#chatbox").append("<div id='chatmessages'>" + message + "</div>");
+                    //     $("#chatbox").html("<form action='/api/message' method='POST' id='sendMessage'><input type='text' id='chatarea' name='text'><button type='submit' form='sendMessage' value='Send'></button></form>");
+                    //     var chat = $("#chatarea").val();
+                    //     $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
+                    //     socket.emit('messages', {
+                    //         chat: chat
+                    //     });
+                    // });
+                });
             });
 
             console.log("Connected to Server");
         });
     }
-
 });

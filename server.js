@@ -50,6 +50,18 @@ app.get('/play', (req, res)=>{
     io.on('connection', (client) => {
         client.broadcast.emit('newUser', req.cookies);
 
+        client.on('chating', (chat)=>{
+            Messages.find({})
+            .populate('message.sendBy')
+            .sort('-createdAt')
+            .exec((err , res)=>{
+                return client.emit('chating' , res);
+            });
+            client.listen('messages', (messages) => {
+                console.log(messages);
+            });
+        });
+
         // for disconnect
         client.on('disconnect', () => {
             console.log("User disconnected");
