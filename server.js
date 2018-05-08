@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 var {mongoose} = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
 const {User} = require('./server/models/user');
+const {UserMessage} = require("./server/models/userMessage");
 const nunjucks = require('nunjucks');
 const {Messages} = require('./server/models/messages');
 const http = require('http');
@@ -50,16 +51,9 @@ app.get('/play', (req, res)=>{
     io.on('connection', (client) => {
         client.broadcast.emit('newUser', req.cookies);
 
-        client.on('chating', (chat)=>{
-            Messages.find({})
-            .populate('message.sendBy')
-            .sort('-createdAt')
-            .exec((err , res)=>{
-                return client.emit('chating' , res);
-            });
-            client.listen('messages', (messages) => {
-                console.log(messages);
-            });
+        client.on('createMessages', (messages) => {
+            console.log("Messages from chat" , messages);
+            io.emit('newMessages' , messages);
         });
 
         // for disconnect
@@ -89,9 +83,9 @@ router.get('/game/:id' , (req , res)=>{
 
 // MESSAGE POST
 router.post('/message' , (req , res)=>{
-    User.findOne({ from : req.body.from }).then((user)=>{   
+    User.findOne({ from : req.cookies.from }).then((user)=>{   
         var user = new User({
-            from : user.from,
+            from: req.cookies.from,
             answers : user.answers,
             level : user.level
         });
@@ -111,11 +105,11 @@ router.post('/message' , (req , res)=>{
             .sort('-createdAt')
             .exec((err , message)=>{
                 if(err) throw err;
-                res.send({AllMessages : message});
+                return res.send({AllMessages : message});
             })
         });
     },(e)=>{
-        res.send(e);
+        return res.send(e);
     });
 });
 

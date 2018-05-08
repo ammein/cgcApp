@@ -602,14 +602,31 @@ input[type=range]:focus::-ms-fill-upper {
 
     .chat{
         float: right;
+        z-index: 2;
+        top: 0;
+        margin-right: 20px;
+        position: absolute;
+    }
+
+    #sendMessage{
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    #text{
+        height: 50px;
     }
 
     #chatmessages{
         overflow: auto;
-        position: absolute;
+        position: relative;
         bottom: 0;
         width: 100%;
         max-height: 100%;
+        color: white;
     }
 
     @keyframes countdown {

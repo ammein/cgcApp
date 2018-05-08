@@ -254,7 +254,7 @@ function gameCounter(question , arrayQuestion){
             countdown = 0;
             clearInterval(timeTrue);
         }else{
-            countdown = --countdown;
+            // countdown = --countdown;
         }
         countdownNumberEl.textContent = countdown;
     }, 1000);
@@ -318,6 +318,7 @@ function sendAnswer(allAnswer , user , level , timeTrue){
     });
 }
 
+
 // DOMContentLoaded
 $(function(){
 
@@ -329,19 +330,53 @@ $(function(){
             "color" : "#2e2e2e"
         });
     });
+    var socket = io();    
 
-    $("form").on("submit" , function () {
-        var question = $(".textarea-box").val();
-        console.log(question);
-        var trueAnswer = $("#trueAnswerBox").val();
-        var falseAnswer = $("#falseAnswerBox").val();
+    $(document).on("click" , "button#chat", function (e) {
+        console.log("Clicked");
+        $("#chatbox").css({
+            width: "100%",
+            transition: "2s ease-in",
+            position : "absolute",
+            float: "right",
+            backgroundColor: "black",
+            display: "block",
+            bottom : "0",
+            top: "0",
+            zIndex: "3",
+            left:"0"
+        });
+        $("#chatbox").html("<form action='/api/message' method='POST' id='sendMessage'><input type='text' id='chatarea' name='text'><button type='submit' form='sendMessage'>Send</button></form>");
+        $("#sendMessage").on("click" , "button" , function (e) {
+            e.preventDefault();
+            var chat = $("#chatarea").val(); 
+            socket.emit('createMessages', {
+                user : getCookie("from"),
+                chat: chat
+            });
+        });
+        $(".close").on("click" , function (e) {
+            $("#chatbox").css({
+                width: "0%",
+                transition: "1s ease-in",
+                display : "none"
+            });
+        })
     });
 
+    socket.on("newMessages", function (message) {
+        var chatArea = $("#chatmessages");
+        var list = $("<li></li>");
+        chatArea.insertBefore("form#sendMessage");
+        list.text(`${message.user} : ${message.chat}`);
+        chatArea.append(list);
+        console.log(message);
+        // $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
+    });
 
     if (window.location.pathname == '/play') {
         gameStarted(1);
         // Initialize socket
-        var socket = io();
         socket.on('connect', function () {
 
             socket.on("newUser", function (welcome) {
@@ -356,28 +391,9 @@ $(function(){
                         $(".user-welcome").css("display", "none");
                     });
                 }, 5000);
-
-                $(document).on("click" , "button#chat" , function(e){
-                    // $("#chatbox").appendTo($(""));
-                    console.log("Clicked");
-                    // $("#chatbox").css({
-                    //     width: "100%",
-                    //     transition: "1s ease-in",
-                    //     float: "right"
-                    // });
-                    // socket.on("chating", function (message) {
-                    //     $("#chatbox").append("<div id='chatmessages'>" + message + "</div>");
-                    //     $("#chatbox").html("<form action='/api/message' method='POST' id='sendMessage'><input type='text' id='chatarea' name='text'><button type='submit' form='sendMessage' value='Send'></button></form>");
-                    //     var chat = $("#chatarea").val();
-                    //     $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
-                    //     socket.emit('messages', {
-                    //         chat: chat
-                    //     });
-                    // });
-                });
             });
-
             console.log("Connected to Server");
         });
     }
+
 });
