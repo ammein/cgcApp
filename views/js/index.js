@@ -330,8 +330,6 @@ $(function(){
             "color" : "#2e2e2e"
         });
     });
-    var socket = io();    
-
     $(document).on("click" , "button#chat", function (e) {
         console.log("Clicked");
         $("#chatbox").css({
@@ -339,61 +337,67 @@ $(function(){
             transition: "2s ease-in",
             position : "absolute",
             float: "right",
-            backgroundColor: "black",
+            backgroundColor: "rgba(0,0,0,0.85)",
             display: "block",
             bottom : "0",
             top: "0",
             zIndex: "3",
-            left:"0"
+            left:"0",
+            paddingBottom: "120px"
         });
-        $("#chatbox").html("<form action='/api/message' method='POST' id='sendMessage'><input type='text' id='chatarea' name='text'><button type='submit' form='sendMessage'>Send</button></form>");
-        $("#sendMessage").on("click" , "button" , function (e) {
-            e.preventDefault();
-            var chat = $("#chatarea").val(); 
-            socket.emit('createMessages', {
-                user : getCookie("from"),
-                chat: chat
-            });
-        });
-        $(".close").on("click" , function (e) {
+        $(".close-chat").on("click" , function (e) {
             $("#chatbox").css({
                 width: "0%",
                 transition: "1s ease-in",
                 display : "none"
             });
-        })
-    });
-
-    socket.on("newMessages", function (message) {
-        var chatArea = $("#chatmessages");
-        var list = $("<li></li>");
-        chatArea.insertBefore("form#sendMessage");
-        list.text(`${message.user} : ${message.chat}`);
-        chatArea.append(list);
-        console.log(message);
-        // $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
+        });
     });
 
     if (window.location.pathname == '/play') {
         gameStarted(1);
         // Initialize socket
+        var socket = io();        
         socket.on('connect', function () {
-
-            socket.on("newUser", function (welcome) {
-                var $div = $(".new-user");
-                $div.slideDown(500, function () {
-                    $div.css("display", "table");
-                    $(".user-welcome").css("display", "block");
-                });
-                $div.html("<p class='user-welcome'>User Connected : " + welcome.from + "</p>");
-                setTimeout(() => {
-                    $div.slideUp(500, function () {
-                        $(".user-welcome").css("display", "none");
-                    });
-                }, 5000);
-            });
             console.log("Connected to Server");
         });
+
+        socket.on("newUser", function (welcome) {
+            var $div = $(".new-user");
+            $div.slideDown(500, function () {
+                $div.css("display", "table");
+                $(".user-welcome").css("display", "block");
+            });
+            $div.html("<p class='user-welcome'>User Connected : " + welcome.from + "</p>");
+            setTimeout(() => {
+                $div.slideUp(500, function () {
+                    $(".user-welcome").css("display", "none");
+                });
+            }, 5000);
+        });
+
+        var chatArea = $("#chatmessages");
+        socket.on("newMessages", function (message) {
+            var listYou = $("<li class='bubble-you'></li>");
+            var listBot = $("<li class='bubble-bot'></li>");
+            if(getCookie("from") === message.user){
+                listYou.text(`YOU : ${message.chat}`);
+                chatArea.append(listYou);
+            }else{
+                listBot.text(`${message.user} : ${message.chat}`);
+                chatArea.append(listBot);
+            }
+            console.log(message);
+            $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
+        });
+
+        $("form#sendMessage").on("submit", function (e) {
+            var chat = $("#chatarea").val();
+            socket.emit('createMessages', chat);
+            $("#chatarea").val("");
+            e.preventDefault();
+        });
+
     }
 
 });

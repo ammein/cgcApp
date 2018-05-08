@@ -13,10 +13,15 @@ Character choose
 <button id='chat' class='chat'>Chat</button>
 <div class="append"></div>
 <div id="chatbox">
-    <div id="close" class="close">
-        <i class="glyphicon glyphicon-remove remove-icon"></i>
-        <p class="close-chat">Close</p>
+    <div id="close-chat" class="close-chat">
+       <i class="fas fa-arrow-left"></i>
+        <p class="close-text-chat">Close</p>
     </div>
+    <div id="chatmessages"></div>
+    <form action='/api/message' method='POST' id='sendMessage'>
+    <input type='text' id='chatarea' placeholder='Send a message' name='text'>
+    <button type='submit' id='sendChat' form='sendMessage'>Send</button>
+    </form>
 </div>
 {% endblock %}
 

@@ -15,7 +15,9 @@ Character choose
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    
 <!-- inject:css -->
 <link rel="stylesheet" href="../css/pagination.css">
 <link rel="stylesheet" href="../css/styles.css">
@@ -30,10 +32,15 @@ Character choose
 <button id='chat' class='chat'>Chat</button>
 <div class="append"></div>
 <div id="chatbox">
-    <div id="close" class="close">
-        <i class="glyphicon glyphicon-remove remove-icon"></i>
-        <p class="close-chat">Close</p>
+    <div id="close-chat" class="close-chat">
+       <i class="fas fa-arrow-left"></i>
+        <p class="close-text-chat">Close</p>
     </div>
+    <div id="chatmessages"></div>
+    <form action='/api/message' method='POST' id='sendMessage'>
+    <input type='text' id='chatarea' placeholder='Send a message' name='text'>
+    <button type='submit' id='sendChat' form='sendMessage'>Send</button>
+    </form>
 </div>
 
     </div>
@@ -45,8 +52,8 @@ Character choose
     <script src="/socket.io/socket.io.js"></script>
     
 <!-- inject:js -->
-<script src="../js/jquery/jquery-3.3.1.min.js"></script>
 <script src="../js/nunjucks/nunjucks.min.js"></script>
+<script src="../js/jquery/jquery-3.3.1.min.js"></script>
 <script src="../js/index.js"></script>
 <!-- endinject -->
 

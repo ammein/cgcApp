@@ -52,8 +52,25 @@ app.get('/play', (req, res)=>{
         client.broadcast.emit('newUser', req.cookies);
 
         client.on('createMessages', (messages) => {
-            console.log("Messages from chat" , messages);
-            io.emit('newMessages' , messages);
+                User.findOne({
+                    from: req.cookies.from
+                }).then((user) => {
+                    var userSchemaUpdate = {
+                        from: user.from,
+                        answers: user.answers,
+                        level: user.level
+                    };
+                    User.update({from : req.cookies.from} , userSchemaUpdate);
+                    var message = new Messages({
+                        message: [{
+                            text: messages,
+                            sendBy: User._id
+                        }]
+                    });
+                    message.save();
+                });
+            console.log("Messages from chat : \n", messages);
+            io.emit('newMessages' , {user : req.cookies.from , chat : messages});
         });
 
         // for disconnect
@@ -77,39 +94,6 @@ router.get('/game/:id' , (req , res)=>{
         res.send({question});
     },(e)=>{
         res.status(400).send(e);
-    });
-});
-
-
-// MESSAGE POST
-router.post('/message' , (req , res)=>{
-    User.findOne({ from : req.cookies.from }).then((user)=>{   
-        var user = new User({
-            from: req.cookies.from,
-            answers : user.answers,
-            level : user.level
-        });
-        user.save();
-        var message = new Messages({
-            message : [{
-                text: req.body.text,
-                sendBy: user._id            
-            }]
-        });
-
-        message.save((err)=>{
-            if(err) throw err;
-
-            Messages.find({})
-            .populate('message.sendBy')
-            .sort('-createdAt')
-            .exec((err , message)=>{
-                if(err) throw err;
-                return res.send({AllMessages : message});
-            })
-        });
-    },(e)=>{
-        return res.send(e);
     });
 });
 

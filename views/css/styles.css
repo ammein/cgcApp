@@ -613,7 +613,27 @@ input[type=range]:focus::-ms-fill-upper {
         left: 0;
         width: 100%;
         height: auto;
-        position: relative;
+        position: fixed;
+        text-align: center;
+    }
+
+    #chatarea {
+        height: 100%;
+        width: 80%;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    #sendChat{
+        height: 56px;
+        width: 17%;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        background-color: rgba(11, 187, 255, 1);
     }
 
     #text{
@@ -627,6 +647,43 @@ input[type=range]:focus::-ms-fill-upper {
         width: 100%;
         max-height: 100%;
         color: white;
+        list-style: none;
+        padding: 30px;
+    }
+
+    .bubble-you{
+        float: right;
+        display: table;
+        background-color: rgba(94, 94, 94, 0.45);
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        width: auto;
+        text-align: left;
+        clear: both;
+    }
+
+    .bubble-bot{
+        clear: both;
+        display: table;
+        width: auto;
+        padding: 10px;
+        background: rgba(94, 94, 94, 0.45);
+        border-radius: 5px;
+        margin-bottom: 20px;
+        max-width: 58%;
+    }
+
+    .close-chat{
+        width: 100%;
+        color: white;
+        margin-top: 9px;
+        padding-left: 18px;
+    }
+
+    .close-text-chat{
+        margin-left: 7px;
+        display: inline;
     }
 
     @keyframes countdown {
