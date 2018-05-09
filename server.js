@@ -4,9 +4,7 @@ const bodyParser = require('body-parser');
 var {mongoose} = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
 const {User} = require('./server/models/user');
-const {UserMessage} = require("./server/models/userMessage");
 const nunjucks = require('nunjucks');
-const {Messages} = require('./server/models/messages');
 const http = require('http');
 // to get certain value of API using lodash
 const _ = require('lodash');
@@ -55,27 +53,23 @@ app.get('/play', (req, res)=>{
                 User.findOne({
                     from: req.cookies.from
                 }).then((user) => {
-                    var userSchemaUpdate = {
-                        from: user.from,
-                        answers: user.answers,
-                        level: user.level
-                    };
-                    User.update({from : req.cookies.from} , userSchemaUpdate);
-                    var message = new Messages({
-                        message: [{
-                            text: messages,
-                            sendBy: User._id
-                        }]
-                    });
-                    message.save();
+                    io.emit('newMessages', {
+                        user: req.cookies.from,
+                        chat: messages,
+                        userAnswers : {
+                            from : user.from,
+                            level : user.level,
+                            answers : user.answers
+                        }
+                    });                    
                 });
             console.log("Messages from chat : \n", messages);
-            io.emit('newMessages' , {user : req.cookies.from , chat : messages});
         });
 
         // for disconnect
         client.on('disconnect', () => {
-            console.log("User disconnected");
+            client.broadcast.emit('userDisconnect' , req.cookies.from)
+            console.log(`User disconnected : ${req.cookies.from}`);
         })
     });
 });
@@ -124,7 +118,9 @@ router.patch('/app/user/:from', (req, res) => {
 
 
 router.get('/app/user', (req, res) => {
-    User.find({}).then((user) => {
+    User.find()
+        .sort({answers : -true})
+        .then((user) => {
         res.send(user);
     }, (e) => {
         res.status(400).send(e);
@@ -190,13 +186,13 @@ router.post('/question' , (req , res)=>{
 // GET /api/question
 router.get('/question' , (req , res)=>{
     if(req.query.q){
-        Question.paginate({}, { page: JSON.parse(req.query.q), limit: 5 }).then((question) => {
+        Question.paginate({}, {page: JSON.parse(req.query.q),limit: 5,sort: {level: +1}}).then((question) => {
             return res.send({question});
         }).catch((e) => {
             return res.status(400).send(e);
         });
     }else if(!req.query.q){
-        Question.paginate({}, { limit: 5 }).then((question) => {
+        Question.paginate({}, { limit: 5 , sort : {level : +1} }).then((question) => {
             return res.send({ question });
         }).catch((e) => {
             return res.status(400).send(e);

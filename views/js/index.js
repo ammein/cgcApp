@@ -1,4 +1,4 @@
-function update(id, questionString , allAnswers , level , q) {
+function update(id, questionString , allAnswers , level , time , q) {
     $.ajax({
         method: "PATCH",
         url: '/api/question/' + id,
@@ -7,7 +7,8 @@ function update(id, questionString , allAnswers , level , q) {
             id,
             questionString,
             answers : allAnswers,
-            level
+            level,
+            time
         }),
         success: function (response) {
             $("#questionsBlock").empty();                        
@@ -52,7 +53,7 @@ function getQueryLink(q){
                 $("#questionsBlock").empty();    
                 response.question.docs.forEach(function (questions) {
                     var id = questions._id;
-                    getListBlock.append("<form id='" + id + "' class='questionBox'><textarea class='list'>" + questions.questionString + "</textarea><input type='number' class='answer-box-edit' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>" + questions.level + "</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level + "' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
+                    getListBlock.append("<form id='" + id + "' class='questionBox'><input type='number' name='time' id='timeLittleBox' value='" + questions.time + "' onfocus='this.value=\"\"'><p style='font-size: 17px;color: #535353; display: inline-block; float:right; padding:3px;'>seconds</p><textarea class='list'>" + questions.questionString + "</textarea><input type='number' class='answer-box-edit' style='background-color: #84ccf3' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>" + questions.level + "</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level + "' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
                 });
                 if (response.question.total >= 6) {
                     getListBlock.last().append("<div id='pagination' class='pagination'><a class='left-arrow' href='/'>❮ Previous</a><a class='right-arrow' href='/'>Next ❯</a></div>");
@@ -79,8 +80,9 @@ function getQueryLink(q){
                     var answer3 = $("form#" + id).find("#falseAnswerBox2").val();
                     var answer4 = $("form#" + id).find("#falseAnswerBox3").val();
                     var level = $("form#" + id).find("#level").val();
+                    var time = $("form#" + id).find("#timeLittleBox").val();                    
                     var allAnswers = [answer1, answer2, answer3, answer4];
-                    update(id, questionString, allAnswers, level , q);
+                    update(id, questionString, allAnswers, level ,time , q);
                 });
                 $('.questionBox').on('click', '.delete', function (e) {
                     e.preventDefault();
@@ -118,7 +120,7 @@ function initialize() {
                 var getListBlock = $("#questionsBlock");
                 response.question.docs.forEach(function (questions) {
                     var id = questions._id;
-                    getListBlock.append("<form id='" + id + "' class='questionBox'><textarea class='list'>" + questions.questionString + "</textarea><input type='number' class='answer-box-edit' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>"+questions.level+"</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level +"' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
+                    getListBlock.append("<form id='" + id + "' class='questionBox'><input type='number' name='time' id='timeLittleBox' value='" + questions.time + "' onfocus='this.value=\"\"'><p style='font-size: 17px;color: #535353; display: inline-block; float:right; padding:3px;'>seconds</p><textarea class='list'>" + questions.questionString + "</textarea><input type='number' style='background-color: #84ccf3' class='answer-box-edit' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>" + questions.level + "</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level + "' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
                 });
                 if(response.question.total >= 6){
                     getListBlock.last().append("<div id='pagination' class='pagination'><a class='left-arrow' href='/'>❮ Previous</a><a class='right-arrow' href='/'>Next ❯</a></div>");
@@ -145,8 +147,9 @@ function initialize() {
                     var answer3 = $("form#" + id).find("#falseAnswerBox2").val();
                     var answer4 = $("form#" + id).find("#falseAnswerBox3").val();
                     var level = $("form#" + id).find("#level").val();
+                    var time = $("form#" + id).find("#timeLittleBox").val();
                     var allAnswers = [answer1 , answer2 , answer3 , answer4];
-                    update(id, questionString , allAnswers , level);
+                    update(id, questionString , allAnswers , level , time);
                 });
                 $('.questionBox').on('click', '.delete', function (e) {
                     e.preventDefault();
@@ -369,6 +372,23 @@ $(function(){
                 $(".user-welcome").css("display", "block");
             });
             $div.html("<p class='user-welcome'>User Connected : " + welcome.from + "</p>");
+            setTimeout(() => {
+                $div.slideUp(500, function () {
+                    $(".user-welcome").css("display", "none");
+                });
+            }, 5000);
+        });
+
+        socket.on('userDisconnect' , function(user){
+            var $div = $(".new-user");
+            $div.slideDown(500, function () {
+                $div.css({
+                    display : "table",
+                    backgroundColor : "red"
+                });
+                $(".user-welcome").css("display", "block");
+            });
+            $div.html("<p class='user-welcome'>User Disconnected : " + user + "</p>");
             setTimeout(() => {
                 $div.slideUp(500, function () {
                     $(".user-welcome").css("display", "none");

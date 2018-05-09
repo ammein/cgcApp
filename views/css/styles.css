@@ -408,28 +408,27 @@ input[type=range]:focus::-ms-fill-upper {
     background: #F0F0F0;
 }
 
+#timeLittleBox{
+    border: none;
+    text-align: center;
+    width: 36px;
+    height: 31px;
+    display: inline-block;
+    font-size: 15.45px;
+    color: #535353;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    float: right;
+    right: 0;
+}
+
 
 
 /* Extra small devices (phones, 600px and down) */
 
 @media only screen and (min-width: 320px) {
     #bodyInput{
-        background: #001c7a;
-        /* Old browsers */
-
-        background: -moz-linear-gradient(top, #001c7a 0%, #a70024 100%);
-        /* FF3.6-15 */
-
-        background: -webkit-linear-gradient(top, #001c7a 0%, #a70024 100%);
-        /* Chrome10-25,Safari5.1-6 */
-
-        background: linear-gradient(to bottom, #001c7a 0%, #a70024 100%);
-        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#001c7a', endColorstr='#a70024', GradientType=0);
-        /* IE6-9 */
-
-
+        background: #023CFF;
     }
 
     div#formInput{
@@ -569,16 +568,13 @@ input[type=range]:focus::-ms-fill-upper {
     }
 
     .new-user {
-        position: relative;
-        bottom : 160px;
-        z-index: 2;
+        position: absolute;
+        top : 0;
         margin: 0 auto;
         color: white;
         display: none;        
         background-color: #529DE1;
-        border-radius: 10px;
-        padding: 10px;
-        width: auto;
+        width: 100%;
         height: auto;
     }
 
@@ -590,6 +586,7 @@ input[type=range]:focus::-ms-fill-upper {
         text-align: center;
         margin-bottom: 0;
         display: none;
+        font-size: 14px;
     }
 
     #chatbox{
@@ -601,11 +598,28 @@ input[type=range]:focus::-ms-fill-upper {
     }
 
     .chat{
-        float: right;
         z-index: 2;
         top: 0;
-        margin-right: 20px;
         position: absolute;
+        border: none;
+        background: none;
+        color: white;
+        font-size: 20px;
+        margin-top: 19px;
+        margin-left: 10px;
+    }
+
+    .ranking{
+        z-index: 2;
+        top: 0;
+        margin-right: 35px;
+        position: absolute;
+        border: none;
+        background: none;
+        color: white;
+        font-size: 20px;
+        margin-top: 19px;
+        right:0;
     }
 
     #sendMessage{
@@ -661,6 +675,7 @@ input[type=range]:focus::-ms-fill-upper {
         width: auto;
         text-align: left;
         clear: both;
+        max-width: 60%;
     }
 
     .bubble-bot{
