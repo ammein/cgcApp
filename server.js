@@ -107,7 +107,8 @@ router.patch('/app/user/:from', (req, res) => {
 
 router.get('/app/user', (req, res) => {
     User.find()
-        .sort({answers : -true})
+        .sort('-createdAt')
+        .sort('-updatedAt')
         .then((users) => {
         res.send({users});
     }, (e) => {
@@ -120,13 +121,6 @@ router.post('/app/user/input' , (req , res)=>{
     var userAttr = new User({
         from : req.body.from,
     });
-
-    function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        var expires = 'expires='+d.toUTCString();
-        return expires;
-    }
 
     userAttr.save().then((user)=>{    
         res.status(200).cookie("from", user.from, {expire: new Date() + 9999}).redirect('/play');

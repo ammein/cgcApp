@@ -214,7 +214,8 @@ function rankClick(){
             rank.users.forEach(function(element) {
                 var answerCount = element.answers.forEach(v => v ? myCounter++ : v);
                 percentage = 100 * myCounter / element.answers.length;
-                $("tbody#appendTable").append(`<tr><td> ${i++} </td><td> ${element.from}</td><td>${(percentage === Infinity) ? percentage = 0 : percentage}/100</td></tr>`);
+                console.log("Percentage :",percentage);
+                $("tbody#appendTable").append(`<tr><td> ${i++} </td><td> ${element.from}</td><td>${(isNaN(percentage) || percentage == Infinity) ? percentage=0 : percentage}/100</td></tr>`);
             });
 
         }
@@ -333,6 +334,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue){
         allAnswer = [];     
     }
 }
+// Array Global to store temporary
 var finalAnswer = [];
 var allLevel = [];
 function sendAnswer(allAnswer , user , level , timeTrue){
@@ -362,6 +364,7 @@ function sendAnswer(allAnswer , user , level , timeTrue){
     });
 }
 
+// Time Function
 function getTime(){
     var Time = {};
     var d = new Date();
@@ -384,6 +387,8 @@ $(function(){
             "color" : "#2e2e2e"
         });
     });
+    
+    // Chat Clicked
     $(document).on("click" , "button#chat", function (e) {
         console.log("Clicked");
         $("#chatbox").css({
@@ -408,6 +413,29 @@ $(function(){
         });
     });
 
+    // Input Name Validation
+    $("#inputSend").submit(function (e) {  
+        e.preventDefault();
+        var valueInput = $("input#from").val();
+        $("p").remove();
+        $.ajax({
+            url : '/api/app/user/input',
+            method : "POST",
+            data : JSON.stringify({
+                from : valueInput
+            }),
+            contentType : "application/json",
+            success : function () {  
+                $(this).unbind("submit").submit();
+                window.location.href = "/play";
+            },
+            error : function (error) {  
+                console.log(error);
+                $("#input").append("<p style='top : 0; font-size : 14px;'>"+error.responseJSON.op.from+" has been taken. Please choose other names.</p>");
+            }
+        });
+    })
+
     if (window.location.pathname == '/play') {
         gameStarted(1);
         // Initialize socket
@@ -416,6 +444,7 @@ $(function(){
             console.log("Connected to Server");
         });
 
+        // Welcoming New User
         socket.on("newUser", function (welcome) {
             var $div = $(".new-user");
             $div.slideDown(500, function () {
@@ -430,6 +459,7 @@ $(function(){
             }, 5000);
         });
 
+        // Broadcast Disconnected Users
         socket.on('userDisconnect' , function(user){
             var $div = $(".new-user");
             $div.slideDown(500, function () {
@@ -447,16 +477,26 @@ $(function(){
             }, 5000);
         });
 
+        // Messages send and receives (Client Side)
         var chatArea = $("#chatmessages");
         socket.on("newMessages", function (message) {
-            var listYou = $(`<li class='bubble-you'><b>YOU</b> : ${message.chat}</li><p class='time' style='clear:both; float:right;'> ${getTime().hours} : ${getTime().minutes} ${getTime().ampm} </p>`);
-            var listBot = $(`<li class='bubble-bot' style='color : #6ef058;'><b>${message.user}</b> : ${message.chat}</li><p class='time'> ${getTime().hours} : ${getTime().minutes} ${getTime().ampm} </p>`);
+            var listYou = $("<li class='bubble-you'></li>");
+            var listBot = $("<li class='bubble-bot' style='color : #6ef058;'></li>");
+            var timeYou = $("<p class='time' style='clear:both; float:right;'></p>");
+            var timeBot = $("<p class='time'></p>");
             if(getCookie("from") === message.user){
+                listYou.text(`YOU : ${message.chat}`);
+                timeYou.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
                 chatArea.append(listYou);
-            }else{
+                timeYou.insertAfter(listYou);
+                console.log("From YOU :",message);                
+            }else {
+                listBot.text(`${message.user} : ${message.chat}`);
+                timeBot.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
                 chatArea.append(listBot);
+                timeBot.insertAfter(listBot);
+                console.log("From Other Users :", message);                
             }
-            console.log(message);
             $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
         });
 
