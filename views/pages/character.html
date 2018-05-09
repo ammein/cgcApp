@@ -19,7 +19,7 @@ Character choose
         <p class="close-text-chat">Close</p>
     </div>
     <div id="chatmessages"></div>
-    <form action='/api/message' method='POST' id='sendMessage'>
+    <form action='/api/message' autocomplete='off' method='POST' id='sendMessage'>
     <input type='text' id='chatarea' placeholder='Send a message' name='text'>
     <button type='submit' id='sendChat' form='sendMessage'>Send</button>
     </form>

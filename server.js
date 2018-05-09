@@ -91,18 +91,6 @@ router.get('/game/:id' , (req , res)=>{
     });
 });
 
-// GET ALL MESSAGE
-router.get('/message', (req , res)=>{
-    var user = req.body.from;
-
-    Messages.find({})
-    .populate('message.sendBy')
-    .sort('-createdAt')
-    .exec((err , message)=>{
-        if (err) throw err;
-        res.send({AllMessages : message});
-    });
-});
 // APP PATCH LIMIT WITH LEVEL
 router.patch('/app/user/:from', (req, res) => {
     var id = req.params;

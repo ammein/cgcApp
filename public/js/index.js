@@ -321,6 +321,16 @@ function sendAnswer(allAnswer , user , level , timeTrue){
     });
 }
 
+function getTime(){
+    var Time = {};
+    var d = new Date();
+    Time.hours = d.getHours() > 12 ? d.getHours() - 12 : d.getHours() === 0 ? d.getHours() + 1 : d.getHours();
+    Time.minutes = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
+    Time.ampm = d.getHours() >= 12 ? "pm" : "am";
+
+    return Time;
+}
+
 
 // DOMContentLoaded
 $(function(){
@@ -398,13 +408,11 @@ $(function(){
 
         var chatArea = $("#chatmessages");
         socket.on("newMessages", function (message) {
-            var listYou = $("<li class='bubble-you'></li>");
-            var listBot = $("<li class='bubble-bot'></li>");
+            var listYou = $(`<li class='bubble-you'><b>YOU</b> : ${message.chat}</li><p class='time' style='clear:both; float:right;'> ${getTime().hours} : ${getTime().minutes} ${getTime().ampm} </p>`);
+            var listBot = $(`<li class='bubble-bot' style='color : #6ef058;'><b>${message.user}</b> : ${message.chat}</li><p class='time'> ${getTime().hours} : ${getTime().minutes} ${getTime().ampm} </p>`);
             if(getCookie("from") === message.user){
-                listYou.text(`YOU : ${message.chat}`);
                 chatArea.append(listYou);
             }else{
-                listBot.text(`${message.user} : ${message.chat}`);
                 chatArea.append(listBot);
             }
             console.log(message);
