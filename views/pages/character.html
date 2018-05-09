@@ -11,7 +11,7 @@ Character choose
 
 {% block content %}
 <button id='chat' class='chat'>Chat</button>
-<button id='ranking' class='ranking'>Ranks</button>
+<button id='ranking' class='ranking' onclick='rankClick()'>Ranks</button>
 <div class="append"></div>
 <div id="chatbox">
     <div id="close-chat" class="close-chat">
@@ -23,6 +23,23 @@ Character choose
     <input type='text' id='chatarea' placeholder='Send a message' name='text'>
     <button type='submit' id='sendChat' form='sendMessage'>Send</button>
     </form>
+</div>
+<div id="rankbox">
+    <div id="close-chat" class="close-chat">
+       <i class="fas fa-arrow-left"></i>
+        <p class="close-text-chat">Close</p>
+    </div>
+    <table class="blueTable">
+    <thead>
+    <tr>
+    <th>NO</th>
+    <th>PLAYER NAME</th>
+    <th>SCORE</th>
+    </tr>
+    </thead>
+    <tbody id='appendTable'>
+    </tbody>
+    </table>
 </div>
 {% endblock %}
 

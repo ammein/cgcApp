@@ -108,8 +108,8 @@ router.patch('/app/user/:from', (req, res) => {
 router.get('/app/user', (req, res) => {
     User.find()
         .sort({answers : -true})
-        .then((user) => {
-        res.send(user);
+        .then((users) => {
+        res.send({users});
     }, (e) => {
         res.status(400).send(e);
     });

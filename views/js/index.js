@@ -188,6 +188,47 @@ function openBox(){
     initialize();
 }
 
+function rankClick(){
+    console.log("Clicked");
+    $("#rankbox").css({
+        width: "100%",
+        transition: "2s ease-in",
+        position: "absolute",
+        float: "right",
+        backgroundColor: "rgba(0,0,0,0.85)",
+        display: "block",
+        bottom: "0",
+        top: "0",
+        zIndex: "3",
+        left: "0",
+    });
+
+    $.ajax({
+        url: '/api/app/user',
+        contentType : "application/json",
+        method : "GET",
+        success : function (rank) {
+            var i = 1;
+            var myCounter = 0;
+            var percentage;
+            rank.users.forEach(function(element) {
+                var answerCount = element.answers.forEach(v => v ? myCounter++ : v);
+                percentage = 100 * myCounter / element.answers.length;
+                $("tbody#appendTable").append(`<tr><td> ${i++} </td><td> ${element.from}</td><td>${(percentage === Infinity) ? percentage = 0 : percentage}/100</td></tr>`);
+            });
+
+        }
+    });
+    $(".close-chat").on("click", function (e) {
+        $("#rankbox").css({
+            width: "0%",
+            transition: "1s ease-in",
+            display: "none"
+        });
+        $("tbody#appendTable").empty();
+    });
+}
+
 
 // Cookies
 
