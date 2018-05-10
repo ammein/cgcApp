@@ -13,6 +13,7 @@ const path = require('path');
 const socketIO = require('socket.io');
 // Use Cookies
 const cookieParser = require('cookie-parser');
+require('dotenv').config({ silent: true });
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
 const router = express.Router();
