@@ -596,7 +596,6 @@ input[type=range]:focus::-ms-fill-upper {
         width: 0;
         height : 100%;
     }
-    }
 
     #rankbox{
         display: none;
