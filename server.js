@@ -44,7 +44,7 @@ app.get('/' , (req , res)=>{
 });
 
 app.get('/play', (req, res)=>{
-    res.render('character.html');
+    res.render('main.html');
     // All socket
     io.on('connection', (client) => {
         client.broadcast.emit('newUser', req.cookies);

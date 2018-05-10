@@ -215,12 +215,12 @@ function rankClick(){
                 var answerCount = element.answers.forEach(v => v ? myCounter++ : v);
                 percentage = 100 * myCounter / element.answers.length;
                 console.log("Percentage :",percentage);
-                $("tbody#appendTable").append(`<tr><td> ${i++} </td><td> ${element.from}</td><td>${(isNaN(percentage) || percentage == Infinity) ? percentage=0 : percentage}/100</td></tr>`);
+                $("tbody#appendTable").append(`<tr style='${(getCookie("from")=== element.from) ? "background-color :rgba(2, 60, 255, 0.41);" : "background-color :none;"}'><td> ${i++} </td><td> ${element.from}</td><td>${(isNaN(percentage) || percentage == Infinity) ? percentage=0 : percentage}/100</td></tr>`);
             });
 
         }
     });
-    $(".close-chat").on("click", function (e) {
+    $(".rank-chat").on("click", function (e) {
         $("#rankbox").css({
             width: "0%",
             transition: "1s ease-in",
@@ -269,6 +269,7 @@ function gameStarted(level){
 }
 
 function gameCounter(question , arrayQuestion){
+    window.clearInterval(window.timeTrue);    
     // console.log("Level available" , question[arrayQuestion].level);
     Array.prototype.move = function (from, to) {
         this.splice(to, 0, this.splice(from, 1)[0]);
@@ -290,22 +291,34 @@ function gameCounter(question , arrayQuestion){
     var countdownNumberEl = document.getElementById('countdown-number');
     var countdown = question[arrayQuestion].time;
     countdownNumberEl.textContent = countdown;
-    var timeTrue = window.setInterval(function () {
-        // console.log("Countdown :", countdown);            
+    window.timeTrue = window.setInterval(function () {
+        console.log("Countdown :", countdown);            
         if (countdown === 0) {
             pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level , timeTrue);
-            $(".append").empty();           
+            window.clearInterval(window.timeTrue);              
             gameCounter(question, arrayQuestion+1);
             countdown = 0;
-            clearInterval(timeTrue);
         }else{
-            // countdown = --countdown;
+            countdown = --countdown;            
         }
         countdownNumberEl.textContent = countdown;
     }, 1000);
     $(".circle").css({
-        animation: "countdown " + question[arrayQuestion].time + "s linear forwards"
-    })
+        animation: "countdown " + countdown + "s linear forwards",
+        animationPlayState : "running"
+    });
+    $("button#chat").on("click", function (e) {
+        window.clearInterval(window.timeTrue);
+        // Bug , reset countdown
+        $(".circle").css({
+            animationPlayState: "paused"
+        });
+        $("div#close-chat").on("click", function (e) {
+            e.stopPropagation();            
+            window.clearInterval(window.timeTrue);
+            gameCounter(question, arrayQuestion);
+        });
+    });
     // Countdown Ends
     for (var i = 1; i <= 4; i++)(function (i) {
         $("#answer" + i).on("click", function () {
@@ -358,7 +371,7 @@ function sendAnswer(allAnswer , user , level , timeTrue){
             $(".append").empty();
             var newLevel = level + 1;
             // clear all interval on timeTrue (BUG)
-            window.clearInterval(timeTrue);
+            window.clearInterval(window.timeTrue);
             gameStarted(newLevel);
         }
     });
@@ -405,6 +418,7 @@ $(function(){
             paddingBottom: "120px"
         });
         $(".close-chat").on("click" , function (e) {
+            e.stopPropagation();            
             $("#chatbox").css({
                 width: "0%",
                 transition: "1s ease-in",
@@ -431,7 +445,7 @@ $(function(){
             },
             error : function (error) {  
                 console.log(error);
-                $("#input").append("<p style='top : 0; font-size : 14px;'>"+error.responseJSON.op.from+" has been taken. Please choose other names.</p>");
+                $("#input").append("<p style='top : 0;font-size : 14px;color: white;background: #ff2457;text-align:  center;'>\"" + error.responseJSON.op.from + "\" has been taken. Please choose other names.</p>");
             }
         });
     })
@@ -484,17 +498,23 @@ $(function(){
             var listBot = $("<li class='bubble-bot' style='color : #6ef058;'></li>");
             var timeYou = $("<p class='time' style='clear:both; float:right;'></p>");
             var timeBot = $("<p class='time'></p>");
+            var nameYou = $("<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>");
+            var nameBot = $("<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>");
             if(getCookie("from") === message.user){
-                listYou.text(`YOU : ${message.chat}`);
+                nameYou.text('YOU');
+                listYou.text(`${message.chat}`);
                 timeYou.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
                 chatArea.append(listYou);
                 timeYou.insertAfter(listYou);
+                nameYou.insertBefore(listYou);
                 console.log("From YOU :",message);                
             }else {
-                listBot.text(`${message.user} : ${message.chat}`);
+                nameBot.text(`${message.user}`);
+                listBot.text(`${message.chat}`);
                 timeBot.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
                 chatArea.append(listBot);
                 timeBot.insertAfter(listBot);
+                nameBot.insertBefore(listBot);
                 console.log("From Other Users :", message);                
             }
             $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
