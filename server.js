@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Load Cookies
 app.use(cookieParser());
 // Configure nunjucks using multiple template in array
-nunjucks.configure(['./app' , './public'], {
+nunjucks.configure('./public', {
     autoescape: false,
     express: app,
     watch : true
