@@ -500,7 +500,7 @@ input[type=range]:focus::-ms-fill-upper {
         right: 5px;
     }
 
-    svg {
+    svg#circleSvg {
         position: absolute;
         top: -111px;
         right: -10px;

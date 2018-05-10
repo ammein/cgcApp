@@ -48,8 +48,13 @@ gulp.task('nunjucks-js' , function(cb){
     .pipe(gulp.dest('./public/js'))
 });
 
+gulp.task('jsonAnimate' , function(){
+    return gulp.src('views/js/**/*.+(json)')
+    .pipe(gulp.dest('./public/js'))
+});
+
 //default task to be run with gulp
-gulp.task('default', ['nunjucks' , 'nunjucks-css' , 'nunjucks-js']);
+gulp.task('default', ['nunjucks' , 'nunjucks-css' , 'nunjucks-js' , 'jsonAnimate']);
 
 /*
     Resource :

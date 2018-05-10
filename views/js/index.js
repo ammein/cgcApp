@@ -286,7 +286,7 @@ function gameCounter(question , arrayQuestion){
     randomArray.move(1, rand2);
     randomArray.move(2, rand3);
     // Begin Append Question
-    $(".append").html("<div id='level-text' class='level-text'><p style='text-align:center;'>Level " + question[arrayQuestion].level + "</p></div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
+    $(".append").html("<div id='level-text' class='level-text'><p style='text-align:center;'>Level " + question[arrayQuestion].level + "</p></div><div id='countdown'><div id='countdown-number'></div><svg id='circleSvg'><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
     // Countdown Begins
     var countdownNumberEl = document.getElementById('countdown-number');
     var countdown = question[arrayQuestion].time;
@@ -325,18 +325,26 @@ function gameCounter(question , arrayQuestion){
             var value = this.value;
             // console.log("You click",value);
             // console.log("True Answer",question[arrayQuestion].answers[0]);
-            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level,timeTrue);
-            gameCounter(question, arrayQuestion + 1);
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level, timeTrue, gameCounter(question,arrayQuestion + 1));
             clearInterval(timeTrue);
         });
     }(i));
 }
 // Make it global to be able to push array for clicking not more than 5 total questions
 var allAnswer = [];
-function pushAnswer(user,correctAns , ans , level , timeTrue){
+function pushAnswer(user,correctAns , ans , level , timeTrue , callback){
     console.log("All Answer" , allAnswer);
     if(ans == correctAns){
         allAnswer.push(true);
+        $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:636px; position:relative;' class='lottie'></div>");
+        var animation = lottie.loadAnimation({
+            container: document.getElementById("lottie"),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: '/js/jsonanimation/dataTrue.json'
+        });
+        animation.addEventListener("complete" , callback);
     }else if(ans !== correctAns){
         allAnswer.push(false);
     }else if(ans == "false"){
