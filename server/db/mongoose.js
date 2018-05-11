@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-// process.env.MONGO_HOST + "/api"
+require('dotenv').config({
+    silent: true
+});
+// process.env.MONGO_HOST + "/test"
 // 'mongodb://localhost:27017/QuestionApp'
-mongoose.connect('mongodb://210.195.147.148:27017/test');
+mongoose.connect(process.env.MONGO_HOST + "/test");
 
 module.exports = {
     mongoose
