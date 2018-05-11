@@ -4,8 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var mongoose = require('./server/db/mongoose');
 var Question = require('./server/models/question').Question;
-var paginate = require('./server/models/question');
-const User = require('./server/models/user');
+const User = require('./server/models/user').User;
 const nunjucks = require('nunjucks');
 const http = require('http');
 // to get certain value of API using lodash
@@ -15,14 +14,18 @@ const path = require('path');
 const socketIO = require('socket.io');
 // Use Cookies
 const cookieParser = require('cookie-parser');
-require('dotenv').config({ silent: true });
+require('dotenv').config({
+    silent: true
+});
 // var env = process.env.NODE_ENV || 'development'; // Only in Heroku
 var app = express();
 const router = express.Router();
 // Pass json using POSTMAN
 app.use(bodyParser.json());
 // Pass json using FORM html METHOD POST
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 // Load static
 app.use(express.static(path.join(__dirname, 'public')));
 // Load Cookies
@@ -31,10 +34,8 @@ app.use(cookieParser());
 nunjucks.configure('./public', {
     autoescape: false,
     express: app,
-    watch : true
+    watch: true
 });
-
-//test push live master
 
 // intergrate app into our server (SOCKET IO)
 var server = http.createServer(app);

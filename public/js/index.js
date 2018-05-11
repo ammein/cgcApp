@@ -1,1 +1,596 @@
-function update(e,t,n,o,a,i){$.ajax({method:"PATCH",url:"/api/question/"+e,contentType:"application/json",data:JSON.stringify({id:e,questionString:t,answers:n,level:o,time:a}),success:function(e){return $("#questionsBlock").empty(),i?getQueryLink(i):initialize()}})}function deleteData(e,t,n){$.ajax({method:"DELETE",url:"/api/question/"+e,contentType:"application/json",data:JSON.stringify({id:e}),success:function(e){return $("#questionsBlock").empty(),n?getQueryLink(n):initialize()}})}function getQueryLink(e){return $.ajax({method:"GET",url:"/api/question/?q="+encodeURIComponent(e),contentType:"application/json",success:function(t){var n=$("#questionsBlock");$("#questionsBlock").empty(),t.question.docs.forEach(function(e){var t=e._id;n.append("<form id='"+t+"' class='questionBox'><input type='number' name='time' id='timeLittleBox' value='"+e.time+"' onfocus='this.value=\"\"'><p style='font-size: 17px;color: #535353; display: inline-block; float:right; padding:3px;'>seconds</p><textarea class='list'>"+e.questionString+"</textarea><input type='number' class='answer-box-edit' style='background-color: #84ccf3' id='trueAnswerBox' value='"+e.answers[0]+"'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='"+e.answers[1]+"'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='"+e.answers[2]+"'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='"+e.answers[3]+"'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>"+e.level+"</output></div></label><input type='range' id='level' min='1' max='10' value='"+e.level+"' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='"+t+"' class='delete'>Delete</button><button form='"+t+"' class='update'>Update</button></form><hr>")}),t.question.total>=6&&n.last().append("<div id='pagination' class='pagination'><a class='left-arrow' href='/'>❮ Previous</a><a class='right-arrow' href='/'>Next ❯</a></div>"),1==t.question.page?$(".left-arrow").addClass("disabled"):t.question.page==t.question.pages&&$(".right-arrow").addClass("disabled"),$("a.left-arrow").on("click",function(e){e.preventDefault(),paginationLeft(t.question.pages,t.question.page)}),$("a.right-arrow").on("click",function(e){e.preventDefault(),paginationRight(t.question.pages,t.question.page)}),$(".questionBox").on("click",".update",function(t){t.preventDefault();var n=$(this).attr("form");update(n,$("form#"+n).find("textarea").val(),[$("form#"+n).find("#trueAnswerBox").val(),$("form#"+n).find("#falseAnswerBox1").val(),$("form#"+n).find("#falseAnswerBox2").val(),$("form#"+n).find("#falseAnswerBox3").val()],$("form#"+n).find("#level").val(),$("form#"+n).find("#timeLittleBox").val(),e)}),$(".questionBox").on("click",".delete",function(t){t.preventDefault();var n=$(this).attr("form");deleteData(n,$("form#"+n).find("textarea").val(),e)})}})}function paginationLeft(e,t){return 1==t?getQueryLink(JSON.parse(t)):t>=1?getQueryLink(JSON.parse(t-1)):void 0}function paginationRight(e,t){return t==e?getQueryLink(JSON.parse(t)):t<=e?getQueryLink(JSON.parse(t+1)):void 0}function initialize(){return $.ajax({method:"GET",url:"/api/question",contentType:"application/json",success:function(e){var t=$("#questionsBlock");e.question.docs.forEach(function(e){var n=e._id;t.append("<form id='"+n+"' class='questionBox'><input type='number' name='time' id='timeLittleBox' value='"+e.time+"' onfocus='this.value=\"\"'><p style='font-size: 17px;color: #535353; display: inline-block; float:right; padding:3px;'>seconds</p><textarea class='list'>"+e.questionString+"</textarea><input type='number' style='background-color: #84ccf3' class='answer-box-edit' id='trueAnswerBox' value='"+e.answers[0]+"'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='"+e.answers[1]+"'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='"+e.answers[2]+"'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='"+e.answers[3]+"'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>"+e.level+"</output></div></label><input type='range' id='level' min='1' max='10' value='"+e.level+"' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='"+n+"' class='delete'>Delete</button><button form='"+n+"' class='update'>Update</button></form><hr>")}),e.question.total>=6&&t.last().append("<div id='pagination' class='pagination'><a class='left-arrow' href='/'>❮ Previous</a><a class='right-arrow' href='/'>Next ❯</a></div>"),1==e.question.page?$(".left-arrow").addClass("disabled"):e.question.page==e.question.pages&&$(".right-arrow").addClass("disabled"),$("a.left-arrow").on("click",function(t){t.preventDefault(),paginationLeft(e.question.pages,e.question.page)}),$("a.right-arrow").on("click",function(t){t.preventDefault(),paginationRight(e.question.pages,e.question.page)}),$(".questionBox").on("click",".update",function(e){e.preventDefault();var t=$(this).attr("form");update(t,$("form#"+t).find("textarea").val(),[$("form#"+t).find("#trueAnswerBox").val(),$("form#"+t).find("#falseAnswerBox1").val(),$("form#"+t).find("#falseAnswerBox2").val(),$("form#"+t).find("#falseAnswerBox3").val()],$("form#"+t).find("#level").val(),$("form#"+t).find("#timeLittleBox").val())}),$(".questionBox").on("click",".delete",function(e){e.preventDefault();var t=$(this).attr("form");deleteData(t,$("form#"+t).find("textarea").val())})}})}function closeBox(){$("#questionsBlock").empty(),$(".all-question").css("display","none"),$(".sidebar").css({width:"0%",transitionDuration:"0.4s"}),$(".overlay").css({display:"none",transitionDuration:"0.2s"})}function openBox(){$(".sidebar").css({display:"block",width:"55%",transitionDuration:"0.4s"}),$(".all-question").css("display","block"),$(".overlay").css({display:"block",transitionDuration:"0.2s"}),initialize()}function rankClick(){console.log("Clicked"),$("#rankbox").css({width:"100%",transition:"2s ease-in",position:"absolute",float:"right",backgroundColor:"rgba(0,0,0,0.85)",display:"block",bottom:"0",top:"0",zIndex:"3",left:"0"}),$.ajax({url:"/api/app/user",contentType:"application/json",method:"GET",success:function(e){var t,n=1,o=0;e.users.forEach(function(e){e.answers.forEach(e=>e?o++:e);t=100*o/e.answers.length,console.log("Percentage :",t),$("tbody#appendTable").append(`<tr style='${getCookie("from")===e.from?"background-color :rgba(2, 60, 255, 0.41);":"background-color :none;"}'><td> ${n++} </td><td> ${e.from}</td><td>${isNaN(t)||t==1/0?t=0:t}/100</td></tr>`)})}}),$(".rank-chat").on("click",function(e){$("#rankbox").css({width:"0%",transition:"1s ease-in",display:"none"}),$("tbody#appendTable").empty()})}function getCookie(e){for(var t=e+"=",n=document.cookie.split(";"),o=0;o<n.length;o++){for(var a=n[o];" "==a.charAt(0);)a=a.substring(1);if(0==a.indexOf(t))return a.substring(t.length,a.length)}return""}function checkCookie(){var e=getCookie("from");""!=e&&($("div#formInput").append("<a class='fetchUser' href='/play'> Use \""+decodeURI(e)+'"</a>'),$("#welcome").append(decodeURI(e)))}function gameStarted(e){$.ajax({url:"/api/game/"+encodeURI(e),method:"GET",contentType:"application/json",success:function(e){gameCounter(e.question,0)}})}function gameCounter(e,t){window.clearInterval(window.timeTrue),Array.prototype.move=function(e,t){this.splice(t,0,this.splice(e,1)[0])};for(var n=e[t].answers,o=[],a=0;a<n.length;a++)o.push(n[a]);var i=Math.floor(3*Math.random()+1),s=Math.floor(4*Math.random()-1),r=Math.floor(3*Math.random()+1);o.move(0,i),o.move(1,s),o.move(2,r),$(".append").html("<div id='level-text' class='level-text'><p style='text-align:center;'>Level "+e[t].level+"</p></div><div id='countdown'><div id='countdown-number'></div><svg><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='"+e[t]._id+"' class='question-display'>"+e[t].questionString+"</div><div class='input-area'><input type='submit' id='answer1' value='"+o[0]+"'><input type='submit' id='answer2' value='"+o[1]+"'><br><input type='submit' id='answer3' value='"+o[2]+"'><input type='submit' id='answer4' value='"+o[3]+"'></div><div id='new-user' class='new-user'></div>");var l=document.getElementById("countdown-number"),u=e[t].time;l.textContent=u,window.timeTrue=window.setInterval(function(){console.log("Countdown :",u),0===u?(pushAnswer(getCookie("from"),e[t].answers[0],"false",e[t].level,timeTrue),window.clearInterval(window.timeTrue),gameCounter(e,t+1),u=0):u=--u,l.textContent=u},1e3),$(".circle").css({animation:"countdown "+u+"s linear forwards",animationPlayState:"running"}),$("button#chat").on("click",function(n){window.clearInterval(window.timeTrue),$(".circle").css({animationPlayState:"paused"}),$("div#close-chat").on("click",function(n){n.stopPropagation(),window.clearInterval(window.timeTrue),gameCounter(e,t)})});for(a=1;a<=4;a++)!function(n){$("#answer"+n).on("click",function(){var n=this.value;pushAnswer(getCookie("from"),e[t].answers[0],n,e[t].level,timeTrue),gameCounter(e,t+1),clearInterval(timeTrue)})}(a)}var allAnswer=[];function pushAnswer(e,t,n,o,a){console.log("All Answer",allAnswer),n==t?allAnswer.push(!0):n!==t?allAnswer.push(!1):"false"==n&&allAnswer.push(!1),5===allAnswer.length&&(sendAnswer(allAnswer,e,o,a),allAnswer=[])}var finalAnswer=[],allLevel=[];function sendAnswer(e,t,n,o){console.log("Final Answer",finalAnswer);for(var a=0;a<e.length;a++)finalAnswer.push(e[a]),allLevel.push(n);$.ajax({url:"api/app/user/"+t,method:"PATCH",contentType:"application/json",data:JSON.stringify({answers:finalAnswer,level:allLevel}),success:function(){console.log("Success TRUE PATCH"),$(".append").empty();var e=n+1;window.clearInterval(window.timeTrue),gameStarted(e)}})}function getTime(){var e={},t=new Date;return e.hours=t.getHours()>12?t.getHours()-12:0===t.getHours()?t.getHours()+1:t.getHours(),e.minutes=t.getMinutes()<10?"0"+t.getMinutes():t.getMinutes(),e.ampm=t.getHours()>=12?"pm":"am",e}$(function(){$("#level").val(1);if(console.log("I loaded in browser"),$(".textarea-box").one("click",function(){$(".textarea-box").val(""),$(".textarea-box").css({color:"#2e2e2e"})}),$(document).on("click","button#chat",function(e){console.log("Clicked"),$("#chatbox").css({width:"100%",transition:"2s ease-in",position:"absolute",float:"right",backgroundColor:"rgba(0,0,0,0.85)",display:"block",bottom:"0",top:"0",zIndex:"3",left:"0",paddingBottom:"120px"}),$(".close-chat").on("click",function(e){e.stopPropagation(),$("#chatbox").css({width:"0%",transition:"1s ease-in",display:"none"})})}),$("#inputSend").submit(function(e){e.preventDefault();var t=$("input#from").val();$("p").remove(),$.ajax({url:"/api/app/user/input",method:"POST",data:JSON.stringify({from:t}),contentType:"application/json",success:function(){$(this).unbind("submit").submit(),window.location.href="/play"},error:function(e){console.log(e),$("#input").append("<p style='top : 0;font-size : 14px;color: white;background: #ff2457;text-align:  center;'>\""+e.responseJSON.op.from+'" has been taken. Please choose other names.</p>')}})}),"/play"==window.location.pathname){gameStarted(1);var e=io();e.on("connect",function(){console.log("Connected to Server")}),e.on("newUser",function(e){var t=$(".new-user");t.slideDown(500,function(){t.css("display","table"),$(".user-welcome").css("display","block")}),t.html("<p class='user-welcome'>User Connected : "+e.from+"</p>"),setTimeout(()=>{t.slideUp(500,function(){$(".user-welcome").css("display","none")})},5e3)}),e.on("userDisconnect",function(e){var t=$(".new-user");t.slideDown(500,function(){t.css({display:"table",backgroundColor:"red"}),$(".user-welcome").css("display","block")}),t.html("<p class='user-welcome'>User Disconnected : "+e+"</p>"),setTimeout(()=>{t.slideUp(500,function(){$(".user-welcome").css("display","none")})},5e3)});var t=$("#chatmessages");e.on("newMessages",function(e){var n=$("<li class='bubble-you'></li>"),o=$("<li class='bubble-bot' style='color : #6ef058;'></li>"),a=$("<p class='time' style='clear:both; float:right;'></p>"),i=$("<p class='time'></p>"),s=$("<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>"),r=$("<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>");getCookie("from")===e.user?(s.text("YOU"),n.text(`${e.chat}`),a.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`),t.append(n),a.insertAfter(n),s.insertBefore(n),console.log("From YOU :",e)):(r.text(`${e.user}`),o.text(`${e.chat}`),i.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`),t.append(o),i.insertAfter(o),r.insertBefore(o),console.log("From Other Users :",e)),$("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight)}),$("form#sendMessage").on("submit",function(t){var n=$("#chatarea").val();e.emit("createMessages",n),$("#chatarea").val(""),t.preventDefault()})}});
+function update(id, questionString , allAnswers , level , time , q) {
+    $.ajax({
+        method: "PATCH",
+        url: '/api/question/' + id,
+        contentType: 'application/json',
+        data: JSON.stringify({
+            id,
+            questionString,
+            answers : allAnswers,
+            level,
+            time
+        }),
+        success: function (response) {
+            $("#questionsBlock").empty();                        
+            if (q) {
+                return getQueryLink(q);
+            } else {
+                return initialize();
+            }
+            // Empty the content to avoid duplicate content
+        }
+    });
+}
+
+function deleteData(id, questionString , q) {
+    $.ajax({
+        method: "DELETE",
+        url: '/api/question/' + id,
+        contentType: 'application/json',
+        data: JSON.stringify({
+            id
+        }),
+        success: function (response) {
+            $("#questionsBlock").empty();            
+            if(q){
+                return getQueryLink(q);
+            }else{
+                return initialize();                
+            }
+            // Empty the content to avoid duplicate content
+        }
+    });
+}
+
+
+function getQueryLink(q){
+    return $.ajax({
+            method: "GET",
+            url: '/api/question/?q=' + encodeURIComponent(q),
+            contentType: 'application/json',
+            success: function (response) {
+                var getListBlock = $("#questionsBlock");
+                $("#questionsBlock").empty();    
+                response.question.docs.forEach(function (questions) {
+                    var id = questions._id;
+                    getListBlock.append("<form id='" + id + "' class='questionBox'><input type='number' name='time' id='timeLittleBox' value='" + questions.time + "' onfocus='this.value=\"\"'><p style='font-size: 17px;color: #535353; display: inline-block; float:right; padding:3px;'>seconds</p><textarea class='list'>" + questions.questionString + "</textarea><input type='number' class='answer-box-edit' style='background-color: #eaad3a' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>" + questions.level + "</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level + "' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
+                });
+                if (response.question.total >= 6) {
+                    getListBlock.last().append("<div id='pagination' class='pagination'><a class='left-arrow' href='/'>❮ Previous</a><a class='right-arrow' href='/'>Next ❯</a></div>");
+                }
+                if (response.question.page == 1) {
+                    $(".left-arrow").addClass("disabled");
+                } else if (response.question.page == response.question.pages) {
+                    $(".right-arrow").addClass("disabled");
+                }
+                $("a.left-arrow").on("click", function (e) {
+                    e.preventDefault();
+                    paginationLeft(response.question.pages, response.question.page);
+                });
+                $("a.right-arrow").on("click", function (e) {
+                    e.preventDefault();
+                    paginationRight(response.question.pages, response.question.page);
+                });
+                $('.questionBox').on('click', '.update', function (e) {
+                    e.preventDefault();
+                    var id = $(this).attr('form');
+                    var questionString = $("form#" + id).find("textarea").val();
+                    var answer1 = $("form#" + id).find("#trueAnswerBox").val();
+                    var answer2 = $("form#" + id).find("#falseAnswerBox1").val();
+                    var answer3 = $("form#" + id).find("#falseAnswerBox2").val();
+                    var answer4 = $("form#" + id).find("#falseAnswerBox3").val();
+                    var level = $("form#" + id).find("#level").val();
+                    var time = $("form#" + id).find("#timeLittleBox").val();                    
+                    var allAnswers = [answer1, answer2, answer3, answer4];
+                    update(id, questionString, allAnswers, level ,time , q);
+                });
+                $('.questionBox').on('click', '.delete', function (e) {
+                    e.preventDefault();
+                    var id = $(this).attr('form');
+                    var questionString = $("form#" + id).find("textarea").val();
+                    deleteData(id, questionString , q);
+                });
+            }
+        });
+}
+
+function paginationLeft(total , currentPage){
+    if(currentPage == 1){
+        return getQueryLink(JSON.parse(currentPage));
+    }else if(currentPage >= 1){
+        return getQueryLink(JSON.parse(currentPage - 1));
+    }
+}
+
+function paginationRight(total , currentPage){
+    if(currentPage == total){
+        return getQueryLink(JSON.parse(currentPage));
+    }else if(currentPage <= total){
+        return getQueryLink(JSON.parse(currentPage + 1));
+    }
+}
+
+
+function initialize() {
+    return $.ajax({
+            method: "GET",
+            url: '/api/question',
+            contentType: 'application/json',
+            success: function (response) {
+                var getListBlock = $("#questionsBlock");
+                response.question.docs.forEach(function (questions) {
+                    var id = questions._id;
+                    getListBlock.append("<form id='" + id + "' class='questionBox'><input type='number' name='time' id='timeLittleBox' value='" + questions.time + "' onfocus='this.value=\"\"'><p style='font-size: 17px;color: #535353; display: inline-block; float:right; padding:3px;'>seconds</p><textarea class='list'>" + questions.questionString + "</textarea><input type='number' style='background-color: #eaad3a' class='answer-box-edit' id='trueAnswerBox' value='" + questions.answers[0] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox1' value='" + questions.answers[1] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox2' value='" + questions.answers[2] + "'><input type='number' class='answer-box-edit' id='falseAnswerBox3' value='" + questions.answers[3] + "'><div class='form-group'><label for='level' id='timeBoxLabelEdit'>Level of Question = <output class='rangeValue' id='rangevalue'>" + questions.level + "</output></div></label><input type='range' id='level' min='1' max='10' value='" + questions.level + "' oninput='rangevalue.value=value' onchange='rangevalue.value=value' /><br><button form='" + id + "' class='delete'>Delete</button><button form='" + id + "' class='update'>Update</button></form><hr>");
+                });
+                if(response.question.total >= 6){
+                    getListBlock.last().append("<div id='pagination' class='pagination'><a class='left-arrow' href='/'>❮ Previous</a><a class='right-arrow' href='/'>Next ❯</a></div>");
+                }
+                if(response.question.page == 1){
+                    $(".left-arrow").addClass("disabled");
+                }else if(response.question.page == response.question.pages){
+                    $(".right-arrow").addClass("disabled");                    
+                }
+                $("a.left-arrow").on("click" , function(e){
+                    e.preventDefault();                    
+                    paginationLeft(response.question.pages , response.question.page);
+                });
+                $("a.right-arrow").on("click" , function(e){
+                    e.preventDefault();                    
+                    paginationRight(response.question.pages , response.question.page);
+                });
+                $('.questionBox').on('click', '.update', function (e) {
+                    e.preventDefault();
+                    var id = $(this).attr('form');
+                    var questionString = $("form#" + id).find("textarea").val();
+                    var answer1 = $("form#" + id).find("#trueAnswerBox").val();
+                    var answer2 = $("form#" + id).find("#falseAnswerBox1").val();
+                    var answer3 = $("form#" + id).find("#falseAnswerBox2").val();
+                    var answer4 = $("form#" + id).find("#falseAnswerBox3").val();
+                    var level = $("form#" + id).find("#level").val();
+                    var time = $("form#" + id).find("#timeLittleBox").val();
+                    var allAnswers = [answer1 , answer2 , answer3 , answer4];
+                    update(id, questionString , allAnswers , level , time);
+                });
+                $('.questionBox').on('click', '.delete', function (e) {
+                    e.preventDefault();
+                    var id = $(this).attr('form');
+                    var questionString = $("form#"+id).find("textarea").val();
+                    deleteData(id, questionString);
+                });
+            }
+        });
+}
+
+function closeBox(){
+    $("#questionsBlock").empty();
+    $(".all-question").css('display' , 'none');
+    $(".sidebar").css({
+        width : "0%",
+        transitionDuration: "0.4s"
+    });
+    $(".overlay").css({
+        display : "none",
+        transitionDuration : "0.2s"
+    });
+}
+
+function openBox(){
+    $(".sidebar").css({
+        display: "block",
+        width: "55%",
+        transitionDuration: "0.4s"
+    });
+    $(".all-question").css('display', 'block');
+    $(".overlay").css({
+        display: "block",
+        transitionDuration: "0.2s"
+    });
+    initialize();
+}
+
+function rankClick(){
+    console.log("Clicked");
+    $("#rankbox").css({
+        width: "100%",
+        transition: "2s ease-in",
+        position: "absolute",
+        float: "right",
+        backgroundColor: "rgba(0,0,0,0.85)",
+        display: "block",
+        bottom: "0",
+        top: "0",
+        zIndex: "3",
+        left: "0",
+    });
+
+    $.ajax({
+        url: '/api/app/user',
+        contentType : "application/json",
+        method : "GET",
+        success : function (rank) {
+            var i = 1;
+            var myCounter = 0;
+            var percentage;
+            rank.users.forEach(function(element) {
+                var answerCount = element.answers.forEach(v => v ? myCounter++ : v);
+                percentage = 100 * myCounter / element.answers.length;
+                console.log("Percentage :",percentage);
+                $("tbody#appendTable").append(`<tr style='${(decodeURI(getCookie("from")) === element.from) ? "background-color :rgba(2, 60, 255, 0.41);" : "background-color :none;"}'><td> ${i++} </td><td> ${element.from}</td><td>${(isNaN(percentage) || percentage == Infinity) ? percentage=0 : percentage}/100</td></tr>`);
+            });
+
+        }
+    });
+    $(".rank-chat").on("click", function (e) {
+        $("#rankbox").css({
+            width: "0%",
+            transition: "1s ease-in",
+            display: "none"
+        });
+        $("tbody#appendTable").empty();
+    });
+}
+
+
+// Cookies
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookie() {
+    var user = getCookie("from");
+    if (user != "") {
+        $("div#formInput").append("<a class='fetchUser' href='/play'> Use \"" + decodeURI(user) + "\"</a>");
+        $("#welcome").append(decodeURI(user));
+    } 
+}
+function gameStarted(level){    
+    $.ajax({
+        url : '/api/game/' + encodeURI(level),
+        method : "GET",
+        contentType : "application/json",
+        success : function(response){
+            var arrayQuestion = 0;
+            var question = response.question;
+            gameCounter(question, arrayQuestion);                
+        }
+    })
+}
+
+function gameCounter(question , arrayQuestion){
+    $("body").css("background-color", "#EAAD3A");
+    window.clearInterval(window.timeTrue);    
+    // console.log("Level available" , question[arrayQuestion].level);
+    Array.prototype.move = function (from, to) {
+        this.splice(to, 0, this.splice(from, 1)[0]);
+    };
+    var oriArray = question[arrayQuestion].answers;
+    var randomArray = [];
+    for(var i = 0; i < oriArray.length;i++){
+        randomArray.push(oriArray[i]);        
+    }
+    var rand = Math.floor((Math.random() * 3) + 1);
+    var rand2 = Math.floor((Math.random() * 4) - 1);
+    var rand3 = Math.floor((Math.random() * 3) + 1);
+    randomArray.move(0, rand);
+    randomArray.move(1, rand2);
+    randomArray.move(2, rand3);
+    // Begin Append Question
+    $(".append").html("<div id='level-text' class='level-text'><p style='text-align:center;'>Level " + question[arrayQuestion].level + "</p></div><div id='countdown'><div id='countdown-number'></div><svg id='circleSvg'><circle class='circle' cx='75' cy='80' r='68' /></svg></div><div id='" + question[arrayQuestion]._id + "' class='question-display'>" + question[arrayQuestion].questionString + "</div><div class='input-area'><input type='submit' id='answer1' value='" + randomArray[0] + "'><input type='submit' id='answer2' value='" + randomArray[1] + "'><br><input type='submit' id='answer3' value='" + randomArray[2] + "'><input type='submit' id='answer4' value='" + randomArray[3] + "'></div><div id='new-user' class='new-user'></div>");
+    // Countdown Begins
+    var countdownNumberEl = document.getElementById('countdown-number');
+    var countdown = question[arrayQuestion].time;
+    countdownNumberEl.textContent = countdown;
+    window.timeTrue = window.setInterval(function () {
+        console.log("Countdown :", countdown);            
+        if (countdown === 0) {
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level, timeTrue, question, arrayQuestion + 1);
+            window.clearInterval(window.timeTrue);              
+            countdown = 0;
+        }else{
+            countdown = --countdown;            
+        }
+        countdownNumberEl.textContent = countdown;
+    }, 1000);
+    $(".circle").css({
+        animation: "countdown " + countdown + "s linear forwards",
+        animationPlayState : "running"
+    });
+    $("button#chat").on("click", function (e) {
+        window.clearInterval(window.timeTrue);
+        // Bug , reset countdown
+        $(".circle").css({
+            animationPlayState: "paused"
+        });
+        $("div#close-chat").on("click", function (e) {
+            e.stopPropagation();            
+            window.clearInterval(window.timeTrue);
+            gameCounter(question, arrayQuestion);
+        });
+    });
+    // Countdown Ends
+    for (var i = 1; i <= 4; i++)(function (i) {
+        $("#answer" + i).on("click", function () {
+            var value = this.value;
+            // console.log("You click",value);
+            // console.log("True Answer",question[arrayQuestion].answers[0]);
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level, timeTrue, question,arrayQuestion + 1);
+            clearInterval(timeTrue);
+        });
+    }(i));
+}
+// Make it global to be able to push array for clicking not more than 5 total questions
+var allAnswer = [];
+function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQuestion){
+    console.log("All Answer" , allAnswer);
+    if(ans == correctAns){
+        allAnswer.push(true);
+        $("body").css("background-color", "#20bf6b");
+        $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
+        var animation = lottie.loadAnimation({
+            container: document.getElementById("lottie"),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: '/js/jsonanimation/dataTrue.json'
+        });
+        // Hide button to avoid bug :D
+        $("button#ranking, button#chat").css("display", "none");
+        animation.addEventListener("complete" , function(){
+            $("body").css("background-color", "#EAAD3A");            
+            $("button#ranking, button#chat").css("display", "inline-block");
+            gameCounter(question, nextQuestion);
+        });
+    }else if(ans !== correctAns){
+        allAnswer.push(false);
+        $("body").css("background-color", "#ff3838");
+        $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
+        var falseAnimation = lottie.loadAnimation({
+            container: document.getElementById("lottie"),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: '/js/jsonanimation/dataFalse.json'
+        });
+        $("button#ranking, button#chat").css("display", "none");        
+        falseAnimation.addEventListener("complete", function () {
+            $("body").css("background-color", "#EAAD3A");
+            $("button#ranking, button#chat").css("display", "inline-block");
+            gameCounter(question, nextQuestion);
+        });
+    }else if(ans == "false"){
+        allAnswer.push(false);
+        $("body").css("background-color", "#ff3838");
+        $(".append").html("<div id='lottie' style='blackground-color : #ff3838; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
+        var falseAnimation = lottie.loadAnimation({
+            container: document.getElementById("lottie"),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: '/js/jsonanimation/dataFalse.json'
+        });
+        $("button#ranking, button#chat").css("display", "none");        
+        falseAnimation.addEventListener("complete", function () {
+            $("body").css("background-color", "#EAAD3A");
+            $("button#ranking, button#chat").css("display", "inline-block");
+            gameCounter(question, nextQuestion);
+        });
+    }
+    // Wait 1 second to execute (BUG)
+    setTimeout(() => {
+        if (allAnswer.length === 5) {
+            // (BUG)
+            $("body").css("background-color", "#EAAD3A");
+            $("button#ranking, button#chat").css("display", "inline-block");
+            lottie.destroy();
+            sendAnswer(allAnswer, user, level, timeTrue);
+            allAnswer = [];
+        }
+    }, 1000);
+}
+// Array Global to store temporary
+var finalAnswer = [];
+var allLevel = [];
+function sendAnswer(allAnswer , user , level , timeTrue){
+    console.log("Final Answer", finalAnswer);    
+    // To make push on each array to a new one
+    for(var i = 0 ; i<allAnswer.length; i++){
+        finalAnswer.push(allAnswer[i]); 
+        allLevel.push(level);       
+    }
+    $(".append").html("<div id='lottie' style='blackground-color : #EAAD3A; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
+    var levelUp = lottie.loadAnimation({
+        container: document.getElementById("lottie"),
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: '/js/jsonanimation/dataLevel.json'
+    });
+    $("button#ranking, button#chat").css("display", "none");
+    levelUp.addEventListener("complete", function () {
+        $("body").css("background-color", "#EAAD3A");
+        $("button#ranking, button#chat").css("display", "inline-block");
+        $.ajax({
+            url: "api/app/user/" + user,
+            method: "PATCH",
+            contentType: "application/json",
+            data: JSON.stringify({
+                answers: finalAnswer,
+                level: allLevel
+            }),
+            success: function () {
+                console.log("Success TRUE PATCH");
+                $(".append").empty();
+                var newLevel = level + 1;
+                // clear all interval on timeTrue (BUG)
+                window.clearInterval(window.timeTrue);
+                gameStarted(newLevel);
+            }
+        });
+    });
+}
+
+// Time Function
+function getTime(){
+    var Time = {};
+    var d = new Date();
+    Time.hours = d.getHours() > 12 ? d.getHours() - 12 : d.getHours() === 0 ? d.getHours() + 1 : d.getHours();
+    Time.minutes = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
+    Time.ampm = d.getHours() >= 12 ? "pm" : "am";
+
+    return Time;
+}
+
+
+// DOMContentLoaded
+$(function(){
+
+    var level = $("#level").val(1);
+    console.log("I loaded in browser");
+    $(".textarea-box").one("click" , function(){
+        $(".textarea-box").val("");
+        $(".textarea-box").css({
+            "color" : "#2e2e2e"
+        });
+    });
+    
+    // Chat Clicked
+    $(document).on("click" , "button#chat", function (e) {
+        console.log("Clicked");
+        $("#chatbox").css({
+            width: "100%",
+            transition: "2s ease-in",
+            position : "absolute",
+            float: "right",
+            backgroundColor: "rgba(0,0,0,0.85)",
+            display: "block",
+            bottom : "0",
+            top: "0",
+            zIndex: "3",
+            left:"0",
+            paddingBottom: "120px"
+        });
+        $(".close-chat").on("click" , function (e) {
+            e.stopPropagation();            
+            $("#chatbox").css({
+                width: "0%",
+                transition: "1s ease-in",
+                display : "none"
+            });
+        });
+    });
+
+    // Input Name Validation
+    $("#inputSend").submit(function (e) {  
+        e.preventDefault();
+        var valueInput = $("input#from").val();
+        $("p").remove();
+        $.ajax({
+            url : '/api/app/user/input',
+            method : "POST",
+            data : JSON.stringify({
+                from : valueInput
+            }),
+            contentType : "application/json",
+            success : function () {  
+                $(this).unbind("submit").submit();
+                window.location.href = "/play";
+            },
+            error : function (error) {  
+                console.log(error);
+                $("#input").append("<p style='top : 0;font-size : 14px;color: white;background: #ff2457;text-align:  center;'>\"" + error.responseJSON.op.from + "\" has been taken. Please choose other names.</p>");
+            }
+        });
+    })
+
+    if (window.location.pathname == '/play') {
+        gameStarted(1);
+        // Initialize socket
+        var socket = io();        
+        socket.on('connect', function () {
+            console.log("Connected to Server");
+        });
+
+        // Welcoming New User
+        socket.on("newUser", function (welcome) {
+            var $div = $(".new-user");
+            $div.slideDown(500, function () {
+                $div.css("display", "table");
+                $(".user-welcome").css("display", "block");
+            });
+            $div.html("<p class='user-welcome'>User Connected : " + welcome.from + "</p>");
+            setTimeout(() => {
+                $div.slideUp(500, function () {
+                    $(".user-welcome").css("display", "none");
+                });
+            }, 5000);
+        });
+
+        // Broadcast Disconnected Users
+        socket.on('userDisconnect' , function(user){
+            var $div = $(".new-user");
+            $div.slideDown(500, function () {
+                $div.css({
+                    display : "table",
+                    backgroundColor : "red"
+                });
+                $(".user-welcome").css("display", "block");
+            });
+            $div.html("<p class='user-welcome'>User Disconnected : " + user + "</p>");
+            setTimeout(() => {
+                $div.slideUp(500, function () {
+                    $(".user-welcome").css("display", "none");
+                });
+            }, 5000);
+        });
+
+        // Messages send and receives (Client Side)
+        var chatArea = $("#chatmessages");
+        socket.on("newMessages", function (message) {
+            var listYou = $("<li class='bubble-you'></li>");
+            var listBot = $("<li class='bubble-bot' style='color : #EAAD3A;'></li>");
+            var timeYou = $("<p class='time' style='clear:both; float:right;'></p>");
+            var timeBot = $("<p class='time'></p>");
+            var nameYou = $("<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>");
+            var nameBot = $("<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>");
+            if(getCookie("from") === message.user){
+                nameYou.text('YOU');
+                listYou.text(`${message.chat}`);
+                timeYou.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
+                chatArea.append(listYou);
+                timeYou.insertAfter(listYou);
+                nameYou.insertBefore(listYou);
+                console.log("From YOU :",message);                
+            }else {
+                nameBot.text(`${message.user}`);
+                listBot.text(`${message.chat}`);
+                timeBot.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
+                chatArea.append(listBot);
+                timeBot.insertAfter(listBot);
+                nameBot.insertBefore(listBot);
+                console.log("From Other Users :", message);                
+            }
+            $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
+        });
+
+        $("form#sendMessage").on("submit", function (e) {
+            var chat = $("#chatarea").val();
+            socket.emit('createMessages', chat);
+            $("#chatarea").val("");
+            e.preventDefault();
+        });
+
+    }
+
+});
