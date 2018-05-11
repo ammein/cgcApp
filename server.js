@@ -112,7 +112,7 @@ router.patch('/app/user/:from', (req, res) => {
 
 
 router.get('/app/user', (req, res) => {
-    User.collection('User').find({})
+    User.find({})
         .sort('-createdAt')
         .sort('-updatedAt')
         .exec(function(err , users){
@@ -144,8 +144,7 @@ router.get('/app/user/input/' , (req , res)=>{
         });
     }
     else{
-        
-        User.collection('User').find({})
+        User.find({})
         .exec(function(err , user){
             if(err) res.status(400).send(e);
             res.status(200).send(user);
