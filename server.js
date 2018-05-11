@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var mongoose = require('./server/db/mongoose');
 var Question = require('./server/models/question').Question;
-var User = require('./server/models/user');
+var User = require('./server/models/user').User;
 const nunjucks = require('nunjucks');
 const http = require('http');
 // to get certain value of API using lodash
@@ -36,7 +36,6 @@ nunjucks.configure('./public', {
     express: app,
     watch: true
 });
-
 // intergrate app into our server (SOCKET IO)
 var server = http.createServer(app);
 
@@ -112,7 +111,7 @@ router.patch('/app/user/:from', (req, res) => {
 
 
 router.get('/app/user', (req, res) => {
-    User.find({})
+    User.find()
         .sort('-createdAt')
         .sort('-updatedAt')
         .exec(function(err , users){
@@ -144,7 +143,7 @@ router.get('/app/user/input/' , (req , res)=>{
         });
     }
     else{
-        User.find({})
+        User.find()
         .exec(function(err , user){
             if(err) res.status(400).send(e);
             res.status(200).send(user);
