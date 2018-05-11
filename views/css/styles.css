@@ -651,6 +651,7 @@ input[type=range]:focus::-ms-fill-upper {
         font-size: 20px;
         margin-top: 19px;
         margin-left: 10px;
+        display: inline-block;
     }
 
     .ranking{
@@ -664,6 +665,7 @@ input[type=range]:focus::-ms-fill-upper {
         font-size: 20px;
         margin-top: 19px;
         right:0;
+        display: inline-block;        
     }
 
     #sendMessage{

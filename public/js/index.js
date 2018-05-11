@@ -215,7 +215,7 @@ function rankClick(){
                 var answerCount = element.answers.forEach(v => v ? myCounter++ : v);
                 percentage = 100 * myCounter / element.answers.length;
                 console.log("Percentage :",percentage);
-                $("tbody#appendTable").append(`<tr style='${(getCookie("from")=== element.from) ? "background-color :rgba(2, 60, 255, 0.41);" : "background-color :none;"}'><td> ${i++} </td><td> ${element.from}</td><td>${(isNaN(percentage) || percentage == Infinity) ? percentage=0 : percentage}/100</td></tr>`);
+                $("tbody#appendTable").append(`<tr style='${(decodeURI(getCookie("from")) === element.from) ? "background-color :rgba(2, 60, 255, 0.41);" : "background-color :none;"}'><td> ${i++} </td><td> ${element.from}</td><td>${(isNaN(percentage) || percentage == Infinity) ? percentage=0 : percentage}/100</td></tr>`);
             });
 
         }
@@ -263,12 +263,13 @@ function gameStarted(level){
         success : function(response){
             var arrayQuestion = 0;
             var question = response.question;
-            gameCounter(question , arrayQuestion);
+            gameCounter(question, arrayQuestion);                
         }
     })
 }
 
 function gameCounter(question , arrayQuestion){
+    $("body").css("background-color", "#023cff");
     window.clearInterval(window.timeTrue);    
     // console.log("Level available" , question[arrayQuestion].level);
     Array.prototype.move = function (from, to) {
@@ -294,9 +295,8 @@ function gameCounter(question , arrayQuestion){
     window.timeTrue = window.setInterval(function () {
         console.log("Countdown :", countdown);            
         if (countdown === 0) {
-            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level , timeTrue);
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], "false", question[arrayQuestion].level, timeTrue, question, arrayQuestion + 1);
             window.clearInterval(window.timeTrue);              
-            gameCounter(question, arrayQuestion+1);
             countdown = 0;
         }else{
             countdown = --countdown;            
@@ -344,19 +344,57 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
             autoplay: true,
             path: '/js/jsonanimation/dataTrue.json'
         });
+        // Hide button to avoid bug :D
+        $("button#ranking, button#chat").css("display", "none");
         animation.addEventListener("complete" , function(){
-            $(".append").empty();
+            $("button#ranking, button#chat").css("display", "inline-block");
             gameCounter(question, nextQuestion);
         });
     }else if(ans !== correctAns){
         allAnswer.push(false);
+        $("body").css("background-color", "#ff3838");
+        $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:636px; position:relative;' class='lottie'></div>");
+        var falseAnimation = lottie.loadAnimation({
+            container: document.getElementById("lottie"),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: '/js/jsonanimation/dataFalse.json'
+        });
+        $("button#ranking, button#chat").css("display", "none");        
+        falseAnimation.addEventListener("complete", function () {
+            $("body").css("background-color", "#023cff");
+            $("button#ranking, button#chat").css("display", "inline-block");
+            gameCounter(question, nextQuestion);
+        });
     }else if(ans == "false"){
         allAnswer.push(false);
+        $("body").css("background-color", "#ff3838");
+        $(".append").html("<div id='lottie' style='blackground-color : #ff3838; z-index:3 width:100%;transform : none; height:636px; position:relative;' class='lottie'></div>");
+        var falseAnimation = lottie.loadAnimation({
+            container: document.getElementById("lottie"),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: '/js/jsonanimation/dataFalse.json'
+        });
+        $("button#ranking, button#chat").css("display", "none");        
+        falseAnimation.addEventListener("complete", function () {
+            $("body").css("background-color", "#023cff");
+            $("button#ranking, button#chat").css("display", "inline-block");
+            gameCounter(question, nextQuestion);
+        });
     }
-    if(allAnswer.length === 5){
-        sendAnswer(allAnswer, user, level , timeTrue);
-        allAnswer = [];     
-    }
+    // Wait 1 second to execute (BUG)
+    setTimeout(() => {
+        if (allAnswer.length === 5) {
+            // (BUG)
+            $("button#ranking, button#chat").css("display", "inline-block");
+            lottie.destroy();
+            sendAnswer(allAnswer, user, level, timeTrue);
+            allAnswer = [];
+        }
+    }, 1000);
 }
 // Array Global to store temporary
 var finalAnswer = [];
@@ -368,23 +406,35 @@ function sendAnswer(allAnswer , user , level , timeTrue){
         finalAnswer.push(allAnswer[i]); 
         allLevel.push(level);       
     }
-    // $("body").removeAttr("onload");
-    $.ajax({
-        url: "api/app/user/" + user,
-        method: "PATCH",
-        contentType: "application/json",
-        data: JSON.stringify({
-            answers: finalAnswer,
-            level: allLevel
-        }),
-        success: function () {
-            console.log("Success TRUE PATCH");
-            $(".append").empty();
-            var newLevel = level + 1;
-            // clear all interval on timeTrue (BUG)
-            window.clearInterval(window.timeTrue);
-            gameStarted(newLevel);
-        }
+    $(".append").html("<div id='lottie' style='blackground-color : #ff3838; z-index:3 width:100%;transform : none; height:636px; position:relative;' class='lottie'></div>");
+    var levelUp = lottie.loadAnimation({
+        container: document.getElementById("lottie"),
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: '/js/jsonanimation/dataLevel.json'
+    });
+    $("button#ranking, button#chat").css("display", "none");
+    levelUp.addEventListener("complete", function () {
+        $("body").css("background-color", "#023cff");
+        $("button#ranking, button#chat").css("display", "inline-block");
+        $.ajax({
+            url: "api/app/user/" + user,
+            method: "PATCH",
+            contentType: "application/json",
+            data: JSON.stringify({
+                answers: finalAnswer,
+                level: allLevel
+            }),
+            success: function () {
+                console.log("Success TRUE PATCH");
+                $(".append").empty();
+                var newLevel = level + 1;
+                // clear all interval on timeTrue (BUG)
+                window.clearInterval(window.timeTrue);
+                gameStarted(newLevel);
+            }
+        });
     });
 }
 
