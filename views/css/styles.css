@@ -10,7 +10,7 @@ h1{
 }
 
 body.create{
-    background-color: #5CB9EB;    
+    background-color: #EAAD3A;
 }
 
 html , body{
@@ -59,7 +59,7 @@ html , body{
 }
 
 .answer-box:nth-of-type(1){
-    background-color: #84CCF3 !important;
+    background-color: #eaad3a !important;
     color: white !important;
 }
 
@@ -87,10 +87,10 @@ html , body{
 .add{
     width: 137.33px;
     height: 45.78px;
-    background-color: #5FF457;
+    background-color: #74b9ff;
     border:none;
     float: right;
-    font-family: 'Joselin Slab', serif;
+    font-family: 'Baumans',cursive;
     font-size: 21px;
     color: white;
     border-radius: 10px;
@@ -167,7 +167,7 @@ input[type=number]::-webkit-outer-spin-button {
     bottom: calc(100% - 60%);
     transform: rotate(-90deg);
     padding: 6px;
-    background-color: #84CCF3;
+    background-color: #2d3436;
     transform-origin: left top 0;
     border-radius: 0 0 5px 5px;
     color : white;
@@ -236,7 +236,7 @@ input[type=number]::-webkit-outer-spin-button {
 .update{
     font-family: 'Baumans',cursive;
     font-size: 18px;
-    color:#5CB9EB;
+    color:#EAAD3A;
     float: right;
     border:none;
     background-color: rgba(255,255,255,1);
@@ -265,7 +265,7 @@ ol{
 }
 
 .answer-box-edit:nth-of-type(1){
-    background-color: #84CCF3;
+    background-color: #EAAD3A;
     color: white;
 }
 
@@ -334,7 +334,7 @@ input[type=range]::-webkit-slider-thumb {
     height: 35px;
     width: 26px;
     border-radius: 7px;
-    background: #529DE1;
+    background: #eaad3a;
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -10px;
@@ -361,7 +361,7 @@ input[type=range]::-moz-range-thumb {
     height: 35px;
     width: 26px;
     border-radius: 7px;
-    background: #529DE1;
+    background: #eaad3a;
     cursor: pointer;
 }
 
@@ -396,7 +396,7 @@ input[type=range]::-ms-thumb {
     height: 35px;
     width: 26px;
     border-radius: 7px;
-    background: #529DE1;
+    background: #eaad3a;
     cursor: pointer;
 }
 
