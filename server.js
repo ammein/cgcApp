@@ -1,9 +1,10 @@
-var {MongoClient, ObjectID} = require('mongodb');
+var MongoClient = require('mongodb');
+var ObjectID = require('mongodb').ObjectID;
 const express = require('express');
 const bodyParser = require('body-parser');
-var {mongoose} = require('./server/db/mongoose');
+var mongoose = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
-const {User} = require('./server/models/user');
+const User = require('./server/models/user');
 const nunjucks = require('nunjucks');
 const http = require('http');
 // to get certain value of API using lodash
