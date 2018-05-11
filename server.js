@@ -145,7 +145,7 @@ router.get('/app/user/input/' , (req , res)=>{
         });
     }
     else{
-        User.find().then((user) => {
+        User.find({}).then((user) => {
             return res.status(200).send(user);
         }, (e) => {
             return res.status(400).send(e);
