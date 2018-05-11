@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var mongoose = require('./server/db/mongoose');
 var Question = require('./server/models/question').Question;
-var User = require('./server/models/user').User;
+var {User} = require('./server/models/user');
 const nunjucks = require('nunjucks');
 const http = require('http');
 // to get certain value of API using lodash
