@@ -1,4 +1,4 @@
-var MongoClient = require('mongodb');
+var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 const mongoose = require('mongoose');
 

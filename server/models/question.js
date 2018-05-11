@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var MongoClient = require('mongodb');
+var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 // Pagination Module
 var mongoosePaginate = require('mongoose-paginate');
