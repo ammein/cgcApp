@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var mongoose = require('./server/db/mongoose');
 var Question = require('./server/models/question').Question;
-var paginate = require('./server/models/question');
 const User = require('./server/models/user').User;
 const nunjucks = require('nunjucks');
 const http = require('http');

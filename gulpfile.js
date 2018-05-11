@@ -53,8 +53,13 @@ gulp.task('jsonAnimate' , function(){
     .pipe(gulp.dest('./public/js'))
 });
 
+gulp.task('media' , function () {
+    return gulp.src('views/media/**/*.+(png)')
+    .pipe(gulp.dest('./public/media'))
+})
+
 //default task to be run with gulp
-gulp.task('default', ['nunjucks' , 'nunjucks-css' , 'nunjucks-js' , 'jsonAnimate']);
+gulp.task('default', ['nunjucks' , 'nunjucks-css' , 'nunjucks-js' , 'jsonAnimate' , 'media']);
 
 /*
     Resource :
