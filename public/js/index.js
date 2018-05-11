@@ -269,7 +269,7 @@ function gameStarted(level){
 }
 
 function gameCounter(question , arrayQuestion){
-    $("body").css("background-color", "#023cff");
+    $("body").css("background-color", "#EAAD3A");
     window.clearInterval(window.timeTrue);    
     // console.log("Level available" , question[arrayQuestion].level);
     Array.prototype.move = function (from, to) {
@@ -336,6 +336,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
     console.log("All Answer" , allAnswer);
     if(ans == correctAns){
         allAnswer.push(true);
+        $("body").css("background-color", "#20bf6b");
         $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
         var animation = lottie.loadAnimation({
             container: document.getElementById("lottie"),
@@ -347,6 +348,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
         // Hide button to avoid bug :D
         $("button#ranking, button#chat").css("display", "none");
         animation.addEventListener("complete" , function(){
+            $("body").css("background-color", "#EAAD3A");            
             $("button#ranking, button#chat").css("display", "inline-block");
             gameCounter(question, nextQuestion);
         });
@@ -363,7 +365,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
         });
         $("button#ranking, button#chat").css("display", "none");        
         falseAnimation.addEventListener("complete", function () {
-            $("body").css("background-color", "#023cff");
+            $("body").css("background-color", "#EAAD3A");
             $("button#ranking, button#chat").css("display", "inline-block");
             gameCounter(question, nextQuestion);
         });
@@ -380,7 +382,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
         });
         $("button#ranking, button#chat").css("display", "none");        
         falseAnimation.addEventListener("complete", function () {
-            $("body").css("background-color", "#023cff");
+            $("body").css("background-color", "#EAAD3A");
             $("button#ranking, button#chat").css("display", "inline-block");
             gameCounter(question, nextQuestion);
         });
@@ -389,7 +391,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
     setTimeout(() => {
         if (allAnswer.length === 5) {
             // (BUG)
-            $("body").css("background-color", "#023cff");            
+            $("body").css("background-color", "#EAAD3A");
             $("button#ranking, button#chat").css("display", "inline-block");
             lottie.destroy();
             sendAnswer(allAnswer, user, level, timeTrue);
@@ -407,7 +409,7 @@ function sendAnswer(allAnswer , user , level , timeTrue){
         finalAnswer.push(allAnswer[i]); 
         allLevel.push(level);       
     }
-    $(".append").html("<div id='lottie' style='blackground-color : #ff3838; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
+    $(".append").html("<div id='lottie' style='blackground-color : #EAAD3A; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
     var levelUp = lottie.loadAnimation({
         container: document.getElementById("lottie"),
         renderer: 'svg',
@@ -417,7 +419,7 @@ function sendAnswer(allAnswer , user , level , timeTrue){
     });
     $("button#ranking, button#chat").css("display", "none");
     levelUp.addEventListener("complete", function () {
-        $("body").css("background-color", "#023cff");
+        $("body").css("background-color", "#EAAD3A");
         $("button#ranking, button#chat").css("display", "inline-block");
         $.ajax({
             url: "api/app/user/" + user,
@@ -557,7 +559,7 @@ $(function(){
         var chatArea = $("#chatmessages");
         socket.on("newMessages", function (message) {
             var listYou = $("<li class='bubble-you'></li>");
-            var listBot = $("<li class='bubble-bot' style='color : #6ef058;'></li>");
+            var listBot = $("<li class='bubble-bot' style='color : #EAAD3A;'></li>");
             var timeYou = $("<p class='time' style='clear:both; float:right;'></p>");
             var timeBot = $("<p class='time'></p>");
             var nameYou = $("<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>");

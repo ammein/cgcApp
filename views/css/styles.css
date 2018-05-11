@@ -428,7 +428,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 @media only screen and (min-width: 320px) {
     #bodyInput{
-        background: #023CFF;
+        background: #EAAD3A;
     }
 
     div#formInput{
