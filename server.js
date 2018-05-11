@@ -115,11 +115,10 @@ router.get('/app/user', (req, res) => {
     User.find()
         .sort('-createdAt')
         .sort('-updatedAt')
-        .then((users) => {
-        res.send({users});
-    }, (e) => {
-        res.status(400).send(e);
-    });
+        .exec(function(err , users){
+            if(err) res.status(400).send(e);
+            res.send({users});
+        })
 });
 
 // APP POST INPUT
@@ -145,10 +144,10 @@ router.get('/app/user/input/' , (req , res)=>{
         });
     }
     else{
-        User.find({}).then((user) => {
-            return res.status(200).send(user);
-        }, (e) => {
-            return res.status(400).send(e);
+        User.find({})
+        .exec(function(err , user){
+            if(err) res.status(400).send(e);
+            res.status(200).send(user);
         });
     }
 
