@@ -1,0 +1,84 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/media/favicon.png" type="image/x-icon">
+ 
+    <title>
+      CGC Content Management System
+    </title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet">
+    
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../css/pagination.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <!-- endinject -->
+    
+  </head>
+ 
+  <body class="create">
+ 
+    
+        <div class="overlay"></div>
+        <div class="sidebar">
+          <div class="all-question">
+            <h1 class="title">All Question</h1>
+            <div class="close-box" onclick="closeBox()">
+              <i class="glyphicon glyphicon-remove remove-icon"></i>
+              <br><p class="close-text">Close</p>
+            </div>
+            <hr>            
+            <ol id="questionsBlock">
+            </ol>
+          </div>
+        </div>
+    
+    <div class="see-questions" onclick="openBox()">
+      <p class="text-question" style="margin : 0;">See Questions</p>
+    </div>
+    <div class="container container-fluid">
+      
+    <div class="row">
+      <div class="parent-box">
+        <div class="box">
+          <h1>CGC Make Question</h1>
+          <form action="/api/question" id="questionForm" method="post">
+            <textarea name="questionString" id="questionForm" class="textarea-box">Add your question here.</textarea>
+            <input type="number" name="answers" id="trueAnswerBox" class="answer-box" placeholder="True Answer" onfocus="this.placeholder = ''">
+            <input type="number" name="answers" id="falseAnswerBox" class="answer-box" placeholder="False Answer" onfocus="this.placeholder = ''">
+            <input type="number" name="answers" id="falseAnswerBox" class="answer-box" placeholder="False Answer" onfocus="this.placeholder = ''">
+            <input type="number" name="answers" id="falseAnswerBox" class="answer-box" placeholder="False Answer" onfocus="this.placeholder = ''">
+            <label for="timeBox" id="timeBoxLabel">Time to complete the question :</label>
+            <input type="number" name="time" id="timeBox" value="60" onfocus="this.value = ''"><p style="font-size: 24px;color: #535353; display: inline-block; margin-left : 14px;">seconds</p>
+            <div class="form-group">
+                <label for="level" id="timeBoxLabel">Level of Question = <output class="rangeValue" id="rangevalue">1</output></label>
+                <input type="range" name="level" id="level" min="1" max="10" oninput="rangevalue.value=value" onchange="rangevalue.value=value" />
+            </div>
+            <input type="submit" value="Add" class="add">
+          </form>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+    <script src="/socket.io/socket.io.js"></script>    
+    
+<!-- inject:js -->
+<script src="../js/jquery/jquery-3.3.1.min.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/lottie/lottie.js"></script>
+<!-- endinject -->
+
+  </body>
+</html>

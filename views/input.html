@@ -1,0 +1,56 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/media/favicon.png" type="image/x-icon">
+    
+    <title>
+      
+Enter Name (CGC)
+
+    </title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet">
+    
+<!-- inject:css -->
+<link rel="stylesheet" href="../css/pagination.css">
+<link rel="stylesheet" href="../css/styles.css">
+<!-- endinject -->
+
+  </head>
+ 
+  <body onload="checkCookie()" id="bodyInput">
+ 
+    <div class="container-fluid">
+      
+<div class="row" id="input">
+    <div id="formInput">
+        <form action="api/app/user/input" autocomplete='off' method="post" id='inputSend' style="margin-left:17px; margin-right:18px;">
+        <label for="from">Your name :</label><br>
+            <input type="text" name="from" id="from"><br>
+            <input type="submit" value="Send" id="nameSubmit">
+        </form>
+    </div>
+</div>
+
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+    <script src="/socket.io/socket.io.js"></script>    
+    
+<!-- inject:js -->
+<script src="../js/jquery/jquery-3.3.1.min.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/lottie/lottie.js"></script>
+<!-- endinject -->
+
+  </body>
+</html>
