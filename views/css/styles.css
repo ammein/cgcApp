@@ -9,7 +9,7 @@ h1{
     margin-bottom: 24.4px;
 }
 
-body.create{
+body{
     background-color: #EAAD3A;
 }
 
@@ -23,6 +23,28 @@ html , body{
     width: 100%;
     margin: auto;
     position: relative;
+}
+
+.page-not-found{
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0;
+}
+
+.perhaps{
+    text-align: center;
+    font-size: 16px;
+    color: white;
+    margin-bottom: 32px;
+}
+
+.not-found-link{
+    display: block;
+    text-align: center;
+    font-size: 24px;
+    color: white;
+    text-decoration: underline;
 }
 
 .box {
