@@ -1,4 +1,5 @@
-var MongoClient, ObjectID = require('mongodb');
+var MongoClient = require('mongodb');
+var ObjectID = require('mongodb').ObjectID;
 const express = require('express');
 const bodyParser = require('body-parser');
 var mongoose = require('./server/db/mongoose');
