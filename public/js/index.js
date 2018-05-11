@@ -336,7 +336,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
     console.log("All Answer" , allAnswer);
     if(ans == correctAns){
         allAnswer.push(true);
-        $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:636px; position:relative;' class='lottie'></div>");
+        $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
         var animation = lottie.loadAnimation({
             container: document.getElementById("lottie"),
             renderer: 'svg',
@@ -353,7 +353,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
     }else if(ans !== correctAns){
         allAnswer.push(false);
         $("body").css("background-color", "#ff3838");
-        $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:636px; position:relative;' class='lottie'></div>");
+        $(".append").html("<div id='lottie' style='blackground-color : #023cff; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
         var falseAnimation = lottie.loadAnimation({
             container: document.getElementById("lottie"),
             renderer: 'svg',
@@ -370,7 +370,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
     }else if(ans == "false"){
         allAnswer.push(false);
         $("body").css("background-color", "#ff3838");
-        $(".append").html("<div id='lottie' style='blackground-color : #ff3838; z-index:3 width:100%;transform : none; height:636px; position:relative;' class='lottie'></div>");
+        $(".append").html("<div id='lottie' style='blackground-color : #ff3838; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
         var falseAnimation = lottie.loadAnimation({
             container: document.getElementById("lottie"),
             renderer: 'svg',
@@ -389,6 +389,7 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQu
     setTimeout(() => {
         if (allAnswer.length === 5) {
             // (BUG)
+            $("body").css("background-color", "#023cff");            
             $("button#ranking, button#chat").css("display", "inline-block");
             lottie.destroy();
             sendAnswer(allAnswer, user, level, timeTrue);
@@ -406,7 +407,7 @@ function sendAnswer(allAnswer , user , level , timeTrue){
         finalAnswer.push(allAnswer[i]); 
         allLevel.push(level);       
     }
-    $(".append").html("<div id='lottie' style='blackground-color : #ff3838; z-index:3 width:100%;transform : none; height:636px; position:relative;' class='lottie'></div>");
+    $(".append").html("<div id='lottie' style='blackground-color : #ff3838; z-index:3 width:100%;transform : none; height:536px; position:relative;' class='lottie'></div>");
     var levelUp = lottie.loadAnimation({
         container: document.getElementById("lottie"),
         renderer: 'svg',
