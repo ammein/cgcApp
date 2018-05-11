@@ -325,14 +325,14 @@ function gameCounter(question , arrayQuestion){
             var value = this.value;
             // console.log("You click",value);
             // console.log("True Answer",question[arrayQuestion].answers[0]);
-            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level, timeTrue, gameCounter(question,arrayQuestion + 1));
+            pushAnswer(getCookie("from"), question[arrayQuestion].answers[0], value, question[arrayQuestion].level, timeTrue, question,arrayQuestion + 1);
             clearInterval(timeTrue);
         });
     }(i));
 }
 // Make it global to be able to push array for clicking not more than 5 total questions
 var allAnswer = [];
-function pushAnswer(user,correctAns , ans , level , timeTrue , callback){
+function pushAnswer(user,correctAns , ans , level , timeTrue , question , nextQuestion){
     console.log("All Answer" , allAnswer);
     if(ans == correctAns){
         allAnswer.push(true);
@@ -344,7 +344,10 @@ function pushAnswer(user,correctAns , ans , level , timeTrue , callback){
             autoplay: true,
             path: '/js/jsonanimation/dataTrue.json'
         });
-        animation.addEventListener("complete" , callback);
+        animation.addEventListener("complete" , function(){
+            $(".append").empty();
+            gameCounter(question, nextQuestion);
+        });
     }else if(ans !== correctAns){
         allAnswer.push(false);
     }else if(ans == "false"){
