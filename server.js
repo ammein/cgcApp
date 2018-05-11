@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var mongoose = require('./server/db/mongoose');
 var Question = require('./server/models/question').Question;
-var User = require('./server/models/user').User;
+var User = require('./server/models/user');
 const nunjucks = require('nunjucks');
 const http = require('http');
 // to get certain value of API using lodash
@@ -112,7 +112,7 @@ router.patch('/app/user/:from', (req, res) => {
 
 
 router.get('/app/user', (req, res) => {
-    User.find()
+    User.collection.find({})
         .sort('-createdAt')
         .sort('-updatedAt')
         .exec(function(err , users){
@@ -144,7 +144,8 @@ router.get('/app/user/input/' , (req , res)=>{
         });
     }
     else{
-        User.find({})
+        
+        User.collection.find({})
         .exec(function(err , user){
             if(err) res.status(400).send(e);
             res.status(200).send(user);
