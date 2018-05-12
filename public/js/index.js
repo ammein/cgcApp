@@ -497,7 +497,7 @@ $(function(){
         var valueInput = $("input#from").val();
         $("p").remove();
         $.ajax({
-            url : '/api/app/user/input',
+            url : 'api/app/user/input',
             method : "POST",
             data : JSON.stringify({
                 from : valueInput
