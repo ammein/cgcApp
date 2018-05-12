@@ -121,7 +121,7 @@ router.get('/app/user', (req, res) => {
 
 // APP POST INPUT
 router.post('/app/user/input' , (req , res)=>{
-    var userAttr = new User({
+    var userAttr = new MyUser({
         from : req.body.from,
     });
 
