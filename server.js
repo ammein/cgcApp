@@ -208,6 +208,23 @@ router.get('/question/:id' , (req , res)=>{
 });
 
 // DELETE /api/question/:id
+router.delete('/app/user/:from' , (req , res)=>{
+    var id = req.params.from;
+    if(!ObjectID.isValid(id)){
+        return res.status(400).send();
+    }
+
+    MyUser.findByOneAndRemove(id).then((question)=>{
+        if(!question){
+            res.status(400).send();
+        }
+        res.send(question);
+    }).catch((e)=>{
+        res.status(400).send(e);
+    });
+});
+
+// DELETE /api/question/:id
 router.delete('/question/:id' , (req , res)=>{
     var id = req.params.id;
     if(!ObjectID.isValid(id)){
