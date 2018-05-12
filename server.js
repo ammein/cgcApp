@@ -133,7 +133,7 @@ router.post('/app/user/input' , (req , res)=>{
 });
 
 // APP GET INPUT
-router.get('/app/user/input/' , (req , res)=>{
+router.get('/app/user/input' , (req , res)=>{
     if(req.cookies.from){
         MyUser.findOne({ from: req.cookies.from}).then((user)=>{
             return res.status(200).send({user});
