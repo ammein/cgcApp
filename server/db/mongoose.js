@@ -5,7 +5,7 @@ require('dotenv').config({
 });
 // process.env.MONGO_HOST + "/test"
 // 'mongodb://localhost:27017/QuestionApp'
-mongoose.connect('mongodb://127.0.0.1:27017/admin');
+mongoose.connect('mongodb://127.0.0.1:27017/QuestionApp');
 
 module.exports = {
     mongoose

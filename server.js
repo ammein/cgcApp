@@ -109,7 +109,6 @@ router.patch('/app/user/:from', (req, res) => {
     });
 });
 
-
 router.get('/app/user', (req, res) => {
     User.find()
         .sort('-createdAt')
