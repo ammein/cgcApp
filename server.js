@@ -134,21 +134,21 @@ router.post('/app/user/input' , (req , res)=>{
 
 // APP GET INPUT
 router.get('/app/user/input/' , (req , res)=>{
-    // if(req.cookies.from){
-    //     MyUser.findOne({ from: req.cookies.from}).then((user)=>{
-    //         return res.status(200).send({user});
-    //     }, (e)=>{
-    //         return res.status(400).send(e);
-    //     });
-    // }
-    // else{
+    if(req.cookies.from){
+        MyUser.findOne({ from: req.cookies.from}).then((user)=>{
+            return res.status(200).send({user});
+        }, (e)=>{
+            return res.status(400).send(e);
+        });
+    }
+    else{
         MyUser.find()
         .then((user)=>{
             res.status(200).send({user});
         },(e)=>{
             res.status(400).send(e);
         });
-    // }
+    }
 
 });
 
