@@ -207,15 +207,10 @@ router.get('/question/:id' , (req , res)=>{
     });
 });
 
-// DELETE /api/question/:id
+// DELETE /api/app/user/:from
 router.delete('/app/user/:from' , (req , res)=>{
     var id = req.params;
     MyUser.findOneAndRemove(id).then((user)=>{
-        if(!user){
-            res.status(400).send({
-                text : "User not found ? I don't know"
-            });
-        }
         res.send(user);
     }).catch((e)=>{
         res.status(400).send(e);
