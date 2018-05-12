@@ -572,7 +572,7 @@ $(function(){
                 timeYou.insertAfter(listYou);
                 nameYou.insertBefore(listYou);
                 console.log("From YOU :",message);                
-            }else if(getCookie("from")) {
+            } else if (decodeURI(getCookie("from")) !== message.user) {
                 nameBot.text(`${message.user}`);
                 listBot.text(`${message.chat}`);
                 timeBot.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
