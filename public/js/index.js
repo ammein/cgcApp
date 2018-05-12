@@ -558,37 +558,32 @@ $(function(){
         // Messages send and receives (Client Side)
         var chatArea = $("#chatmessages");
         socket.on("newMessages", function (message) {
-            if(decodeURI(getCookie("from")) === message.user){
-                var nameYou = $("<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>");
-                var listYou = $("<li class='bubble-you'></li>");                
-                var timeYou = $("<p class='time' style='clear:both; float:right;'></p>");                
-                nameYou.text('YOU');
-                listYou.text(`${message.chat}`);
-                timeYou.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
-                chatArea.append(listYou);
-                timeYou.insertAfter(listYou);
-                nameYou.insertBefore(listYou);
-                console.log("From YOU :",message);                
-            } else if (decodeURI(getCookie("from")) !== message.user) {
-                var listBot = $("<li class='bubble-bot' style='color : #EAAD3A;'></li>");
-                var timeBot = $("<p class='time'></p>");
-                var nameBot = $("<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>");
-                nameBot.text(`${message.user}`);
-                listBot.text(`${message.chat}`);
-                timeBot.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
-                chatArea.append(listBot);
-                timeBot.insertAfter(listBot);
-                nameBot.insertBefore(listBot);
-                console.log("From Other Users :", message);                
-            }
+            var name = $(`<p style='${(decodeURI(getCookie("from")) === message.user) ? "clear: both; float: right; margin-bottom: 0; font-size: 12px;" : "clear: both; margin-bottom: 0; font-size: 12px;"}'></p>`);
+            var list = $(`<li class='${(decodeURI(getCookie("from")) === message.user)? "bubble-you" : "bubble-bot"}'></li>`);
+            var time = $(`<p class='time' style='${(decodeURI(getCookie("from")) === message.user) ? "clear:both; float:right;" : ""}'></p>`);
+            name.text(`${(decodeURI(getCookie("from")) === message.user) ? "YOU": message.user}`);
+            list.text(`${message.chat}`);
+            time.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
+            chatArea.append(list);
+            time.insertAfter(list);
+            name.insertBefore(list);
+            console.log("From Other Users :", message);                
             $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
         });
 
         $("form#sendMessage").on("submit", function (e) {
+            e.stopPropagation();
+            e.preventDefault();            
             var chat = $("#chatarea").val();
-            socket.emit('createMessages', chat);
+            console.log("Send Chat" , chat);
+            socket.emit('createMessages', {
+                chat : chat
+            });
             $("#chatarea").val("");
-            e.preventDefault();
+        });
+
+        socket.on('disconnect', function () {
+            console.log("Disconnected from server");
         });
 
     }

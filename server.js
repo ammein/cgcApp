@@ -40,7 +40,9 @@ nunjucks.configure('./public', {
 var server = http.createServer(app);
 
 // Add websocket server on createServer
-var io = socketIO(server);
+var io = socketIO(server, {
+    wsEngine: 'ws'
+});
 
 var port = process.env.PORT || 3000;
 
@@ -58,9 +60,9 @@ app.get('/play', (req, res)=>{
                 MyUser.findOne({
                     from: req.cookies.from
                 }).then((user) => {
-                    client.emit('newMessages', {
+                    io.emit('newMessages', {
                         user: req.cookies.from,
-                        chat: messages,
+                        chat: messages.chat,
                         userAnswers : {
                             from : user.from,
                             level : user.level,
