@@ -564,7 +564,7 @@ $(function(){
             var timeBot = $("<p class='time'></p>");
             var nameYou = $("<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>");
             var nameBot = $("<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>");
-            if(getCookie("from") === message.user){
+            if(decodeURI(getCookie("from")) === message.user){
                 nameYou.text('YOU');
                 listYou.text(`${message.chat}`);
                 timeYou.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
@@ -572,7 +572,7 @@ $(function(){
                 timeYou.insertAfter(listYou);
                 nameYou.insertBefore(listYou);
                 console.log("From YOU :",message);                
-            }else {
+            }else if(getCookie("from")) {
                 nameBot.text(`${message.user}`);
                 listBot.text(`${message.chat}`);
                 timeBot.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);

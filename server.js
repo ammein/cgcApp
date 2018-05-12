@@ -58,7 +58,7 @@ app.get('/play', (req, res)=>{
                 MyUser.findOne({
                     from: req.cookies.from
                 }).then((user) => {
-                    io.emit('newMessages', {
+                    client.emit('newMessages', {
                         user: req.cookies.from,
                         chat: messages,
                         userAnswers : {
