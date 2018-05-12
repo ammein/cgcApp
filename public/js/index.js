@@ -576,9 +576,7 @@ $(function(){
             e.preventDefault();            
             var chat = $("#chatarea").val();
             console.log("Send Chat" , chat);
-            socket.emit('createMessages', {
-                chat : chat
-            });
+            socket.emit('createMessages', chat);
             $("#chatarea").val("");
         });
 

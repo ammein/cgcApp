@@ -62,7 +62,7 @@ app.get('/play', (req, res)=>{
                 }).then((user) => {
                     io.emit('newMessages', {
                         user: req.cookies.from,
-                        chat: messages.chat,
+                        chat: messages,
                         userAnswers : {
                             from : user.from,
                             level : user.level,
