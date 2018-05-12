@@ -144,7 +144,7 @@ router.get('/app/user/input/' , (req , res)=>{
     else{
         MyUser.find()
         .then((user)=>{
-            res.status(200).send(user);
+            res.status(200).send({user});
         },(e)=>{
             res.status(400).send(e);
         });
