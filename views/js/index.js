@@ -215,7 +215,7 @@ function rankClick(){
                 var answerCount = element.answers.forEach(v => v ? myCounter++ : v);
                 percentage = 100 * myCounter / element.answers.length;
                 console.log("Percentage :",percentage);
-                $("tbody#appendTable").append(`<tr style='${(decodeURI(getCookie("from")) === element.from) ? "background-color :rgba(2, 60, 255, 0.41);" : "background-color :none;"}'><td> ${i++} </td><td> ${element.from}</td><td>${(isNaN(percentage) || percentage == Infinity) ? percentage=0 : percentage}/100</td></tr>`);
+                $("tbody#appendTable").append(`<tr style='${(decodeURI(getCookie("from")) === element.from) ? "background-color :rgba(2, 60, 255, 0.41);" : "background-color :none;"}'><td> ${i++} </td><td> ${element.from}</td><td>${(isNaN(percentage) || percentage == Infinity) ? percentage=0 : percentage}</td></tr>`);
             });
 
         }
