@@ -15,9 +15,6 @@ var userschema = new mongoose.Schema({
 {
     timestamps : true
 });
-
-userschema.plugin(mongoosePaginate);
-
 // userschema.plugin(mongoosePaginate);
 var MyUser = mongoose.model('myUser', userschema);
 
