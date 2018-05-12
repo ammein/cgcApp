@@ -209,12 +209,8 @@ router.get('/question/:id' , (req , res)=>{
 
 // DELETE /api/question/:id
 router.delete('/app/user/:from' , (req , res)=>{
-    var id = req.params.from;
-    if(!ObjectID.isValid(id)){
-        return res.status(400).send();
-    }
-
-    MyUser.findByOneAndRemove(id).then((question)=>{
+    var id = req.params;
+    MyUser.findOneAndRemove(id).then((question)=>{
         if(!question){
             res.status(400).send();
         }
