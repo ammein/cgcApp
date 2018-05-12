@@ -507,10 +507,10 @@ $(function(){
                 $(this).unbind("submit").submit();
                 window.location.href = "/play";
             },
-            error : function (error) {  
-                console.log(error);
-                $("#input").append("<p style='top : 0;font-size : 14px;color: white;background: #ff2457;text-align:  center;'>\"" + valueInput + "\" has been taken. Please choose other names.</p>");
-            }
+            // error : function (error) {  
+            //     console.log(error);
+            //     $("#input").append("<p style='top : 0;font-size : 14px;color: white;background: #ff2457;text-align:  center;'>\"" + valueInput + "\" has been taken. Please choose other names.</p>");
+            // }
         });
     })
 
