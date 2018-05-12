@@ -19,8 +19,8 @@ var userschema = new mongoose.Schema({
 userschema.plugin(mongoosePaginate);
 
 // userschema.plugin(mongoosePaginate);
-var User = mongoose.model('myUser', userschema);
+var MyUser = mongoose.model('myUser', userschema);
 
 module.exports ={
-    User
+    MyUser
 }

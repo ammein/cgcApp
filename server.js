@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var {mongoose} = require('./server/db/mongoose');
 var {Question} = require('./server/models/question');
-var {User} = require('./server/models/user');
+var {MyUser} = require('./server/models/user');
 const nunjucks = require('nunjucks');
 const http = require('http');
 // to get certain value of API using lodash
@@ -55,7 +55,7 @@ app.get('/play', (req, res)=>{
         client.broadcast.emit('newUser', req.cookies);
 
         client.on('createMessages', (messages) => {
-                User.findOne({
+                MyUser.findOne({
                     from: req.cookies.from
                 }).then((user) => {
                     io.emit('newMessages', {
@@ -102,7 +102,7 @@ router.patch('/app/user/:from', (req, res) => {
     // pick key to update the value
     var body = _.pick(req.body, ['level', 'answers', 'from', 'text']);
 
-    User.findOneAndUpdate(id, { $set: body }, { new: true }).then((user) => {
+    MyUser.findOneAndUpdate(id, { $set: body }, { new: true }).then((user) => {
         res.send(user);
     }, (e) => {
         res.status(400).send(e);
@@ -110,7 +110,7 @@ router.patch('/app/user/:from', (req, res) => {
 });
 
 router.get('/app/user', (req, res) => {
-    User.find()
+    MyUser.find()
         .sort('-createdAt')
         .sort('-updatedAt')
         .exec(function(err , users){
@@ -135,17 +135,18 @@ router.post('/app/user/input' , (req , res)=>{
 // APP GET INPUT
 router.get('/app/user/input/' , (req , res)=>{
     if(req.cookies.from){
-        User.findOne({ from: req.cookies.from}).then((user)=>{
+        MyUser.findOne({ from: req.cookies.from}).then((user)=>{
             return res.status(200).send({user});
         }, (e)=>{
             return res.status(400).send(e);
         });
     }
     else{
-        User.find()
-        .exec(function(err , user){
-            if(err) res.status(400).send(e);
+        MyUser.find()
+        .then((user)=>{
             res.status(200).send(user);
+        },(e)=>{
+            res.status(400).send(e);
         });
     }
 
