@@ -558,13 +558,10 @@ $(function(){
         // Messages send and receives (Client Side)
         var chatArea = $("#chatmessages");
         socket.on("newMessages", function (message) {
-            var listYou = $("<li class='bubble-you'></li>");
-            var listBot = $("<li class='bubble-bot' style='color : #EAAD3A;'></li>");
-            var timeYou = $("<p class='time' style='clear:both; float:right;'></p>");
-            var timeBot = $("<p class='time'></p>");
-            var nameYou = $("<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>");
-            var nameBot = $("<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>");
             if(decodeURI(getCookie("from")) === message.user){
+                var nameYou = $("<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>");
+                var listYou = $("<li class='bubble-you'></li>");                
+                var timeYou = $("<p class='time' style='clear:both; float:right;'></p>");                
                 nameYou.text('YOU');
                 listYou.text(`${message.chat}`);
                 timeYou.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
@@ -573,6 +570,9 @@ $(function(){
                 nameYou.insertBefore(listYou);
                 console.log("From YOU :",message);                
             } else if (decodeURI(getCookie("from")) !== message.user) {
+                var listBot = $("<li class='bubble-bot' style='color : #EAAD3A;'></li>");
+                var timeBot = $("<p class='time'></p>");
+                var nameBot = $("<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>");
                 nameBot.text(`${message.user}`);
                 listBot.text(`${message.chat}`);
                 timeBot.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
