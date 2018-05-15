@@ -217,8 +217,8 @@ router.delete('/app/user/:from' , (req , res)=>{
             });
         }
         res.send(user);
-    }).catch((e)=>{
-        res.status(400).send(e);
+    }, (e)=>{
+        res.status(400).send(e);        
     });
 });
 
