@@ -207,10 +207,10 @@ router.get('/question/:id' , (req , res)=>{
     });
 });
 
-// DELETE /api/app/user/:from
-router.delete('/app/user/:from' , (req , res)=>{
-    var id = req.params;
-    MyUser.findOneAndRemove(id).then((user)=>{
+// DELETE /api/app/user/:id
+router.delete('/app/user/:id' , (req , res)=>{
+    var id = req.params.id;
+    MyUser.findByIdAndRemove(id).then((user)=>{
         res.send(user);
     }, (e)=>{
         res.status(400).send(e);        
