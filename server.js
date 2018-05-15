@@ -71,7 +71,7 @@ app.get('/play', (req, res)=>{
                     });                    
                 });
             console.log("Messages from chat : \n", messages);
-        });
+        }).setMaxListeners(0);
 
         // for disconnect
         client.on('disconnect', () => {
@@ -210,6 +210,11 @@ router.get('/question/:id' , (req , res)=>{
 // DELETE /api/app/user/:id
 router.delete('/app/user/:id' , (req , res)=>{
     var id = req.params.id;
+
+    if(!ObjectID.isValid(id)){
+        return res.status(400).send();
+    }
+
     MyUser.findByIdAndRemove(id).then((user)=>{
         res.send(user);
     }, (e)=>{

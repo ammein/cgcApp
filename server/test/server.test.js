@@ -2,6 +2,7 @@ const expect = require('expect');
 const request = require('supertest');
 const {app} = require('./../../server');
 const {Question} = require('./../models/question');
+const {MyUser} = require('./../models/user');
 const {ObjectID} = require('mongodb');
 
 const question = [{
@@ -21,9 +22,17 @@ const question = [{
     time: 30
 }];
 
-describe('POST /question/api' , ()=>{
-    it('should create new question' , (done)=>{
-        after((done)=>{
+const user =[{
+    _id : new ObjectID().toHexString(),
+    from : "Amin"
+},{
+    _id : new ObjectID().toHexString(),
+    from : "Lala"
+}];
+
+describe('POST /api/question', () => {
+    it('should create new question and Equals to (1)' , (done)=>{
+        before((done)=>{
             Question.remove({}).then(()=>{
                 return Question.insertMany(question , done());
             }).catch((e)=> done(e));
@@ -32,7 +41,7 @@ describe('POST /question/api' , ()=>{
         var answers= question[0].answers;
         var time = question[0].time;
         request(app)
-        .post('/question/api')
+        .post('/api/question')
         .send({
             questionString,
             answers,
@@ -70,7 +79,7 @@ describe('POST /question/api' , ()=>{
         var questionString = '';
         var time = null;
         request(app)
-        .post('/question/api')
+        .post('/api/question')
         .send({
             questionString,
             time
@@ -82,7 +91,7 @@ describe('POST /question/api' , ()=>{
     it('should not create a string with 2 characters' , (done)=>{
         var questionString = 'as';        
         request(app)
-        .post('/question/api')
+        .post('/api/question')
         .send({
             questionString
         })
@@ -95,7 +104,7 @@ describe('POST /question/api' , ()=>{
         var questionString = "For too many answers";
 
         request(app)
-        .post('/question/api')
+        .post('/api/question')
         .send({
             questionString,
             answers
@@ -109,7 +118,7 @@ describe('POST /question/api' , ()=>{
         var questionString = "Without Answers";
         
         request(app)
-        .post('/question/api')
+        .post('/api/question')
         .send({
             questionString,
             answers
@@ -128,7 +137,7 @@ describe('GET /question/api' , ()=>{
             console.log("before GET 2");
         });
         request(app)
-        .get('/question/api')
+        .get('/api/question')
         .expect(200)
         .end(done);
     });
@@ -146,11 +155,31 @@ describe('GET /question/api' , ()=>{
         // console.log("Id : ",id);
         // done();
         request(app)
-        .get(`/question/api/${id}`)
+        .get(`/api/question/api/${id}`)
         .expect(200)
         .expect((res)=>{
             expect(res.body.question.questionString).toBe(question[0].questionString);
         })
+        .end(done);
+    });
+});
+
+describe('DELETE /api/app/user/:id' , ()=>{
+    it('should delete user bitch !' , (done)=>{
+        before((done)=>{
+            MyUser.remove({})
+            .then(()=>{
+                return MyUser.insertMany(user , done());
+            }).catch((e)=>{
+                done(e);
+            });
+        });
+
+        var id = user[0]._id;
+
+        request(app)
+        .delete(`/api/app/user/${id}`)
+        .expect(200)
         .end(done);
     });
 });
