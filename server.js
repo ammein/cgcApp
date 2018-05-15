@@ -212,8 +212,8 @@ router.delete('/app/user/:from' , (req , res)=>{
     var id = req.params;
     MyUser.findOneAndRemove(id).then((user)=>{
         res.send(user);
-    }).catch((e)=>{
-        res.status(400).send(e);
+    }, (e)=>{
+        res.status(400).send(e);        
     });
 });
 
