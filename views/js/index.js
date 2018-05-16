@@ -455,7 +455,7 @@ function getTime(){
 
 // DOMContentLoaded
 $(function(){
-
+    var socket = io();    
     var level = $("#level").val(1);
     console.log("I loaded in browser");
     $(".textarea-box").one("click" , function(){
@@ -491,6 +491,19 @@ $(function(){
         });
     });
 
+    // Emit Messages
+    $("form#sendMessage").on("submit", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var chat = $("#chatarea").val();
+        console.log("Send Chat", chat);
+        socket.emit('createMessages', {
+            chat,
+            from: getCookie("from")
+        });
+        $("#chatarea").val("");
+    });
+
     // Input Name Validation
     $("#inputSend").submit(function (e) {  
         e.preventDefault();
@@ -517,7 +530,6 @@ $(function(){
     if (window.location.pathname == '/play') {
         gameStarted(1);
         // Initialize socket
-        var socket = io();        
         socket.on('connect', function () {
             console.log("Connected to Server");
         });
@@ -569,15 +581,6 @@ $(function(){
             name.insertBefore(list);
             console.log("From Other Users :", message);                
             $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
-        });
-
-        $("form#sendMessage").on("submit", function (e) {
-            e.stopPropagation();
-            e.preventDefault();            
-            var chat = $("#chatarea").val();
-            console.log("Send Chat" , chat);
-            socket.emit('createMessages', chat);
-            $("#chatarea").val("");
         });
 
         socket.on('disconnect', function () {

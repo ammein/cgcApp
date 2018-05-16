@@ -576,7 +576,10 @@ $(function(){
             e.preventDefault();            
             var chat = $("#chatarea").val();
             console.log("Send Chat" , chat);
-            socket.emit('createMessages', chat);
+            socket.emit('createMessages', {
+                chat,
+                from : getCookie("from")
+            });
             $("#chatarea").val("");
         });
 

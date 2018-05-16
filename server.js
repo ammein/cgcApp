@@ -57,19 +57,10 @@ app.get('/play', (req, res)=>{
         client.broadcast.emit('newUser', req.cookies);
 
         client.on('createMessages', (messages) => {
-                MyUser.findOne({
-                    from: req.cookies.from
-                }).then((user) => {
-                    io.emit('newMessages', {
-                        user: req.cookies.from,
-                        chat: messages,
-                        userAnswers : {
-                            from : user.from,
-                            level : user.level,
-                            answers : user.answers
-                        }
-                    });                    
-                });
+            client.broadcast.emit('newMessages', {
+                user: messages.from,
+                chat: messages.chat,
+            });
             console.log("Messages from chat : \n", messages);
         }).setMaxListeners(0);
 
@@ -128,7 +119,7 @@ router.post('/app/user/input' , (req , res)=>{
     });
 
     userAttr.save().then((user)=>{    
-        res.status(200).cookie("from", user.from, {expire: new Date() + 9999}).redirect('/play');
+        res.status(200).cookie("from", user.from, {maxAge: 24 * 60 * 60 * 1000}).redirect('/play');
     },(e)=>{
         res.status(400).send(e);
     });
