@@ -199,7 +199,7 @@ router.get('/question/:id' , (req , res)=>{
 });
 
 // DELETE /api/app/user/:id
-router.delete('/app/user/:id' , (req , res)=>{
+router.delete('/user/:id' , (req , res)=>{
     var id = req.params.id;
 
     if(!ObjectID.isValid(id)){
