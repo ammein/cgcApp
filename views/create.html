@@ -8,37 +8,37 @@
     <link rel="shortcut icon" href="/media/favicon.png" type="image/x-icon">
  
     <title>
-      CGC Content Management System
+       CGC Content Management System 
     </title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet">
-    
-    <!-- inject:css -->
-    <link rel="stylesheet" href="../css/pagination.css">
-    <link rel="stylesheet" href="../css/styles.css">
-    <!-- endinject -->
-    
+     
+<!-- inject:css -->
+<link rel="stylesheet" href="../css/pagination.css">
+<link rel="stylesheet" href="../css/styles.css">
+<!-- endinject -->
+
   </head>
  
   <body class="create">
  
     
-        <div class="overlay"></div>
-        <div class="sidebar">
-          <div class="all-question">
-            <h1 class="title">All Question</h1>
-            <div class="close-box" onclick="closeBox()">
-              <i class="glyphicon glyphicon-remove remove-icon"></i>
-              <br><p class="close-text">Close</p>
-            </div>
-            <hr>            
-            <ol id="questionsBlock">
-            </ol>
-          </div>
+    <div class="overlay"></div>
+    <div class="sidebar">
+    <div class="all-question">
+        <h1 class="title">All Question</h1>
+        <div class="close-box" onclick="closeBox()">
+        <i class="glyphicon glyphicon-remove remove-icon"></i>
+        <br><p class="close-text">Close</p>
         </div>
-    
+        <hr>            
+        <ol id="questionsBlock">
+        </ol>
+    </div>
+    </div>
+
     <div class="see-questions" onclick="openBox()">
       <p class="text-question" style="margin : 0;">See Questions</p>
     </div>
@@ -64,7 +64,6 @@
           </form>
         </div>
       </div>
-    </div>
 
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -73,9 +72,10 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
     <script src="/socket.io/socket.io.js"></script>    
-    
+     
+<script src="./../js/barba/barba.min.js"></script>
 <!-- inject:js -->
-<script src="../js/jquery/jquery-3.3.1.min.js"></script>
+<script src="../js/barba/barba.min.js"></script>
 <script src="../js/index.js"></script>
 <script src="../js/lottie/lottie.js"></script>
 <!-- endinject -->

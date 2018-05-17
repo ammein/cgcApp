@@ -251,7 +251,7 @@ function getCookie(cname) {
 function checkCookie() {
     var user = getCookie("from");
     if (user != "") {
-        $("div#formInput").append("<a class='fetchUser' href='/play'> Use \"" + decodeURI(user) + "\"</a>");
+        $("div#formInput").append("<a class='fetchUser' id='fetchUser' href='/play'> Use \"" + decodeURI(user) + "\"</a>");
         $("#welcome").append(decodeURI(user));
     } 
 }
@@ -452,48 +452,69 @@ function getTime(){
     return Time;
 }
 
-
-// DOMContentLoaded
-$(function(){
-    var socket = io();    
-    var level = $("#level").val(1);
-    console.log("I loaded in browser");
-    $(".textarea-box").one("click" , function(){
-        $(".textarea-box").val("");
-        $(".textarea-box").css({
-            "color" : "#2e2e2e"
-        });
+function playPath(){
+    gameStarted(1);
+    var socket = io();
+    // Initialize socket
+    socket.on('connect', function () {
+        console.log("Connected to Server");
     });
-    
-    // Chat Clicked
-    $(document).on("click" , "button#chat", function (e) {
-        console.log("Clicked");
-        $("#chatbox").css({
-            width: "100%",
-            transition: "2s ease-in",
-            position : "absolute",
-            float: "right",
-            backgroundColor: "rgba(0,0,0,0.85)",
-            display: "block",
-            bottom : "0",
-            top: "0",
-            zIndex: "3",
-            left:"0",
-            paddingBottom: "120px"
+
+    // Welcoming New User
+    socket.on("newUser", function (welcome) {
+        var $div = $(".new-user");
+        $div.slideDown(500, function () {
+            $div.css("display", "table");
+            $(".user-welcome").css("display", "block");
         });
-        $(".close-chat").on("click" , function (e) {
-            e.stopPropagation();            
-            $("#chatbox").css({
-                width: "0%",
-                transition: "1s ease-in",
-                display : "none"
+        $div.html("<p class='user-welcome'>User Connected : " + welcome.from + "</p>");
+        setTimeout(() => {
+            $div.slideUp(500, function () {
+                $(".user-welcome").css("display", "none");
             });
+        }, 5000);
+    });
+
+    // Broadcast Disconnected Users
+    socket.on('userDisconnect', function (user) {
+        var $div = $(".new-user");
+        $div.slideDown(500, function () {
+            $div.css({
+                display: "table",
+                backgroundColor: "red"
+            });
+            $(".user-welcome").css("display", "block");
         });
+        $div.html("<p class='user-welcome'>User Disconnected : " + user + "</p>");
+        setTimeout(() => {
+            $div.slideUp(500, function () {
+                $(".user-welcome").css("display", "none");
+            });
+        }, 5000);
+    });
+
+    // Messages send and receives (Client Side)
+    var chatArea = $("#chatmessages");
+    socket.on("newMessages", function (message) {
+        var name = $(`<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>`);
+        var list = $(`<li class='bubble-bot'></li>`);
+        var time = $(`<p class='time'></p>`);
+        // Backup
+        // var name = $(`<p style='${(decodeURI(getCookie("from")) === message.user) ? "clear: both; float: right; margin-bottom: 0; font-size: 12px;" : "clear: both; margin-bottom: 0; font-size: 12px;"}'></p>`);
+        // var list = $(`<li class='${(decodeURI(getCookie("from")) === message.user)? "bubble-you" : "bubble-bot"}'></li>`);
+        // var time = $(`<p class='time' style='${(decodeURI(getCookie("from")) === message.user) ? "clear:both; float:right;" : ""}'></p>`);
+        name.text(`${decodeURI(message.user)}`);
+        list.text(`${message.chat}`);
+        time.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
+        chatArea.append(list);
+        time.insertAfter(list);
+        name.insertBefore(list);
+        console.log("From Other Users :", message);
+        $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
     });
 
     // Emit Messages
-    $("form#sendMessage").on("submit", function (e) {
-        e.stopPropagation();
+    $("#sendChat").on("click", function (e) {
         e.preventDefault();
         var chat = $("#chatarea").val();
         console.log("Send Chat", chat);
@@ -502,91 +523,126 @@ $(function(){
             from: getCookie("from")
         });
         $("#chatarea").val("");
+        // Messages
+        var name = $(`<p style='clear: both; float: right; margin-bottom: 0; font-size: 12px;'></p>`);
+        var list = $(`<li class='bubble-you'></li>`);
+        var time = $(`<p class='time' style='clear:both; float:right;'></p>`);
+        name.text(`YOU`);
+        list.text(`${chat}`);
+        time.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
+        chatArea.append(list);
+        time.insertAfter(list);
+        name.insertBefore(list);
+        $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
+    });
+
+    socket.on('disconnect', function () {
+        console.log("Disconnected from server");
+    });
+}
+
+// DOMContentLoaded
+document.addEventListener("DOMContentLoaded", function(){
+    var level = $("#level").val(1);
+    console.log("I loaded in browser");
+    $(".textarea-box").one("click", function () {
+        $(".textarea-box").val("");
+        $(".textarea-box").css({
+            "color": "#2e2e2e"
+        });
+    });
+
+    // Chat Clicked
+    $(document).on("click", "button#chat", function (e) {
+        console.log("Clicked");
+        $("#chatbox").css({
+            width: "100%",
+            transition: "2s ease-in",
+            position: "absolute",
+            float: "right",
+            backgroundColor: "rgba(0,0,0,0.85)",
+            display: "block",
+            bottom: "0",
+            top: "0",
+            zIndex: "3",
+            left: "0",
+            paddingBottom: "120px"
+        });
+        $(".close-chat").on("click", function (e) {
+            e.stopPropagation();
+            $("#chatbox").css({
+                width: "0%",
+                transition: "1s ease-in",
+                display: "none"
+            });
+        });
     });
 
     // Input Name Validation
-    $("#inputSend").submit(function (e) {  
+    $("#inputSend").submit(function (e) {
         e.preventDefault();
         var valueInput = $("input#from").val();
         $("p").remove();
         $.ajax({
-            url : 'api/app/user/input',
-            method : "POST",
-            data : JSON.stringify({
-                from : valueInput
+            url: 'api/app/user/input',
+            method: "POST",
+            data: JSON.stringify({
+                from: valueInput
             }),
-            contentType : "application/json",
-            success : function () {  
+            contentType: "application/json",
+            success: function () {
                 $(this).unbind("submit").submit();
                 window.location.href = "/play";
             },
-            error : function (error) {  
+            error: function (error) {
                 console.log(error);
                 $("#input").append("<p style='top : 0;font-size : 14px;color: white;background: #ff2457;text-align:  center;'>\"" + valueInput + "\" has been taken. Please choose other names.</p>");
             }
         });
-    })
+    });
 
-    if (window.location.pathname == '/play') {
-        gameStarted(1);
-        // Initialize socket
-        socket.on('connect', function () {
-            console.log("Connected to Server");
-        });
-
-        // Welcoming New User
-        socket.on("newUser", function (welcome) {
-            var $div = $(".new-user");
-            $div.slideDown(500, function () {
-                $div.css("display", "table");
-                $(".user-welcome").css("display", "block");
-            });
-            $div.html("<p class='user-welcome'>User Connected : " + welcome.from + "</p>");
-            setTimeout(() => {
-                $div.slideUp(500, function () {
-                    $(".user-welcome").css("display", "none");
-                });
-            }, 5000);
-        });
-
-        // Broadcast Disconnected Users
-        socket.on('userDisconnect' , function(user){
-            var $div = $(".new-user");
-            $div.slideDown(500, function () {
-                $div.css({
-                    display : "table",
-                    backgroundColor : "red"
-                });
-                $(".user-welcome").css("display", "block");
-            });
-            $div.html("<p class='user-welcome'>User Disconnected : " + user + "</p>");
-            setTimeout(() => {
-                $div.slideUp(500, function () {
-                    $(".user-welcome").css("display", "none");
-                });
-            }, 5000);
-        });
-
-        // Messages send and receives (Client Side)
-        var chatArea = $("#chatmessages");
-        socket.on("newMessages", function (message) {
-            var name = $(`<p style='${(decodeURI(getCookie("from")) === message.user) ? "clear: both; float: right; margin-bottom: 0; font-size: 12px;" : "clear: both; margin-bottom: 0; font-size: 12px;"}'></p>`);
-            var list = $(`<li class='${(decodeURI(getCookie("from")) === message.user)? "bubble-you" : "bubble-bot"}'></li>`);
-            var time = $(`<p class='time' style='${(decodeURI(getCookie("from")) === message.user) ? "clear:both; float:right;" : ""}'></p>`);
-            name.text(`${(decodeURI(getCookie("from")) === message.user) ? "YOU": message.user}`);
-            list.text(`${message.chat}`);
-            time.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
-            chatArea.append(list);
-            time.insertAfter(list);
-            name.insertBefore(list);
-            console.log("From Other Users :", message);                
-            $("#chatmessages").scrollTop($("#chatmessages")[0].scrollHeight);
-        });
-
-        socket.on('disconnect', function () {
-            console.log("Disconnected from server");
-        });
-
+    if(window.location.pathname == '/play'){
+        playPath();
     }
 
+
+    // Barba Transition
+    var transitionEffect = Barba.BaseTransition.extend({
+        start: function () {
+            this.newContainerLoading.then(val => this.fadeIn($(this.newContainer)));
+        },
+        fadeIn : function(newContainer){
+            var _this = this;
+            newContainer.hide();
+            $(this.oldContainer).fadeOut(1000).promise().done(()=>{
+                 newContainer.css({
+                     visibility: "visible"
+                 });
+                  newContainer.fadeIn(1000, function () {
+                    //   gameStarted(1);
+                    //   playPath();
+                      _this.done();
+                  });
+            })
+        }
+    });
+
+     // Assign transition effect
+     Barba.Pjax.getTransition = function () {
+        return transitionEffect;         
+     }
+     // Listen an event of linkClicked
+    Barba.Dispatcher.on("linkClicked", function (HTMLElement, MouseEvent) {
+        console.log("What is HTMLElement ? :\n", HTMLElement);
+        console.log("What is MouseEvent ? :\n", MouseEvent);
+    });
+     // Listen an event of newPageReady
+    Barba.Dispatcher.on("newPageReady", function (currentStatus,prevStatus , HTMLElementContainer, newPageRawHTML) {
+        console.log("What is currentStatus ? :\n", currentStatus);
+        console.log("What is prevStatus ? :\n", prevStatus);
+        console.log("What is HTMLElementContainer ? :\n", HTMLElementContainer);
+        console.log("What is newPageRawHTML ? :\n", newPageRawHTML);
+    });
+
+    Barba.Pjax.start();
 });

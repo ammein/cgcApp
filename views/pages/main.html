@@ -1,0 +1,53 @@
+{% extends "./../templates/baseplay.html" %}
+
+{% block title %} Let's Play {% endblock %}
+
+{% block css %} 
+<!-- inject:css -->
+<!-- endinject -->
+{% endblock %}
+
+{% block content %}
+<div id="barba-wrapper">
+    <div class="barba-container">
+        <button id='chat' class='chat'>Chat</button>
+        <button id='ranking' class='ranking' onclick='rankClick()'>Ranks</button>
+        <div class="append"></div>
+        <div id="chatbox">
+            <div id="close-chat" class="close-chat">
+               <i class="fas fa-arrow-left"></i>
+                <p class="close-text-chat">Close</p>
+            </div>
+            <div id="chatmessages"></div>
+            <form autocomplete='off' id='sendMessage'>
+            <input type='text' id='chatarea' placeholder='Send a message' name='text'>
+            <button type='submit' id='sendChat'>Send</button>
+            </form>
+        </div>
+        <div id="rankbox">
+            <div id="rank-chat" class="rank-chat">
+               <i class="fas fa-arrow-left"></i>
+                <p class="close-text-chat">Close</p>
+            </div>
+            <table class="blueTable">
+            <thead>
+            <tr>
+            <th>NO</th>
+            <th>PLAYER NAME</th>
+            <th>SCORE</th>
+            </tr>
+            </thead>
+            <tbody id='appendTable'>
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block script %} 
+<!-- inject:js -->
+<!-- endinject -->
+{% endblock %}

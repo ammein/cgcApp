@@ -62,7 +62,9 @@ app.get('/play', (req, res)=>{
                 chat: messages.chat,
             });
             console.log("Messages from chat : \n", messages);
-        }).setMaxListeners(0);
+        });
+
+        process.setMaxListeners(10);
 
         // for disconnect
         client.on('disconnect', () => {

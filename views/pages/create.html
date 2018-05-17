@@ -1,30 +1,13 @@
-<!-- base.html -->
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/media/favicon.png" type="image/x-icon">
- 
-    <title>
-       CGC Content Management System 
-    </title>
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Baumans" rel="stylesheet">
-     
-<!-- inject:css -->
-<link rel="stylesheet" href="../css/pagination.css">
-<link rel="stylesheet" href="../css/styles.css">
-<!-- endinject -->
+{% extends "./../templates/base.html" %}
 
-  </head>
- 
-  <body class="create">
- 
-    
+{% block css %} 
+<!-- inject:css -->
+<!-- endinject -->
+{% endblock %}
+
+{% block title %} CGC Content Management System {% endblock %}
+
+{% block overlay %}
     <div class="overlay"></div>
     <div class="sidebar">
     <div class="all-question">
@@ -38,12 +21,9 @@
         </ol>
     </div>
     </div>
+{% endblock %}
 
-    <div class="see-questions" onclick="openBox()">
-      <p class="text-question" style="margin : 0;">See Questions</p>
-    </div>
-    <div class="container container-fluid">
-      
+{% block content %}
     <div class="row">
       <div class="parent-box">
         <div class="box">
@@ -64,21 +44,10 @@
           </form>
         </div>
       </div>
+{% endblock %}
 
-    </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
-    <script src="/socket.io/socket.io.js"></script>    
-     
+{% block script %} 
 <script src="./../js/barba/barba.min.js"></script>
 <!-- inject:js -->
-<script src="../js/barba/barba.min.js"></script>
-<script src="../js/index.js"></script>
-<script src="../js/lottie/lottie.js"></script>
 <!-- endinject -->
-
-  </body>
-</html>
+{% endblock %}
