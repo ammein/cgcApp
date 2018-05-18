@@ -499,10 +499,6 @@ function playPath(){
         var name = $(`<p style='clear: both; margin-bottom: 0; font-size: 12px;'></p>`);
         var list = $(`<li class='bubble-bot'></li>`);
         var time = $(`<p class='time'></p>`);
-        // Backup
-        // var name = $(`<p style='${(decodeURI(getCookie("from")) === message.user) ? "clear: both; float: right; margin-bottom: 0; font-size: 12px;" : "clear: both; margin-bottom: 0; font-size: 12px;"}'></p>`);
-        // var list = $(`<li class='${(decodeURI(getCookie("from")) === message.user)? "bubble-you" : "bubble-bot"}'></li>`);
-        // var time = $(`<p class='time' style='${(decodeURI(getCookie("from")) === message.user) ? "clear:both; float:right;" : ""}'></p>`);
         name.text(`${decodeURI(message.user)}`);
         list.text(`${message.chat}`);
         time.text(`${getTime().hours} : ${getTime().minutes} ${getTime().ampm}`);
