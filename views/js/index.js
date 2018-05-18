@@ -615,14 +615,14 @@ document.addEventListener("DOMContentLoaded", function(){
             var _this = this;
             newContainer.hide();
             $(this.oldContainer).fadeOut(1000).promise().done(()=>{
-                 newContainer.css({
-                     visibility: "visible"
-                 });
-                  newContainer.fadeIn(1000, function () {
-                    //   gameStarted(1);
-                    //   playPath();
-                      _this.done();
-                  });
+                newContainer.css({
+                    visibility: "visible"
+                });
+                newContainer.fadeIn(1000, function () {
+                    // gameStarted(1);
+                    playPath();
+                    _this.done();
+                });
             })
         }
     });
