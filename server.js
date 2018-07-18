@@ -262,7 +262,8 @@ app.get('*' , (req, res)=>{
     res.status(404).render('404.html');
 })
 
-server.listen(port , ()=>{
+// Second argument is for open to public (all device can access)
+server.listen(port ,'0.0.0.0', ()=>{
     console.log(`Listen on port ${port}`);
 });
 
